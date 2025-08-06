@@ -5,7 +5,7 @@ import { Header } from "../shared/components/Header";
 export const Route = createRootRoute({
   component: () => (
     <>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col min-w-[1680px]">
         <Header />
         <main className="bg-white flex-1 flex items-center justify-center">
           <Outlet />
