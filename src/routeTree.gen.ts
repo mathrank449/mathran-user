@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as RedirectKakaoRouteRouteImport } from './routes/redirect-kakao/route'
 import { Route as IndexRouteImport } from './routes/index'
 
 const LoginRoute = LoginRouteImport.update({
@@ -23,6 +24,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RedirectKakaoRouteRoute = RedirectKakaoRouteRouteImport.update({
+  id: '/redirect-kakao',
+  path: '/redirect-kakao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/about': typeof AboutRoute
   '/login': typeof LoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/login'
+  fullPaths: '/' | '/redirect-kakao' | '/about' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login'
-  id: '__root__' | '/' | '/about' | '/login'
+  to: '/' | '/redirect-kakao' | '/about' | '/login'
+  id: '__root__' | '/' | '/redirect-kakao' | '/about' | '/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RedirectKakaoRouteRoute: typeof RedirectKakaoRouteRoute
   AboutRoute: typeof AboutRoute
   LoginRoute: typeof LoginRoute
 }
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/redirect-kakao': {
+      id: '/redirect-kakao'
+      path: '/redirect-kakao'
+      fullPath: '/redirect-kakao'
+      preLoaderRoute: typeof RedirectKakaoRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RedirectKakaoRouteRoute: RedirectKakaoRouteRoute,
   AboutRoute: AboutRoute,
   LoginRoute: LoginRoute,
 }
