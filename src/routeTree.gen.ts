@@ -9,24 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as RedirectKakaoRouteRouteImport } from './routes/redirect-kakao/route'
+import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MainLayoutLoginRouteRouteImport } from './routes/_mainLayout/login/route'
+import { Route as MainLayoutAboutRouteRouteImport } from './routes/_mainLayout/about/route'
+import { Route as MainLayoutTestPapersIndexRouteImport } from './routes/_mainLayout/test-papers/index'
+import { Route as MainLayoutProblemsIndexRouteImport } from './routes/_mainLayout/problems/index'
+import { Route as MainLayoutContestsIndexRouteImport } from './routes/_mainLayout/contests/index'
+import { Route as MainLayoutTestPapersTestPaperIdRouteImport } from './routes/_mainLayout/test-papers/$testPaperId'
+import { Route as MainLayoutProblemsProblemIdRouteImport } from './routes/_mainLayout/problems/$problemId'
+import { Route as MainLayoutContestsContestIdRouteImport } from './routes/_mainLayout/contests/$contestId'
+import { Route as MainLayoutProblemsSchoolRouteRouteImport } from './routes/_mainLayout/problems/school/route'
+import { Route as MainLayoutProblemsPopularRouteRouteImport } from './routes/_mainLayout/problems/popular/route'
+import { Route as MainLayoutProblemsNewRouteRouteImport } from './routes/_mainLayout/problems/new/route'
+import { Route as MainLayoutProblemsCourseRouteRouteImport } from './routes/_mainLayout/problems/course/route'
 
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RedirectKakaoRouteRoute = RedirectKakaoRouteRouteImport.update({
   id: '/redirect-kakao',
   path: '/redirect-kakao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainLayoutRouteRoute = MainLayoutRouteRouteImport.update({
+  id: '/_mainLayout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,62 +39,197 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MainLayoutLoginRouteRoute = MainLayoutLoginRouteRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutAboutRouteRoute = MainLayoutAboutRouteRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutTestPapersIndexRoute =
+  MainLayoutTestPapersIndexRouteImport.update({
+    id: '/test-papers/',
+    path: '/test-papers/',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutProblemsIndexRoute = MainLayoutProblemsIndexRouteImport.update({
+  id: '/problems/',
+  path: '/problems/',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutContestsIndexRoute = MainLayoutContestsIndexRouteImport.update({
+  id: '/contests/',
+  path: '/contests/',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutTestPapersTestPaperIdRoute =
+  MainLayoutTestPapersTestPaperIdRouteImport.update({
+    id: '/test-papers/$testPaperId',
+    path: '/test-papers/$testPaperId',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutProblemsProblemIdRoute =
+  MainLayoutProblemsProblemIdRouteImport.update({
+    id: '/problems/$problemId',
+    path: '/problems/$problemId',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutContestsContestIdRoute =
+  MainLayoutContestsContestIdRouteImport.update({
+    id: '/contests/$contestId',
+    path: '/contests/$contestId',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutProblemsSchoolRouteRoute =
+  MainLayoutProblemsSchoolRouteRouteImport.update({
+    id: '/problems/school',
+    path: '/problems/school',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutProblemsPopularRouteRoute =
+  MainLayoutProblemsPopularRouteRouteImport.update({
+    id: '/problems/popular',
+    path: '/problems/popular',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutProblemsNewRouteRoute =
+  MainLayoutProblemsNewRouteRouteImport.update({
+    id: '/problems/new',
+    path: '/problems/new',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutProblemsCourseRouteRoute =
+  MainLayoutProblemsCourseRouteRouteImport.update({
+    id: '/problems/course',
+    path: '/problems/course',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
-  '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
+  '/about': typeof MainLayoutAboutRouteRoute
+  '/login': typeof MainLayoutLoginRouteRoute
+  '/problems/course': typeof MainLayoutProblemsCourseRouteRoute
+  '/problems/new': typeof MainLayoutProblemsNewRouteRoute
+  '/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
+  '/problems/school': typeof MainLayoutProblemsSchoolRouteRoute
+  '/contests/$contestId': typeof MainLayoutContestsContestIdRoute
+  '/problems/$problemId': typeof MainLayoutProblemsProblemIdRoute
+  '/test-papers/$testPaperId': typeof MainLayoutTestPapersTestPaperIdRoute
+  '/contests': typeof MainLayoutContestsIndexRoute
+  '/problems': typeof MainLayoutProblemsIndexRoute
+  '/test-papers': typeof MainLayoutTestPapersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
-  '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
+  '/about': typeof MainLayoutAboutRouteRoute
+  '/login': typeof MainLayoutLoginRouteRoute
+  '/problems/course': typeof MainLayoutProblemsCourseRouteRoute
+  '/problems/new': typeof MainLayoutProblemsNewRouteRoute
+  '/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
+  '/problems/school': typeof MainLayoutProblemsSchoolRouteRoute
+  '/contests/$contestId': typeof MainLayoutContestsContestIdRoute
+  '/problems/$problemId': typeof MainLayoutProblemsProblemIdRoute
+  '/test-papers/$testPaperId': typeof MainLayoutTestPapersTestPaperIdRoute
+  '/contests': typeof MainLayoutContestsIndexRoute
+  '/problems': typeof MainLayoutProblemsIndexRoute
+  '/test-papers': typeof MainLayoutTestPapersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_mainLayout': typeof MainLayoutRouteRouteWithChildren
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
-  '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
+  '/_mainLayout/about': typeof MainLayoutAboutRouteRoute
+  '/_mainLayout/login': typeof MainLayoutLoginRouteRoute
+  '/_mainLayout/problems/course': typeof MainLayoutProblemsCourseRouteRoute
+  '/_mainLayout/problems/new': typeof MainLayoutProblemsNewRouteRoute
+  '/_mainLayout/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
+  '/_mainLayout/problems/school': typeof MainLayoutProblemsSchoolRouteRoute
+  '/_mainLayout/contests/$contestId': typeof MainLayoutContestsContestIdRoute
+  '/_mainLayout/problems/$problemId': typeof MainLayoutProblemsProblemIdRoute
+  '/_mainLayout/test-papers/$testPaperId': typeof MainLayoutTestPapersTestPaperIdRoute
+  '/_mainLayout/contests/': typeof MainLayoutContestsIndexRoute
+  '/_mainLayout/problems/': typeof MainLayoutProblemsIndexRoute
+  '/_mainLayout/test-papers/': typeof MainLayoutTestPapersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/redirect-kakao' | '/about' | '/login'
+  fullPaths:
+    | '/'
+    | '/redirect-kakao'
+    | '/about'
+    | '/login'
+    | '/problems/course'
+    | '/problems/new'
+    | '/problems/popular'
+    | '/problems/school'
+    | '/contests/$contestId'
+    | '/problems/$problemId'
+    | '/test-papers/$testPaperId'
+    | '/contests'
+    | '/problems'
+    | '/test-papers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/redirect-kakao' | '/about' | '/login'
-  id: '__root__' | '/' | '/redirect-kakao' | '/about' | '/login'
+  to:
+    | '/'
+    | '/redirect-kakao'
+    | '/about'
+    | '/login'
+    | '/problems/course'
+    | '/problems/new'
+    | '/problems/popular'
+    | '/problems/school'
+    | '/contests/$contestId'
+    | '/problems/$problemId'
+    | '/test-papers/$testPaperId'
+    | '/contests'
+    | '/problems'
+    | '/test-papers'
+  id:
+    | '__root__'
+    | '/'
+    | '/_mainLayout'
+    | '/redirect-kakao'
+    | '/_mainLayout/about'
+    | '/_mainLayout/login'
+    | '/_mainLayout/problems/course'
+    | '/_mainLayout/problems/new'
+    | '/_mainLayout/problems/popular'
+    | '/_mainLayout/problems/school'
+    | '/_mainLayout/contests/$contestId'
+    | '/_mainLayout/problems/$problemId'
+    | '/_mainLayout/test-papers/$testPaperId'
+    | '/_mainLayout/contests/'
+    | '/_mainLayout/problems/'
+    | '/_mainLayout/test-papers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MainLayoutRouteRoute: typeof MainLayoutRouteRouteWithChildren
   RedirectKakaoRouteRoute: typeof RedirectKakaoRouteRoute
-  AboutRoute: typeof AboutRoute
-  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/redirect-kakao': {
       id: '/redirect-kakao'
       path: '/redirect-kakao'
       fullPath: '/redirect-kakao'
       preLoaderRoute: typeof RedirectKakaoRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_mainLayout': {
+      id: '/_mainLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainLayoutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -99,14 +239,131 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_mainLayout/login': {
+      id: '/_mainLayout/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof MainLayoutLoginRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/about': {
+      id: '/_mainLayout/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof MainLayoutAboutRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/test-papers/': {
+      id: '/_mainLayout/test-papers/'
+      path: '/test-papers'
+      fullPath: '/test-papers'
+      preLoaderRoute: typeof MainLayoutTestPapersIndexRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/problems/': {
+      id: '/_mainLayout/problems/'
+      path: '/problems'
+      fullPath: '/problems'
+      preLoaderRoute: typeof MainLayoutProblemsIndexRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/contests/': {
+      id: '/_mainLayout/contests/'
+      path: '/contests'
+      fullPath: '/contests'
+      preLoaderRoute: typeof MainLayoutContestsIndexRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/test-papers/$testPaperId': {
+      id: '/_mainLayout/test-papers/$testPaperId'
+      path: '/test-papers/$testPaperId'
+      fullPath: '/test-papers/$testPaperId'
+      preLoaderRoute: typeof MainLayoutTestPapersTestPaperIdRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/problems/$problemId': {
+      id: '/_mainLayout/problems/$problemId'
+      path: '/problems/$problemId'
+      fullPath: '/problems/$problemId'
+      preLoaderRoute: typeof MainLayoutProblemsProblemIdRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/contests/$contestId': {
+      id: '/_mainLayout/contests/$contestId'
+      path: '/contests/$contestId'
+      fullPath: '/contests/$contestId'
+      preLoaderRoute: typeof MainLayoutContestsContestIdRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/problems/school': {
+      id: '/_mainLayout/problems/school'
+      path: '/problems/school'
+      fullPath: '/problems/school'
+      preLoaderRoute: typeof MainLayoutProblemsSchoolRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/problems/popular': {
+      id: '/_mainLayout/problems/popular'
+      path: '/problems/popular'
+      fullPath: '/problems/popular'
+      preLoaderRoute: typeof MainLayoutProblemsPopularRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/problems/new': {
+      id: '/_mainLayout/problems/new'
+      path: '/problems/new'
+      fullPath: '/problems/new'
+      preLoaderRoute: typeof MainLayoutProblemsNewRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/problems/course': {
+      id: '/_mainLayout/problems/course'
+      path: '/problems/course'
+      fullPath: '/problems/course'
+      preLoaderRoute: typeof MainLayoutProblemsCourseRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
   }
 }
 
+interface MainLayoutRouteRouteChildren {
+  MainLayoutAboutRouteRoute: typeof MainLayoutAboutRouteRoute
+  MainLayoutLoginRouteRoute: typeof MainLayoutLoginRouteRoute
+  MainLayoutProblemsCourseRouteRoute: typeof MainLayoutProblemsCourseRouteRoute
+  MainLayoutProblemsNewRouteRoute: typeof MainLayoutProblemsNewRouteRoute
+  MainLayoutProblemsPopularRouteRoute: typeof MainLayoutProblemsPopularRouteRoute
+  MainLayoutProblemsSchoolRouteRoute: typeof MainLayoutProblemsSchoolRouteRoute
+  MainLayoutContestsContestIdRoute: typeof MainLayoutContestsContestIdRoute
+  MainLayoutProblemsProblemIdRoute: typeof MainLayoutProblemsProblemIdRoute
+  MainLayoutTestPapersTestPaperIdRoute: typeof MainLayoutTestPapersTestPaperIdRoute
+  MainLayoutContestsIndexRoute: typeof MainLayoutContestsIndexRoute
+  MainLayoutProblemsIndexRoute: typeof MainLayoutProblemsIndexRoute
+  MainLayoutTestPapersIndexRoute: typeof MainLayoutTestPapersIndexRoute
+}
+
+const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
+  MainLayoutAboutRouteRoute: MainLayoutAboutRouteRoute,
+  MainLayoutLoginRouteRoute: MainLayoutLoginRouteRoute,
+  MainLayoutProblemsCourseRouteRoute: MainLayoutProblemsCourseRouteRoute,
+  MainLayoutProblemsNewRouteRoute: MainLayoutProblemsNewRouteRoute,
+  MainLayoutProblemsPopularRouteRoute: MainLayoutProblemsPopularRouteRoute,
+  MainLayoutProblemsSchoolRouteRoute: MainLayoutProblemsSchoolRouteRoute,
+  MainLayoutContestsContestIdRoute: MainLayoutContestsContestIdRoute,
+  MainLayoutProblemsProblemIdRoute: MainLayoutProblemsProblemIdRoute,
+  MainLayoutTestPapersTestPaperIdRoute: MainLayoutTestPapersTestPaperIdRoute,
+  MainLayoutContestsIndexRoute: MainLayoutContestsIndexRoute,
+  MainLayoutProblemsIndexRoute: MainLayoutProblemsIndexRoute,
+  MainLayoutTestPapersIndexRoute: MainLayoutTestPapersIndexRoute,
+}
+
+const MainLayoutRouteRouteWithChildren = MainLayoutRouteRoute._addFileChildren(
+  MainLayoutRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MainLayoutRouteRoute: MainLayoutRouteRouteWithChildren,
   RedirectKakaoRouteRoute: RedirectKakaoRouteRoute,
-  AboutRoute: AboutRoute,
-  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

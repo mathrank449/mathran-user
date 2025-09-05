@@ -1,12 +1,12 @@
-import instance from "../../../apis/instance";
+import instance from "../../../shared/apis/instance";
 import type { OauthInfo } from "../types/oauth";
-import type { userInfo } from "../types/user";
+import type { UserInfo } from "../types/user";
 import axios from "axios";
 
-export const login = async (oauthInfo: OauthInfo): Promise<userInfo> => {
+export const login = async (oauthInfo: OauthInfo): Promise<UserInfo> => {
   try {
-    const { data } = await instance.get<userInfo>(
-      `/api/v1/auth/login/oauth/${oauthInfo.provider}?code=${oauthInfo.code}&state=${oauthInfo.state}`
+    const { data } = await instance.get<UserInfo>(
+      `v1/auth/login/oauth/${oauthInfo.provider}?code=${oauthInfo.code}&state=${oauthInfo.state}`
     );
     return data;
   } catch (error: unknown) {
@@ -17,5 +17,15 @@ export const login = async (oauthInfo: OauthInfo): Promise<userInfo> => {
       throw error;
     }
     throw new Error("Unknown error occurred during login");
+  }
+};
+
+export const refreshToken = async (): Promise<UserInfo> => {
+  try {
+    const { data } = await instance.post("/v1/auth/login/refresh");
+    return data;
+  } catch (e) {
+    console.log(e);
+    throw e;
   }
 };

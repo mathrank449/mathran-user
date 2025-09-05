@@ -1,6 +1,8 @@
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
 import { AiOutlineDown } from "react-icons/ai";
+import { AxiosError } from "axios";
+import { useState } from "react";
 import { ProblemNav } from "./ProblemNav";
 import { MoreNav } from "./MoreNav";
 
@@ -8,31 +10,28 @@ export function Header() {
   const navigate = useNavigate();
   const [isHoveringProblemNav, setIsHoveringProblemNav] = useState(false);
   const [isHoveringMoreNav, setIsHoveringMoreNav] = useState(false);
+
+  const logoutMutation = useMutation({
+    mutationFn: async () => {},
+    onSuccess: () => {
+      localStorage.removeItem("mathrancloud_username");
+      navigate({ to: "/login" }); // 로그아웃 후 이동할 경로
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) console.log(error.message);
+    },
+  });
   return (
-    <header className="relative px-6 bg-white text-[#8E8E8E] border-t-[0px] border-b-[1px] border-[#8E8E8E] min-w-[1680px]">
-      <div className="absolute right-8 top-2">
-        <button className="cursor-pointer">
-          <span>회원가입 </span>
-        </button>
-        <span className="mx-2">|</span>
+    <header className="relative min-w-[1680px] bg-white border-b-2 border-t-[1.4px] border-[#D6D6D6] border-solid flex justify-center items-center pt-2 px-6 z-10">
+      <nav className="flex items-center justify-center gap-16 pt-4">
         <button
           className="cursor-pointer"
           onClick={() => {
-            navigate({ to: "/login" });
+            navigate({ to: "/" });
           }}
         >
-          <span>로그인</span>
+          <img src="/mathran_logo.png" className="absolute w-20 left-4 top-1" />
         </button>
-      </div>
-      <button
-        className="cursor-pointer"
-        onClick={() => {
-          navigate({ to: "/" });
-        }}
-      >
-        <img src="/mathran_logo.png" className="absolute w-20 left-4 top-1" />
-      </button>
-      <nav className="flex items-center justify-center gap-16 pt-4">
         <div
           className="py-4"
           onMouseEnter={() => setIsHoveringProblemNav(true)}
@@ -49,7 +48,7 @@ export function Header() {
             navigate({ to: "/test-papers" });
           }}
         >
-          시험지
+          문제집
         </button>
         <button
           className="text-lg cursor-pointer  py-4"
@@ -68,7 +67,7 @@ export function Header() {
           랭킹
         </button>
         <button
-          className="text-lg cursor-pointer  py-4"
+          className="text-lg cursor-pointer py-4"
           onClick={() => {
             navigate({ to: "/forum" });
           }}
@@ -76,7 +75,7 @@ export function Header() {
           게시판
         </button>
         <button
-          className="text-lg cursor-pointer  py-4"
+          className="text-lg cursor-pointer py-4"
           onClick={() => {
             navigate({ to: "/resources" });
           }}
@@ -84,7 +83,7 @@ export function Header() {
           자료실
         </button>
         <div
-          className="py-4 relative"
+          className="relative py-4"
           onMouseEnter={() => setIsHoveringMoreNav(true)}
           onMouseLeave={() => setIsHoveringMoreNav(false)}
         >
@@ -93,8 +92,36 @@ export function Header() {
           {/* 드롭다운 메뉴 */}
           <MoreNav isVisible={isHoveringMoreNav} />
         </div>
+        <div className="absolute right-4">
+          {/* 오른쪽 로그인/로그아웃 */}
+          {localStorage.getItem("mathran_problem_frontend") ? (
+            <div className="flex items-center gap-4 mr-8">
+              <span className="text-sm text-gray-700 font-medium">
+                유저이름
+              </span>
+              <button
+                onClick={() => {
+                  logoutMutation.mutate();
+                }}
+                className="cursor-pointer text-white bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-md text-sm transition-colors duration-200"
+              >
+                로그아웃
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4 mr-8">
+              <button
+                onClick={() => {
+                  navigate({ to: "/login" });
+                }}
+                className="cursor-pointer text-white bg-gray-800 hover:bg-gray-700 px-4 py-1 rounded-md text-sm transition-colors duration-200"
+              >
+                로그인
+              </button>
+            </div>
+          )}
+        </div>
       </nav>
     </header>
   );
 }
-// 5%
