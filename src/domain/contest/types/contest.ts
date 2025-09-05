@@ -22,6 +22,7 @@ export type ContestResponseItem = {
   minutes: number;
   startAt: string;
   endAt: string;
+  solved: boolean;
 };
 
 export type ContestDetailedResponse = {

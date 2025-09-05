@@ -5,6 +5,8 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 import { ProblemNav } from "./ProblemNav";
 import { MoreNav } from "./MoreNav";
+import instance from "../apis/instance";
+import { logout } from "../../domain/user/apis/auth";
 
 export function Header() {
   const navigate = useNavigate();
@@ -13,8 +15,10 @@ export function Header() {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {},
-    onSuccess: () => {
+    onSuccess: async () => {
       localStorage.removeItem("mathran_username");
+      instance.defaults.headers.common["Authorization"] = null;
+      await logout();
       navigate({ to: "/login" }); // 로그아웃 후 이동할 경로
     },
     onError: (error) => {
@@ -96,9 +100,26 @@ export function Header() {
           {/* 오른쪽 로그인/로그아웃 */}
           {localStorage.getItem("mathran_username") ? (
             <div className="flex items-center gap-4 mr-8">
-              <span className="text-sm text-gray-700 font-medium">
-                유저이름
-              </span>
+              <button
+                className="cursor-pointer"
+                onClick={() => {
+                  navigate({ to: "/my" });
+                }}
+              >
+                <span className="text-sm text-black-700 font-medium">
+                  {localStorage.getItem("mathran_username")}
+                </span>
+              </button>
+              <span className="text-gray-400">|</span>
+              <button
+                className="cursor-pointer"
+                onClick={() => {
+                  navigate({ to: "/setting" });
+                }}
+              >
+                <span className="text-sm text-black-700 font-medium">설정</span>
+              </button>
+              <span className="text-gray-400">|</span>
               <button
                 onClick={() => {
                   logoutMutation.mutate();

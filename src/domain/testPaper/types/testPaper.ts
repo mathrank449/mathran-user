@@ -20,6 +20,7 @@ export type TestPaperResponseItem = {
   createdAt: string; // ISO8601 문자열
   difficulty: DifficultyType;
   minutes: number;
+  solved: boolean;
 };
 
 // 응답 전체

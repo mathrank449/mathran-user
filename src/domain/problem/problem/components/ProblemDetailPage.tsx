@@ -45,10 +45,12 @@ function ProblemDetailPage({ problemId }: ProblemDetailPageProps) {
       setStartTime(Date.now());
       setProblem(preoblemDetailedRes);
 
-      const challengeLogsResponse = await getChallengeLogsBySingleProblemId(
-        String(problemId)
-      );
-      setChallengeLogs(challengeLogsResponse);
+      if (localStorage.getItem("mathran_username")) {
+        const challengeLogsResponse = await getChallengeLogsBySingleProblemId(
+          String(problemId)
+        );
+        setChallengeLogs(challengeLogsResponse);
+      }
       setIsLoading(false);
     };
     fetchData();

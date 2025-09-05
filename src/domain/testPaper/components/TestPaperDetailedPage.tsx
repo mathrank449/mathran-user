@@ -90,12 +90,14 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
       // itemDetails 개수만큼 정답 배열 초기화 (예: [[""], [""], ...])
       const initialAnswers = testPaperResponse.itemDetails.map(() => [""]);
       setAnswers(initialAnswers);
+      if (localStorage.getItem("mathran_username")) {
+        const submissionLogsResponse = await getSubmissionLogsByAssessmentId(
+          String(testPaperId)
+        );
 
-      const submissionLogsResponse = await getSubmissionLogsByAssessmentId(
-        String(testPaperId)
-      );
+        setSubmissionLogs(submissionLogsResponse);
+      }
 
-      setSubmissionLogs(submissionLogsResponse);
       setElapsedTime(0);
     };
 
@@ -137,7 +139,7 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
       prev.map((arr, pIdx) => (pIdx === problemIndex ? [...arr, ""] : arr))
     );
   };
-  console.log(selectedLog);
+
   return (
     <div className="flex justify-center mt-24 mr-8">
       {/* 상단 타이머 */}
@@ -347,6 +349,7 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
                   await getSubmissionLogsByAssessmentId(String(testPaperId));
 
                 setSubmissionLogs(submissionLogsResponse);
+                alert("정답을 제출하였습니다.");
               } catch (e) {
                 console.log(e);
               }

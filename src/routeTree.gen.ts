@@ -12,9 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RedirectKakaoRouteRouteImport } from './routes/redirect-kakao/route'
 import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MainLayoutRankingsRouteRouteImport } from './routes/_mainLayout/rankings/route'
+import { Route as MainLayoutMyRouteRouteImport } from './routes/_mainLayout/my/route'
 import { Route as MainLayoutLoginRouteRouteImport } from './routes/_mainLayout/login/route'
 import { Route as MainLayoutAboutRouteRouteImport } from './routes/_mainLayout/about/route'
 import { Route as MainLayoutTestPapersIndexRouteImport } from './routes/_mainLayout/test-papers/index'
+import { Route as MainLayoutSettingIndexRouteImport } from './routes/_mainLayout/setting/index'
 import { Route as MainLayoutProblemsIndexRouteImport } from './routes/_mainLayout/problems/index'
 import { Route as MainLayoutContestsIndexRouteImport } from './routes/_mainLayout/contests/index'
 import { Route as MainLayoutTestPapersTestPaperIdRouteImport } from './routes/_mainLayout/test-papers/$testPaperId'
@@ -39,6 +42,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MainLayoutRankingsRouteRoute = MainLayoutRankingsRouteRouteImport.update({
+  id: '/rankings',
+  path: '/rankings',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutMyRouteRoute = MainLayoutMyRouteRouteImport.update({
+  id: '/my',
+  path: '/my',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
 const MainLayoutLoginRouteRoute = MainLayoutLoginRouteRouteImport.update({
   id: '/login',
   path: '/login',
@@ -55,6 +68,11 @@ const MainLayoutTestPapersIndexRoute =
     path: '/test-papers/',
     getParentRoute: () => MainLayoutRouteRoute,
   } as any)
+const MainLayoutSettingIndexRoute = MainLayoutSettingIndexRouteImport.update({
+  id: '/setting/',
+  path: '/setting/',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
 const MainLayoutProblemsIndexRoute = MainLayoutProblemsIndexRouteImport.update({
   id: '/problems/',
   path: '/problems/',
@@ -113,6 +131,8 @@ export interface FileRoutesByFullPath {
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/about': typeof MainLayoutAboutRouteRoute
   '/login': typeof MainLayoutLoginRouteRoute
+  '/my': typeof MainLayoutMyRouteRoute
+  '/rankings': typeof MainLayoutRankingsRouteRoute
   '/problems/course': typeof MainLayoutProblemsCourseRouteRoute
   '/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -122,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/test-papers/$testPaperId': typeof MainLayoutTestPapersTestPaperIdRoute
   '/contests': typeof MainLayoutContestsIndexRoute
   '/problems': typeof MainLayoutProblemsIndexRoute
+  '/setting': typeof MainLayoutSettingIndexRoute
   '/test-papers': typeof MainLayoutTestPapersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -129,6 +150,8 @@ export interface FileRoutesByTo {
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/about': typeof MainLayoutAboutRouteRoute
   '/login': typeof MainLayoutLoginRouteRoute
+  '/my': typeof MainLayoutMyRouteRoute
+  '/rankings': typeof MainLayoutRankingsRouteRoute
   '/problems/course': typeof MainLayoutProblemsCourseRouteRoute
   '/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -138,6 +161,7 @@ export interface FileRoutesByTo {
   '/test-papers/$testPaperId': typeof MainLayoutTestPapersTestPaperIdRoute
   '/contests': typeof MainLayoutContestsIndexRoute
   '/problems': typeof MainLayoutProblemsIndexRoute
+  '/setting': typeof MainLayoutSettingIndexRoute
   '/test-papers': typeof MainLayoutTestPapersIndexRoute
 }
 export interface FileRoutesById {
@@ -147,6 +171,8 @@ export interface FileRoutesById {
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/_mainLayout/about': typeof MainLayoutAboutRouteRoute
   '/_mainLayout/login': typeof MainLayoutLoginRouteRoute
+  '/_mainLayout/my': typeof MainLayoutMyRouteRoute
+  '/_mainLayout/rankings': typeof MainLayoutRankingsRouteRoute
   '/_mainLayout/problems/course': typeof MainLayoutProblemsCourseRouteRoute
   '/_mainLayout/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/_mainLayout/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -156,6 +182,7 @@ export interface FileRoutesById {
   '/_mainLayout/test-papers/$testPaperId': typeof MainLayoutTestPapersTestPaperIdRoute
   '/_mainLayout/contests/': typeof MainLayoutContestsIndexRoute
   '/_mainLayout/problems/': typeof MainLayoutProblemsIndexRoute
+  '/_mainLayout/setting/': typeof MainLayoutSettingIndexRoute
   '/_mainLayout/test-papers/': typeof MainLayoutTestPapersIndexRoute
 }
 export interface FileRouteTypes {
@@ -165,6 +192,8 @@ export interface FileRouteTypes {
     | '/redirect-kakao'
     | '/about'
     | '/login'
+    | '/my'
+    | '/rankings'
     | '/problems/course'
     | '/problems/new'
     | '/problems/popular'
@@ -174,6 +203,7 @@ export interface FileRouteTypes {
     | '/test-papers/$testPaperId'
     | '/contests'
     | '/problems'
+    | '/setting'
     | '/test-papers'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -181,6 +211,8 @@ export interface FileRouteTypes {
     | '/redirect-kakao'
     | '/about'
     | '/login'
+    | '/my'
+    | '/rankings'
     | '/problems/course'
     | '/problems/new'
     | '/problems/popular'
@@ -190,6 +222,7 @@ export interface FileRouteTypes {
     | '/test-papers/$testPaperId'
     | '/contests'
     | '/problems'
+    | '/setting'
     | '/test-papers'
   id:
     | '__root__'
@@ -198,6 +231,8 @@ export interface FileRouteTypes {
     | '/redirect-kakao'
     | '/_mainLayout/about'
     | '/_mainLayout/login'
+    | '/_mainLayout/my'
+    | '/_mainLayout/rankings'
     | '/_mainLayout/problems/course'
     | '/_mainLayout/problems/new'
     | '/_mainLayout/problems/popular'
@@ -207,6 +242,7 @@ export interface FileRouteTypes {
     | '/_mainLayout/test-papers/$testPaperId'
     | '/_mainLayout/contests/'
     | '/_mainLayout/problems/'
+    | '/_mainLayout/setting/'
     | '/_mainLayout/test-papers/'
   fileRoutesById: FileRoutesById
 }
@@ -239,6 +275,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_mainLayout/rankings': {
+      id: '/_mainLayout/rankings'
+      path: '/rankings'
+      fullPath: '/rankings'
+      preLoaderRoute: typeof MainLayoutRankingsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/my': {
+      id: '/_mainLayout/my'
+      path: '/my'
+      fullPath: '/my'
+      preLoaderRoute: typeof MainLayoutMyRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
     '/_mainLayout/login': {
       id: '/_mainLayout/login'
       path: '/login'
@@ -258,6 +308,13 @@ declare module '@tanstack/react-router' {
       path: '/test-papers'
       fullPath: '/test-papers'
       preLoaderRoute: typeof MainLayoutTestPapersIndexRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/setting/': {
+      id: '/_mainLayout/setting/'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof MainLayoutSettingIndexRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
     '/_mainLayout/problems/': {
@@ -329,6 +386,8 @@ declare module '@tanstack/react-router' {
 interface MainLayoutRouteRouteChildren {
   MainLayoutAboutRouteRoute: typeof MainLayoutAboutRouteRoute
   MainLayoutLoginRouteRoute: typeof MainLayoutLoginRouteRoute
+  MainLayoutMyRouteRoute: typeof MainLayoutMyRouteRoute
+  MainLayoutRankingsRouteRoute: typeof MainLayoutRankingsRouteRoute
   MainLayoutProblemsCourseRouteRoute: typeof MainLayoutProblemsCourseRouteRoute
   MainLayoutProblemsNewRouteRoute: typeof MainLayoutProblemsNewRouteRoute
   MainLayoutProblemsPopularRouteRoute: typeof MainLayoutProblemsPopularRouteRoute
@@ -338,12 +397,15 @@ interface MainLayoutRouteRouteChildren {
   MainLayoutTestPapersTestPaperIdRoute: typeof MainLayoutTestPapersTestPaperIdRoute
   MainLayoutContestsIndexRoute: typeof MainLayoutContestsIndexRoute
   MainLayoutProblemsIndexRoute: typeof MainLayoutProblemsIndexRoute
+  MainLayoutSettingIndexRoute: typeof MainLayoutSettingIndexRoute
   MainLayoutTestPapersIndexRoute: typeof MainLayoutTestPapersIndexRoute
 }
 
 const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutAboutRouteRoute: MainLayoutAboutRouteRoute,
   MainLayoutLoginRouteRoute: MainLayoutLoginRouteRoute,
+  MainLayoutMyRouteRoute: MainLayoutMyRouteRoute,
+  MainLayoutRankingsRouteRoute: MainLayoutRankingsRouteRoute,
   MainLayoutProblemsCourseRouteRoute: MainLayoutProblemsCourseRouteRoute,
   MainLayoutProblemsNewRouteRoute: MainLayoutProblemsNewRouteRoute,
   MainLayoutProblemsPopularRouteRoute: MainLayoutProblemsPopularRouteRoute,
@@ -353,6 +415,7 @@ const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutTestPapersTestPaperIdRoute: MainLayoutTestPapersTestPaperIdRoute,
   MainLayoutContestsIndexRoute: MainLayoutContestsIndexRoute,
   MainLayoutProblemsIndexRoute: MainLayoutProblemsIndexRoute,
+  MainLayoutSettingIndexRoute: MainLayoutSettingIndexRoute,
   MainLayoutTestPapersIndexRoute: MainLayoutTestPapersIndexRoute,
 }
 

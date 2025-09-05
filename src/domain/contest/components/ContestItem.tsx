@@ -30,6 +30,13 @@ function ContestItem({
         >
           {contest.contestName}
         </a>
+        <span>
+          {contest.solved === true && (
+            <span className="text-md px-3 py-1 rounded-xl border-solid border border-blue-500 bg-blue-500 text-white">
+              응시
+            </span>
+          )}
+        </span>
       </div>
       <div className="inline-block align-middle w-[400px] text-center overflow-hidden truncate">
         {/* {testPaper.courseInfo.courseName} */}
