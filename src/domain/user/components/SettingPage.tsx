@@ -45,7 +45,6 @@ function SettingPage() {
     fetchUserInfo();
   }, []);
 
-  console.log(userDetailedInfo);
   if (userDetailedInfo === undefined) return;
 
   return (
@@ -90,7 +89,13 @@ function SettingPage() {
           <span className="text-gray-500 font-medium">가입 날짜</span>
           <span className="text-gray-700 w-1/2">
             {userDetailedInfo?.createdAt
-              ? new Date(userDetailedInfo.createdAt).toLocaleDateString()
+              ? new Date(userDetailedInfo.createdAt)
+                  .toLocaleDateString("ko-KR", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })
+                  .replace(/\s/g, "")
               : "-"}
           </span>
         </div>

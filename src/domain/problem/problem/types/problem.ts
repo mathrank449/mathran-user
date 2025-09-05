@@ -1,8 +1,13 @@
+import type { PageInfo } from "../../../../shared/types/page";
 import type {
   CourseType,
   DifficultyType,
   ProblemType,
 } from "../../types/problem";
+
+export interface ProblemListPagination extends PageInfo {
+  queryResults: ProblemItemResponse[];
+}
 
 export type ProblemItemResponse = {
   id: string;

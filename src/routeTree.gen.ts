@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RedirectKakaoRouteRouteImport } from './routes/redirect-kakao/route'
 import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MainLayoutRegisterRouteRouteImport } from './routes/_mainLayout/register/route'
 import { Route as MainLayoutRankingsRouteRouteImport } from './routes/_mainLayout/rankings/route'
 import { Route as MainLayoutMyRouteRouteImport } from './routes/_mainLayout/my/route'
 import { Route as MainLayoutLoginRouteRouteImport } from './routes/_mainLayout/login/route'
@@ -41,6 +42,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const MainLayoutRegisterRouteRoute = MainLayoutRegisterRouteRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => MainLayoutRouteRoute,
 } as any)
 const MainLayoutRankingsRouteRoute = MainLayoutRankingsRouteRouteImport.update({
   id: '/rankings',
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof MainLayoutLoginRouteRoute
   '/my': typeof MainLayoutMyRouteRoute
   '/rankings': typeof MainLayoutRankingsRouteRoute
+  '/register': typeof MainLayoutRegisterRouteRoute
   '/problems/course': typeof MainLayoutProblemsCourseRouteRoute
   '/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/login': typeof MainLayoutLoginRouteRoute
   '/my': typeof MainLayoutMyRouteRoute
   '/rankings': typeof MainLayoutRankingsRouteRoute
+  '/register': typeof MainLayoutRegisterRouteRoute
   '/problems/course': typeof MainLayoutProblemsCourseRouteRoute
   '/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/_mainLayout/login': typeof MainLayoutLoginRouteRoute
   '/_mainLayout/my': typeof MainLayoutMyRouteRoute
   '/_mainLayout/rankings': typeof MainLayoutRankingsRouteRoute
+  '/_mainLayout/register': typeof MainLayoutRegisterRouteRoute
   '/_mainLayout/problems/course': typeof MainLayoutProblemsCourseRouteRoute
   '/_mainLayout/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/_mainLayout/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/my'
     | '/rankings'
+    | '/register'
     | '/problems/course'
     | '/problems/new'
     | '/problems/popular'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/my'
     | '/rankings'
+    | '/register'
     | '/problems/course'
     | '/problems/new'
     | '/problems/popular'
@@ -233,6 +244,7 @@ export interface FileRouteTypes {
     | '/_mainLayout/login'
     | '/_mainLayout/my'
     | '/_mainLayout/rankings'
+    | '/_mainLayout/register'
     | '/_mainLayout/problems/course'
     | '/_mainLayout/problems/new'
     | '/_mainLayout/problems/popular'
@@ -274,6 +286,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_mainLayout/register': {
+      id: '/_mainLayout/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof MainLayoutRegisterRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
     }
     '/_mainLayout/rankings': {
       id: '/_mainLayout/rankings'
@@ -388,6 +407,7 @@ interface MainLayoutRouteRouteChildren {
   MainLayoutLoginRouteRoute: typeof MainLayoutLoginRouteRoute
   MainLayoutMyRouteRoute: typeof MainLayoutMyRouteRoute
   MainLayoutRankingsRouteRoute: typeof MainLayoutRankingsRouteRoute
+  MainLayoutRegisterRouteRoute: typeof MainLayoutRegisterRouteRoute
   MainLayoutProblemsCourseRouteRoute: typeof MainLayoutProblemsCourseRouteRoute
   MainLayoutProblemsNewRouteRoute: typeof MainLayoutProblemsNewRouteRoute
   MainLayoutProblemsPopularRouteRoute: typeof MainLayoutProblemsPopularRouteRoute
@@ -406,6 +426,7 @@ const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutLoginRouteRoute: MainLayoutLoginRouteRoute,
   MainLayoutMyRouteRoute: MainLayoutMyRouteRoute,
   MainLayoutRankingsRouteRoute: MainLayoutRankingsRouteRoute,
+  MainLayoutRegisterRouteRoute: MainLayoutRegisterRouteRoute,
   MainLayoutProblemsCourseRouteRoute: MainLayoutProblemsCourseRouteRoute,
   MainLayoutProblemsNewRouteRoute: MainLayoutProblemsNewRouteRoute,
   MainLayoutProblemsPopularRouteRoute: MainLayoutProblemsPopularRouteRoute,

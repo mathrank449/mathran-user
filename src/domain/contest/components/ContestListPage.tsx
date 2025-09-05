@@ -7,6 +7,7 @@ import ContestHeader from "./ContestHeader";
 import ContestItem from "./ContestItem";
 import type { ContestQueryListType } from "../types/contest";
 import { getContestByQuery } from "../apis/contest";
+import Pagination from "../../../shared/components/Pagination";
 
 const typeMap: Record<string, ContestQueryListType["queryType"]> = {
   전체: "all",
@@ -16,18 +17,20 @@ const typeMap: Record<string, ContestQueryListType["queryType"]> = {
 
 function ContestListPage() {
   const [selectedType, setSelectedType] = useState("전체");
+  const [page, setPage] = useState(1);
   const [queryList, setQueryList] = useState<ContestQueryListType>({
     queryType: "all",
     contestId: "",
     contestName: "",
     difficulty: "",
   });
-  console.log(queryList);
-  const { data: testPaperList, isLoading } = useQuery({
-    queryKey: ["v1/problem/contest/", queryList] as const,
-    queryFn: ({ queryKey }) => getContestByQuery(queryKey[1]),
+
+  const { data: testPaperListPagination, isLoading } = useQuery({
+    queryKey: ["v1/problem/contest/", queryList, page] as const,
+    queryFn: ({ queryKey }) => getContestByQuery(queryKey[1], queryKey[2]),
   });
 
+  if (testPaperListPagination === undefined) return;
   return (
     <div className="flex flex-col items-center gap-8">
       <div className="text-left pl-12 bg-gray-50 text-3xl py-6 w-full">
@@ -101,8 +104,8 @@ function ContestListPage() {
       </nav>
       <div>
         <ContestHeader />
-        {!isLoading && testPaperList ? (
-          testPaperList?.queryResults
+        {!isLoading && testPaperListPagination?.queryResults ? (
+          testPaperListPagination?.queryResults
             .sort((a, b) => Number(a.contestId) - Number(b.contestId))
             .map((contest, index) => (
               <ContestItem
@@ -115,6 +118,14 @@ function ContestListPage() {
           <div>데이터 없음</div>
         )}
       </div>
+      <Pagination
+        pageInfo={{
+          currentPageNumber: testPaperListPagination?.currentPageNumber,
+          possibleNextPageNumbers:
+            testPaperListPagination?.possibleNextPageNumbers,
+        }}
+        setPage={setPage}
+      />
     </div>
   );
 }

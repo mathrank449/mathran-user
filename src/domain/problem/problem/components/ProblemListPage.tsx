@@ -10,6 +10,7 @@ import type { DifficultyType } from "../../types/problem";
 import { difficultys } from "../../utils/difficultys";
 import { pathMap } from "../utils/pathMap";
 import { useNavigate } from "@tanstack/react-router";
+import Pagination from "../../../../shared/components/Pagination";
 
 const typeMap: Record<string, SingleProblemQueryListType["queryType"]> = {
   전체: "all",
@@ -21,6 +22,7 @@ const typeMap: Record<string, SingleProblemQueryListType["queryType"]> = {
 
 function ProblemListPage() {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
   const { data: gradeList } = useQuery({
     queryKey: [`v1/problem/course/`, ""],
     queryFn: ({ queryKey }) => getCourse(queryKey[1]),
@@ -38,11 +40,12 @@ function ProblemListPage() {
     difficulty: "",
   });
 
-  const { data: problemList, isLoading } = useQuery({
-    queryKey: ["v1/problem/single/", queryList] as const,
-    queryFn: ({ queryKey }) => getSingleProblemsByQuery(queryKey[1]),
+  const { data: problemListPagination, isLoading } = useQuery({
+    queryKey: ["v1/problem/single/", queryList, page] as const,
+    queryFn: ({ queryKey }) =>
+      getSingleProblemsByQuery(queryKey[1], queryKey[2]),
   });
-  console.log(problemList);
+  console.log(problemListPagination);
 
   useEffect(() => {
     setQueryList((prev) => ({
@@ -51,6 +54,7 @@ function ProblemListPage() {
     }));
   }, [selectedType]);
 
+  if (problemListPagination === undefined) return;
   return (
     <div className="flex flex-col items-center gap-8">
       <div className="text-left pl-12 bg-gray-50 text-3xl py-6 w-full">
@@ -153,8 +157,8 @@ function ProblemListPage() {
       </nav>
       <div>
         <ProblemListHeader />
-        {!isLoading && problemList ? (
-          problemList
+        {!isLoading && problemListPagination?.queryResults ? (
+          problemListPagination?.queryResults
             .sort((a, b) => Number(a.id) - Number(b.id))
             .map((problem, index) => (
               <ProblemItem key={problem.id} problem={problem} index={index} />
@@ -163,6 +167,14 @@ function ProblemListPage() {
           <div>데이터 없음</div>
         )}
       </div>
+      <Pagination
+        pageInfo={{
+          possibleNextPageNumbers:
+            problemListPagination?.possibleNextPageNumbers,
+          currentPageNumber: problemListPagination?.currentPageNumber,
+        }}
+        setPage={setPage}
+      />
     </div>
   );
 }

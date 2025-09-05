@@ -1,6 +1,6 @@
 import instance from "../../../shared/apis/instance";
 import type { OauthInfo } from "../types/oauth";
-import type { UserInfo } from "../types/user";
+import type { BasicUserInfo, UserInfo } from "../types/user";
 import axios from "axios";
 
 export const login = async (oauthInfo: OauthInfo): Promise<UserInfo> => {
@@ -42,5 +42,27 @@ export const refreshToken = async (): Promise<UserInfo> => {
   } catch (e) {
     console.log(e);
     throw e;
+  }
+};
+
+export const register = async (registerInfo: BasicUserInfo) => {
+  try {
+    const { data } = await instance.put("/v1/member/registration", {
+      memberType: registerInfo.memberType,
+      schoolCodes:
+        registerInfo.schoolDetail === undefined
+          ? null
+          : registerInfo.schoolDetail.schoolCode,
+      agreeToPrivacyPolicy: registerInfo.agreeToPrivacyPolicy,
+    });
+    return data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "OAuth login failed");
+    }
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Unknown error occurred during login");
   }
 };

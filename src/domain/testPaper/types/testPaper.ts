@@ -1,3 +1,4 @@
+import type { PageInfo } from "../../../shared/types/page";
 import type {
   CourseType,
   DifficultyType,
@@ -23,13 +24,9 @@ export type TestPaperResponseItem = {
   solved: boolean;
 };
 
-// 응답 전체
-export type TestPaperResponse = {
+export interface TestPaperResponsePagination extends PageInfo {
   queryResults: TestPaperResponseItem[];
-  currentPageNumber: number;
-  currentPageSize: number;
-  possibleNextPageNumbers: number[];
-};
+}
 
 // 개별 문항
 export interface ItemDetail {

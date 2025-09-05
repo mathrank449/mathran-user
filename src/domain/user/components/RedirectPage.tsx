@@ -16,6 +16,13 @@ function RedirectPage({ code, error }: RedirectPageProps) {
         instance.defaults.headers.common[
           "Authorization"
         ] = `${userInfo.accessToken}`;
+
+        if (userInfo.isNewUser) {
+          alert("기본정보를 기입해주세요.");
+          navigate({ to: "/register" });
+          return;
+        }
+
         localStorage.setItem("mathran_username", userInfo.userName);
         alert("로그인에 성공하였습니다.");
         navigate({ to: "/" });

@@ -25,6 +25,14 @@ export type UserDetailedInfo = {
   schoolDetail?: School;
 };
 
+export type BasicUserInfo = {
+  nickName: string;
+  role: Role;
+  memberType: MemberType;
+  agreeToPrivacyPolicy: boolean;
+  schoolDetail?: School;
+};
+
 export type ProblemSolveInfo = {
   solvedSingleProblemIds: string[];
   failedSingleProblemIds: string[];

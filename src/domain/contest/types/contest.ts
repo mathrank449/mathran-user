@@ -1,3 +1,4 @@
+import type { PageInfo } from "../../../shared/types/page";
 import type {
   CourseType,
   DifficultyType,
@@ -55,7 +56,9 @@ export interface ItemDetail {
 // 응답 전체
 export type ContestResponse = {
   queryResults: ContestResponseItem[];
-  currentPageNumber: number;
-  currentPageSize: number;
-  possibleNextPageNumbers: number[];
 };
+
+// 응답 전체
+export interface ContestResponsePagination extends PageInfo {
+  queryResults: ContestResponseItem[];
+}
