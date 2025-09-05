@@ -14,7 +14,7 @@ export function Header() {
   const logoutMutation = useMutation({
     mutationFn: async () => {},
     onSuccess: () => {
-      localStorage.removeItem("mathrancloud_username");
+      localStorage.removeItem("mathran_username");
       navigate({ to: "/login" }); // 로그아웃 후 이동할 경로
     },
     onError: (error) => {
@@ -94,7 +94,7 @@ export function Header() {
         </div>
         <div className="absolute right-4">
           {/* 오른쪽 로그인/로그아웃 */}
-          {localStorage.getItem("mathran_problem_frontend") ? (
+          {localStorage.getItem("mathran_username") ? (
             <div className="flex items-center gap-4 mr-8">
               <span className="text-sm text-gray-700 font-medium">
                 유저이름
