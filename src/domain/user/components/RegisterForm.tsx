@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import InputBox from "../../../shared/components/InputBox";
 import { AiOutlineSearch } from "react-icons/ai";
 import { register } from "../apis/auth";
-import type { BasicUserInfo, UserDetailedInfo } from "../types/user";
+import type { BasicUserInfo } from "../types/user";
 import { useNavigate } from "@tanstack/react-router";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
@@ -40,7 +40,7 @@ const RegisterForm = ({ formData, setFormData }: RegisterFormProps) => {
 
   const registerMutation = useMutation({
     mutationFn: (formData: BasicUserInfo) => register(formData),
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert("회원가입이 완료되었습니다.");
       navigate({ to: "/login" });
     },

@@ -25,12 +25,11 @@ function ContestListPage() {
     difficulty: "",
   });
 
-  const { data: testPaperListPagination, isLoading } = useQuery({
+  const { data: contestListPagination, isLoading } = useQuery({
     queryKey: ["v1/problem/contest/", queryList, page] as const,
     queryFn: ({ queryKey }) => getContestByQuery(queryKey[1], queryKey[2]),
   });
 
-  if (testPaperListPagination === undefined) return;
   return (
     <div className="flex flex-col items-center gap-8">
       <div className="text-left pl-12 bg-gray-50 text-3xl py-6 w-full">
@@ -104,8 +103,8 @@ function ContestListPage() {
       </nav>
       <div>
         <ContestHeader />
-        {!isLoading && testPaperListPagination?.queryResults ? (
-          testPaperListPagination?.queryResults
+        {!isLoading && contestListPagination?.queryResults ? (
+          contestListPagination?.queryResults
             .sort((a, b) => Number(a.contestId) - Number(b.contestId))
             .map((contest, index) => (
               <ContestItem
@@ -118,14 +117,16 @@ function ContestListPage() {
           <div>데이터 없음</div>
         )}
       </div>
-      <Pagination
-        pageInfo={{
-          currentPageNumber: testPaperListPagination?.currentPageNumber,
-          possibleNextPageNumbers:
-            testPaperListPagination?.possibleNextPageNumbers,
-        }}
-        setPage={setPage}
-      />
+      {contestListPagination && (
+        <Pagination
+          pageInfo={{
+            currentPageNumber: contestListPagination?.currentPageNumber,
+            possibleNextPageNumbers:
+              contestListPagination?.possibleNextPageNumbers,
+          }}
+          setPage={setPage}
+        />
+      )}
     </div>
   );
 }

@@ -24,13 +24,11 @@ function TestPapersListPage() {
     testPaperName: "",
     difficulty: "",
   });
-  console.log(queryList);
+
   const { data: testPaperListPagination, isLoading } = useQuery({
     queryKey: ["v1/problem/assessment/", queryList, page] as const,
     queryFn: ({ queryKey }) => getTestPapersByQuery(queryKey[1], queryKey[2]),
   });
-
-  if (testPaperListPagination === undefined) return;
 
   return (
     <div className="flex flex-col items-center gap-8">
@@ -118,14 +116,16 @@ function TestPapersListPage() {
           <div>데이터 없음</div>
         )}
       </div>
-      <Pagination
-        pageInfo={{
-          currentPageNumber: testPaperListPagination?.currentPageNumber,
-          possibleNextPageNumbers:
-            testPaperListPagination?.possibleNextPageNumbers,
-        }}
-        setPage={setPage}
-      />
+      {testPaperListPagination && (
+        <Pagination
+          pageInfo={{
+            currentPageNumber: testPaperListPagination?.currentPageNumber,
+            possibleNextPageNumbers:
+              testPaperListPagination?.possibleNextPageNumbers,
+          }}
+          setPage={setPage}
+        />
+      )}
     </div>
   );
 }

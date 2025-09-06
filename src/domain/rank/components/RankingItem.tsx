@@ -22,8 +22,8 @@ function RankingItem({
         </span>
       </div>
       <div className="inline-block align-middle w-[450px] text-center overflow-hidden truncate">
-        <div className="flex flex-col gap-1 text-center">
-          <span className="ml-2 text-md px-3 py-1 text-center rounded-xl border-solid border border-red-500 bg-red-500 text-white">
+        <div className="gap-1 text-center">
+          <span className="text-md px-3 py-1 mr-3 text-center rounded-xl border-solid border border-red-500 bg-red-500 text-white">
             {rankingItem.tier}
           </span>
           <span
@@ -36,9 +36,7 @@ function RankingItem({
       </div>
       <div className="inline-block align-middle w-[550px] text-center overflow-hidden truncate">
         {/* {testPaper.courseInfo.courseName} */}
-        <span className="ml-2 text-sm  whitespace-nowrap">
-          {rankingItem.score}
-        </span>
+        <span className="text-sm  whitespace-nowrap">{rankingItem.score}</span>
       </div>
       <div className="inline-block align-middle w-[150px] text-center overflow-hidden truncate">
         <span

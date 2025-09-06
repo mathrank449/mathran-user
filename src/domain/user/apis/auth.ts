@@ -48,8 +48,9 @@ export const refreshToken = async (): Promise<UserInfo> => {
 export const register = async (registerInfo: BasicUserInfo) => {
   try {
     const { data } = await instance.put("/v1/member/registration", {
+      nickName: registerInfo.nickName,
       memberType: registerInfo.memberType,
-      schoolCodes:
+      schoolCode:
         registerInfo.schoolDetail === undefined
           ? null
           : registerInfo.schoolDetail.schoolCode,

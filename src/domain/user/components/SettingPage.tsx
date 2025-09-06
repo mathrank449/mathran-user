@@ -89,7 +89,10 @@ function SettingPage() {
           <span className="text-gray-500 font-medium">가입 날짜</span>
           <span className="text-gray-700 w-1/2">
             {userDetailedInfo?.createdAt
-              ? new Date(userDetailedInfo.createdAt)
+              ? new Date(
+                  new Date(userDetailedInfo.createdAt).getTime() +
+                    9 * 60 * 60 * 1000
+                ) // 9시간 더하기
                   .toLocaleDateString("ko-KR", {
                     year: "numeric",
                     month: "2-digit",

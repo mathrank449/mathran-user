@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { RankInfo, RankInfoPagination } from "../types/rank";
+import type { RankInfoPagination } from "../types/rank";
 import { getRankAll } from "../apis/rank";
 import RankingHeader from "./RankingHeader";
 import RankingItem from "./RankingItem";
@@ -24,18 +24,20 @@ function RankingListPage() {
       <div className="text-left pl-12 bg-gray-50 text-3xl py-6 w-full">
         랭킹
       </div>
-      <RankingHeader />
-      {rankginListPagination?.queryResults?.map((rankingItem, index) => (
-        <RankingItem rankingItem={rankingItem} index={index} />
-      ))}
-      <Pagination
-        pageInfo={{
-          currentPageNumber: rankginListPagination?.currentPageNumber,
-          possibleNextPageNumbers:
-            rankginListPagination?.possibleNextPageNumbers,
-        }}
-        setPage={setPage}
-      />
+      <div>
+        <RankingHeader />
+        {rankginListPagination?.queryResults?.map((rankingItem, index) => (
+          <RankingItem rankingItem={rankingItem} index={index} />
+        ))}
+        <Pagination
+          pageInfo={{
+            currentPageNumber: rankginListPagination?.currentPageNumber,
+            possibleNextPageNumbers:
+              rankginListPagination?.possibleNextPageNumbers,
+          }}
+          setPage={setPage}
+        />
+      </div>
     </div>
   );
 }

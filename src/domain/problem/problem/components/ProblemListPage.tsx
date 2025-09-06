@@ -54,7 +54,6 @@ function ProblemListPage() {
     }));
   }, [selectedType]);
 
-  if (problemListPagination === undefined) return;
   return (
     <div className="flex flex-col items-center gap-8">
       <div className="text-left pl-12 bg-gray-50 text-3xl py-6 w-full">
@@ -167,14 +166,16 @@ function ProblemListPage() {
           <div>데이터 없음</div>
         )}
       </div>
-      <Pagination
-        pageInfo={{
-          possibleNextPageNumbers:
-            problemListPagination?.possibleNextPageNumbers,
-          currentPageNumber: problemListPagination?.currentPageNumber,
-        }}
-        setPage={setPage}
-      />
+      {problemListPagination && (
+        <Pagination
+          setPage={setPage}
+          pageInfo={{
+            currentPageNumber: problemListPagination?.currentPageNumber,
+            possibleNextPageNumbers:
+              problemListPagination?.possibleNextPageNumbers,
+          }}
+        />
+      )}
     </div>
   );
 }
