@@ -1,3 +1,4 @@
+import type { PageInfo } from "../../../shared/types/page";
 import type { MemberInfo, MemberType } from "../../user/types/user";
 
 type Tier =
@@ -58,3 +59,7 @@ export type RankInfo = {
   totalSubmittedCount: number;
   successCount: number;
 };
+
+export interface RankInfoPagination extends PageInfo {
+  queryResults: RankInfo[];
+}

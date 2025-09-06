@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import instance from "../../../shared/apis/instance";
-import type { RankInfo, UserRankInfo } from "../types/rank";
+import type { RankInfo, RankInfoPagination, UserRankInfo } from "../types/rank";
 
 export const getRankByMemberId = async (
   memberId: string
@@ -17,10 +17,10 @@ export const getRankByMemberId = async (
   }
 };
 
-export const getRankAll = async (): Promise<RankInfo[]> => {
+export const getRankAll = async (page: number): Promise<RankInfoPagination> => {
   try {
     const { data } = await instance.get(
-      `/v1/rank/all?pageSize=10&pageNumber=1`
+      `/v1/rank/all?pageSize=10&pageNumber=${page}`
     );
 
     return data;

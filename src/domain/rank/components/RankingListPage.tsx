@@ -1,29 +1,41 @@
 import { useEffect, useState } from "react";
-import type { RankInfo } from "../types/rank";
+import type { RankInfo, RankInfoPagination } from "../types/rank";
 import { getRankAll } from "../apis/rank";
 import RankingHeader from "./RankingHeader";
 import RankingItem from "./RankingItem";
+import Pagination from "../../../shared/components/Pagination";
 
 function RankingListPage() {
-  const [rankginList, setRankingList] = useState<RankInfo[] | undefined>(
-    undefined
-  );
+  const [rankginListPagination, setRankginListPagination] = useState<
+    RankInfoPagination | undefined
+  >(undefined);
+  const [page, setPage] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
-      const rankginListResponse = await getRankAll();
-      setRankingList(rankginListResponse);
+      const rankginListResponse = await getRankAll(page);
+      setRankginListPagination(rankginListResponse);
     };
     fetchData();
   }, []);
+
+  if (rankginListPagination === undefined) return null;
   return (
     <div className="flex flex-col items-center gap-24">
       <div className="text-left pl-12 bg-gray-50 text-3xl py-6 w-full">
         랭킹
       </div>
       <RankingHeader />
-      {rankginList?.map((rankingItem, index) => (
+      {rankginListPagination?.queryResults?.map((rankingItem, index) => (
         <RankingItem rankingItem={rankingItem} index={index} />
       ))}
+      <Pagination
+        pageInfo={{
+          currentPageNumber: rankginListPagination?.currentPageNumber,
+          possibleNextPageNumbers:
+            rankginListPagination?.possibleNextPageNumbers,
+        }}
+        setPage={setPage}
+      />
     </div>
   );
 }
