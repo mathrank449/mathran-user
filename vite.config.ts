@@ -8,6 +8,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+
   plugins: [
     // Please make sure that '@tanstack/router-plugin' is passed before '@vitejs/plugin-react'
     tanstackRouter({
@@ -18,4 +19,5 @@ export default defineConfig({
     tailwindcss(),
     // ...,
   ],
+  base: "/",
 });
