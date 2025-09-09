@@ -16,7 +16,6 @@ import { Route as MainLayoutRegisterRouteRouteImport } from './routes/_mainLayou
 import { Route as MainLayoutRankingsRouteRouteImport } from './routes/_mainLayout/rankings/route'
 import { Route as MainLayoutMyRouteRouteImport } from './routes/_mainLayout/my/route'
 import { Route as MainLayoutLoginRouteRouteImport } from './routes/_mainLayout/login/route'
-import { Route as MainLayoutAboutRouteRouteImport } from './routes/_mainLayout/about/route'
 import { Route as MainLayoutTestPapersIndexRouteImport } from './routes/_mainLayout/test-papers/index'
 import { Route as MainLayoutSettingIndexRouteImport } from './routes/_mainLayout/setting/index'
 import { Route as MainLayoutProblemsIndexRouteImport } from './routes/_mainLayout/problems/index'
@@ -78,11 +77,6 @@ const MainLayoutMyRouteRoute = MainLayoutMyRouteRouteImport.update({
 const MainLayoutLoginRouteRoute = MainLayoutLoginRouteRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => MainLayoutRouteRoute,
-} as any)
-const MainLayoutAboutRouteRoute = MainLayoutAboutRouteRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => MainLayoutRouteRoute,
 } as any)
 const MainLayoutTestPapersIndexRoute =
@@ -254,7 +248,6 @@ const MainLayoutSolutionBoardQuestionContestContestIdRouteRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
-  '/about': typeof MainLayoutAboutRouteRoute
   '/login': typeof MainLayoutLoginRouteRoute
   '/my': typeof MainLayoutMyRouteRoute
   '/rankings': typeof MainLayoutRankingsRouteRoute
@@ -291,7 +284,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
-  '/about': typeof MainLayoutAboutRouteRoute
   '/login': typeof MainLayoutLoginRouteRoute
   '/my': typeof MainLayoutMyRouteRoute
   '/rankings': typeof MainLayoutRankingsRouteRoute
@@ -330,7 +322,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_mainLayout': typeof MainLayoutRouteRouteWithChildren
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
-  '/_mainLayout/about': typeof MainLayoutAboutRouteRoute
   '/_mainLayout/login': typeof MainLayoutLoginRouteRoute
   '/_mainLayout/my': typeof MainLayoutMyRouteRoute
   '/_mainLayout/rankings': typeof MainLayoutRankingsRouteRoute
@@ -369,7 +360,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/redirect-kakao'
-    | '/about'
     | '/login'
     | '/my'
     | '/rankings'
@@ -406,7 +396,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/redirect-kakao'
-    | '/about'
     | '/login'
     | '/my'
     | '/rankings'
@@ -444,7 +433,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_mainLayout'
     | '/redirect-kakao'
-    | '/_mainLayout/about'
     | '/_mainLayout/login'
     | '/_mainLayout/my'
     | '/_mainLayout/rankings'
@@ -534,13 +522,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof MainLayoutLoginRouteRouteImport
-      parentRoute: typeof MainLayoutRouteRoute
-    }
-    '/_mainLayout/about': {
-      id: '/_mainLayout/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof MainLayoutAboutRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
     '/_mainLayout/test-papers/': {
@@ -743,7 +724,6 @@ declare module '@tanstack/react-router' {
 }
 
 interface MainLayoutRouteRouteChildren {
-  MainLayoutAboutRouteRoute: typeof MainLayoutAboutRouteRoute
   MainLayoutLoginRouteRoute: typeof MainLayoutLoginRouteRoute
   MainLayoutMyRouteRoute: typeof MainLayoutMyRouteRoute
   MainLayoutRankingsRouteRoute: typeof MainLayoutRankingsRouteRoute
@@ -779,7 +759,6 @@ interface MainLayoutRouteRouteChildren {
 }
 
 const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
-  MainLayoutAboutRouteRoute: MainLayoutAboutRouteRoute,
   MainLayoutLoginRouteRoute: MainLayoutLoginRouteRoute,
   MainLayoutMyRouteRoute: MainLayoutMyRouteRoute,
   MainLayoutRankingsRouteRoute: MainLayoutRankingsRouteRoute,
