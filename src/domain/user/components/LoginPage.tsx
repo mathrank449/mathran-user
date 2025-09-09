@@ -4,6 +4,7 @@ import google_login from "../../../shared/assests/google_login.png";
 import mathran_logo from "/mathran_logo.png";
 
 const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+const redirect_url = import.meta.env.VITE_REDIRECT_URL;
 
 function LoginPage() {
   return (
@@ -15,7 +16,7 @@ function LoginPage() {
         </div>
         <button
           onClick={() => {
-            window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClientId}&redirect_uri=http://localhost:3000/redirect-kakao&response_type=code&state=1234`;
+            window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClientId}&redirect_uri=${redirect_url}&response_type=code&state=1234`;
           }}
         >
           <img
