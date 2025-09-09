@@ -222,11 +222,20 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
           <div className="p-4 flex flex-col relative mb-2">
             {/* 제목 입력창 */}
             <div className="flex justify-between gap-4 items-center pb-3">
-              {/* 문서 제목 */}
-              <span className="focus:outline-none focus:ring-2 focus:ring-blue-400 px-2 rounded-md">
-                {contest.contestName}
-              </span>
-
+              <div>
+                {/* 문서 제목 */}
+                <span className="focus:outline-none focus:ring-2 focus:ring-blue-400 px-2 rounded-md">
+                  {contest.contestName}
+                </span>
+                <button
+                  className="text-blue-600 text-md hover:text-blue-800 cursor-pointer"
+                  onClick={() => {
+                    window.location.href = `/solution-board/question/contest/${contest.contestId}`;
+                  }}
+                >
+                  풀이 게시판 보기
+                </button>
+              </div>
               {/* 시간 제한 */}
               <div className="flex items-center gap-1">
                 <span className="text-sm">시간제한/</span>

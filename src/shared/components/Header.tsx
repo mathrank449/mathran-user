@@ -73,7 +73,7 @@ export function Header() {
         <button
           className="text-lg cursor-pointer py-4"
           onClick={() => {
-            navigate({ to: "/forum" });
+            navigate({ to: "/solution-board/list/all" });
           }}
         >
           게시판
