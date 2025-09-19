@@ -57,11 +57,9 @@ export function ProblemNav({ isVisible }: ProblemNavProps) {
         <CategoryGrid
           title="기출 문제"
           items={[
-            { title: "수능", linkTo: "" },
-            { title: "고3 모의고사", linkTo: "" },
-            { title: "고2 모의고사", linkTo: "" },
             { title: "고1 모의고사", linkTo: "" },
-            { title: "전국연합학력평가", linkTo: "" },
+            { title: "고2 모의고사", linkTo: "" },
+            { title: "고3 모의고사", linkTo: "" },
           ]}
         />
       </div>

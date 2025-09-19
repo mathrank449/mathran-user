@@ -15,7 +15,7 @@ export type MemberInfo = {
 };
 
 export type UserDetailedInfo = {
-  memberId: number;
+  memberId: string;
   nickName: string;
   role: Role;
   memberType: MemberType;

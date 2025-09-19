@@ -5,6 +5,7 @@ import type { ProblemSolveInfo, UserDetailedInfo } from "../types/user";
 export const getUserInfo = async (): Promise<UserDetailedInfo> => {
   try {
     const { data } = await instance.get<UserDetailedInfo>("/v1/member/info/my");
+    console.log(data);
     return data;
   } catch (e) {
     if (e instanceof AxiosError) {
