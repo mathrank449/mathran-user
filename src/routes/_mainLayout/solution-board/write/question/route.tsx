@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import WritingQuestionPage from "../../../../../domain/solutionBoard/components/WritingQuestionPage";
+import WritingQuestionPage from "../../../../../domain/solutionBoard/write/components/WritingQuestionPage";
 
 export const Route = createFileRoute(
   "/_mainLayout/solution-board/write/question"

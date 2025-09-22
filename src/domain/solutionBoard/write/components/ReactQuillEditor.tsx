@@ -2,7 +2,7 @@
 import { forwardRef } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { uploadImageToServer } from "../../../shared/apis/image";
+import { uploadImageToServer } from "../../../../shared/apis/image";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 

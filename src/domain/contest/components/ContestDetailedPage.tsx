@@ -233,7 +233,7 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
                     window.location.href = `/solution-board/question/contest/${contest.contestId}`;
                   }}
                 >
-                  풀이 게시판 보기
+                  질문 게시판 보기
                 </button>
               </div>
               {/* 시간 제한 */}
