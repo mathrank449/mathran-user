@@ -14,12 +14,25 @@ function MyPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const myUserInfo = await getUserInfo();
-      setMySchool(myUserInfo.schoolDetail);
-      const myRankInfo = await getRankByMemberId(String(myUserInfo.memberId));
-      setMyRank(myRankInfo);
-      const myProblemSolveInfoResponse = await getMyProblemSolveInfo();
-      setMyProblemSolveInfo(myProblemSolveInfoResponse);
+      try {
+        const myUserInfo = await getUserInfo();
+        setMySchool(myUserInfo.schoolDetail);
+        const myRankInfo = await getRankByMemberId(String(myUserInfo.memberId));
+        setMyRank(myRankInfo);
+        const myProblemSolveInfoResponse = await getMyProblemSolveInfo();
+        setMyProblemSolveInfo(myProblemSolveInfoResponse);
+      } catch (e) {
+        console.log(e);
+
+        if ((e as { code: number })?.code === 8003) {
+          setMyRank({
+            rank: 0,
+            tier: "NONE",
+            score: 0,
+            totalUserCount: 0,
+          });
+        }
+      }
     };
 
     fetchData();

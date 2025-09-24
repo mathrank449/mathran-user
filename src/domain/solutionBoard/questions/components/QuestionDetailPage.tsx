@@ -1,56 +1,75 @@
 // SolutionBoardPage.tsx
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill-new";
 import type { Question } from "../types/question";
 import ReadOnlyReactQuillEditor from "../../write/components/ReadOnlyReactQuillEditor";
-import CommentBox from "./CommentBox";
+import CommentBox from "../comments/components/CommentBox";
 import ReactQuillEditor from "../../write/components/ReactQuillEditor";
-
-const questionData = {
-  id: "1",
-  title: "안되는 이유를 맞춰보시오[5점]",
-  category: {
-    type: "problem",
-    id: "1",
-  } as const,
-  writer: "ttcori",
-  contents: "<p>21312312321</p>",
-  createdAt: "2025-09-19T20:15:00Z",
-  comments: [
-    {
-      id: "1",
-      writer: "ddri",
-      contents: "123",
-      createdAt: "2025-09-19T20:15:00Z",
-    },
-    {
-      id: "1",
-      writer: "ddri",
-      contents: "123",
-      createdAt: "2025-09-19T20:15:00Z",
-    },
-    {
-      id: "1",
-      writer: "ddri",
-      contents: "123",
-      createdAt: "2025-09-19T20:15:00Z",
-    },
-  ],
-};
+import { getQuestionById } from "../apis/question";
+import { postComment } from "../comments/apis/comment";
+import { getUserInfo } from "../../../user/apis/user";
+import { deleteSolution } from "../../apis/solutionBoard";
+import { useNavigate } from "@tanstack/react-router";
 
 function QuestionDetailPage({ questionId }: { questionId: string }) {
-  console.log(questionId);
   const quillRef = useRef<ReactQuill>(null);
   const commentsEndRef = useRef<HTMLDivElement>(null);
-  const [question, setQuestion] = useState<Question>(questionData);
+  const [question, setQuestion] = useState<Question | undefined>(undefined);
   const [isWritingComment, setIsWritingComment] = useState(false);
+  const [isMyQuestion, setIsMyQuestion] = useState(false);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const userInfo = await getUserInfo();
+      const questionResponse = await getQuestionById(questionId);
+      if (userInfo.memberId === questionResponse.memberInfo.memberId) {
+        setIsMyQuestion(true);
+      }
+      setQuestion(questionResponse);
+    };
+    fetchData();
+  }, [questionId]);
+
+  const handlePostComment = async () => {
+    try {
+      await postComment(
+        questionId,
+        quillRef.current?.getEditor().root.innerHTML ?? ""
+      );
+      setIsWritingComment(false);
+
+      const questionResponse = await getQuestionById(questionId);
+      setQuestion(questionResponse);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDeletePost = async () => {
+    // 확인
+    const confirmed = window.confirm("정말 삭제하시겠습니까?");
+    if (!confirmed) return; // 취소하면 종료
+
+    try {
+      await deleteSolution(questionId);
+      alert("게시글이 삭제되었습니다.");
+      // 필요 시 삭제 후 이동 처리
+      // 예: navigate("/questions");
+      navigate({ to: "/solution-board/list/all" });
+    } catch (e) {
+      console.error(e);
+      alert("게시글 삭제중 오류가 발생하였습니다.");
+    }
+  };
+
+  if (question === undefined) return <div>로딩중</div>;
   return (
     <div className="w-full max-w-[1680px] mx-auto mt-24 px-4">
       <div className="w-full max-w-[800px] mx-auto flex flex-col gap-6">
         {/* 제목 입력 */}
         <span className="text-4xl font-semibold py-4 px-3">
-          {question.id}. {question.title}
+          {question.postId}. {question.title}
         </span>
 
         {/* 카테고리 & 문제 번호 */}
@@ -59,68 +78,68 @@ function QuestionDetailPage({ questionId }: { questionId: string }) {
             <span className="font-medium text-lg whitespace-nowrap mr-4">
               카테고리
             </span>
-            {question.category.type === "free" && (
+            {question.postType == "FREE" && (
               <span className="text-sm text-black-500 whitespace-nowrap mr-4">
                 자유
               </span>
             )}
 
-            {question.category.type === "notice" && (
+            {question.postType == "NOTICE" && (
               <span className="text-sm text-red-500 whitespace-nowrap mr-4">
                 공지
               </span>
             )}
 
-            {question.category.type === "problem" && (
+            {question.postType == "SINGLE_PROBLEM" && (
               <a
                 className="text-lg text-blue-500 whitespace-nowrap mr-4"
-                href={`/problems/${question.category.id}`}
+                href={`/problems/${question.singleProblemId}`}
               >
                 문제
               </a>
             )}
 
-            {question.category.type === "testPaper" && (
+            {question.postType == "ASSESSMENT" && (
               <a
                 className="text-sm text-blue-500 whitespace-nowrap mr-4"
-                href={`/teatPapers/${question.category.id}`}
+                href={`/teatPapers/${question.assessmentId}`}
               >
                 시험지
               </a>
             )}
 
-            {question.category.type === "contest" && (
+            {question.postType == "CONTEST" && (
               <a
                 className="text-sm text-blue-500 whitespace-nowrap mr-4"
-                href={`/contests/${question.category.id}`}
+                href={`/contests/${question.contestId}`}
               >
                 대회
               </a>
             )}
           </div>
-          {question.category.type === "problem" && (
+          {question.postType == "SINGLE_PROBLEM" && (
             <div className="flex items-center gap-4">
               <span className="font-medium">문제 번호</span>
-              <span className="px-3 py-2 w-32">{question.category.id}</span>
+              <span className="px-3 py-2 w-32">{question.singleProblemId}</span>
             </div>
           )}
-          {question.category.type === "testPaper" && (
+          {question.postType == "ASSESSMENT" && (
             <div className="flex items-center gap-4">
               <span className="font-medium">문제집 번호</span>
-              <span className="px-3 py-2 w-32">{question.category.id}</span>
+              <span className="px-3 py-2 w-32">{question.assessmentId}</span>
             </div>
           )}
-          {question.category.type === "contest" && (
+          {question.postType == "CONTEST" && (
             <div className="flex items-center gap-4">
               <span className="font-medium">대회 번호</span>
-              <span className="px-3 py-2 w-32">{question.category.id}</span>
+              <span className="px-3 py-2 w-32">{question.contestId}</span>
             </div>
           )}
         </div>
 
         {/* 에디터 */}
         <div className="border-2 border-gray-300 rounded-lg overflow-hidden">
-          <ReadOnlyReactQuillEditor contents={question.contents} />
+          <ReadOnlyReactQuillEditor contents={question.content} />
         </div>
         <div className="flex flex-col gap-4">
           {question.comments.map((comment) => (
@@ -129,7 +148,7 @@ function QuestionDetailPage({ questionId }: { questionId: string }) {
         </div>
         <div className="text-center">
           <button
-            className={`my-3 mt-16 cursor-pointer px-3 py-2 rounded-lg shadow transition
+            className={`my-3 mt-16 cursor-pointer px-3 py-2 rounded-lg shadow transition mr-4
     ${
       isWritingComment
         ? "bg-gray-400 text-gray-200 cursor-not-allowed"
@@ -153,14 +172,33 @@ function QuestionDetailPage({ questionId }: { questionId: string }) {
           >
             댓글 작성
           </button>
+          {isMyQuestion && (
+            <button
+              type="button"
+              className="my-3 mt-16 cursor-pointer px-3 py-2 rounded-lg shadow transition bg-blue-500 text-white hover:bg-blue-600 mr-4"
+              onClick={() => {
+                navigate({ to: `/questions/modify/${questionId}` });
+              }}
+            >
+              게시글 수정
+            </button>
+          )}
+          {isMyQuestion && (
+            <button
+              type="button"
+              className="my-3 mt-16 cursor-pointer px-3 py-2 rounded-lg shadow transition bg-blue-500 text-white hover:bg-blue-600"
+              onClick={handleDeletePost}
+            >
+              게시글 삭제
+            </button>
+          )}
+
           {isWritingComment && (
             <div ref={commentsEndRef}>
               <ReactQuillEditor ref={quillRef} />
               <button
                 className="my-3 mt-16 cursor-pointer px-3 py-2 rounded-lg shadow transition bg-blue-500 text-white"
-                onClick={() => {
-                  setIsWritingComment(true);
-                }}
+                onClick={handlePostComment}
               >
                 저장
               </button>

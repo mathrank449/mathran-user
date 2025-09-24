@@ -1,9 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BoardNav from "./BoardNav";
+import type { QuestionPostsResponsePagination } from "../types/question";
+import { getAllSolutionBoard } from "../apis/solutionBoard";
+import QuestionListHeader from "../list/components/QuestionListHeader";
+import QuestionItem from "../list/components/QuestionItem";
+import Pagination from "../../../shared/components/Pagination";
 
 function SolutionFreeBoardPage() {
+  const [questionListPagination, setQuestionListPagination] =
+    useState<QuestionPostsResponsePagination>({
+      queryResults: [],
+      currentPageNumber: 1,
+      possibleNextPageNumbers: [],
+    });
+  const [page, setPage] = useState(1);
   const [searchType, setSearchType] = useState("작성자");
   const [keyword, setKeyword] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (searchType == "작성자") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          { postType: "FREE", title: "", nickName: keyword },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+
+      if (searchType == "글제목") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          { postType: "FREE", title: keyword, nickName: "" },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+    };
+    fetchData();
+  }, [searchType, keyword]);
 
   const handleSearch = () => {
     console.log(`검색: ${searchType} -> ${keyword}`);
@@ -14,7 +47,20 @@ function SolutionFreeBoardPage() {
     <div className="w-full max-w-[1680px] mx-auto mt-24 px-4">
       <BoardNav title="자유" />
       <div className="mt-6">
-        {/* 여기서 activeTab에 따라 게시글 리스트 렌더링 */}탭 내용
+        <QuestionListHeader />
+        {questionListPagination.queryResults.map((question, index) => (
+          <QuestionItem question={question} index={index} />
+        ))}
+        {questionListPagination && (
+          <Pagination
+            pageInfo={{
+              currentPageNumber: questionListPagination?.currentPageNumber,
+              possibleNextPageNumbers:
+                questionListPagination?.possibleNextPageNumbers,
+            }}
+            setPage={setPage}
+          />
+        )}
       </div>
 
       {/* 검색 UI */}
@@ -25,7 +71,7 @@ function SolutionFreeBoardPage() {
           className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
         >
           <option value="작성자">작성자</option>
-          <option value="제목">글제목</option>
+          <option value="글제목">글제목</option>
         </select>
 
         <input

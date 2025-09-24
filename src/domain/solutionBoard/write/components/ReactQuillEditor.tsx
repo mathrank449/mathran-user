@@ -1,5 +1,5 @@
 // ReactQuillEditor.tsx
-import { forwardRef } from "react";
+import { forwardRef, memo } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { uploadImageToServer } from "../../../../shared/apis/image";
@@ -24,6 +24,7 @@ const ReactQuillEditor = forwardRef<ReactQuill, ReactQuillEditorProps>(
     const handleChange = (content: string) => {
       console.log(content);
     };
+
     const handleImageUpload = () => {
       const input = document.createElement("input");
       input.setAttribute("type", "file");
@@ -58,6 +59,8 @@ const ReactQuillEditor = forwardRef<ReactQuill, ReactQuillEditorProps>(
       },
     };
 
+    console.log("렌더링");
+
     return (
       <ReactQuill
         ref={ref}
@@ -65,10 +68,13 @@ const ReactQuillEditor = forwardRef<ReactQuill, ReactQuillEditorProps>(
         value={value}
         onChange={handleChange}
         modules={modules}
-        style={{ width: "800px", height: "400px", margin: "0 auto" }}
+        style={{ width: "800px", margin: "0 auto" }}
       />
     );
   }
 );
 
-export default ReactQuillEditor;
+// ✅ memo로 감싸서 value가 바뀔 때만 리렌더링
+export default memo(ReactQuillEditor, (prev, next) => {
+  return prev.value === next.value;
+});

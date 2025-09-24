@@ -1,8 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BoardNav from "./BoardNav";
+import QuestionListHeader from "../list/components/QuestionListHeader";
+import QuestionItem from "../list/components/QuestionItem";
+import Pagination from "../../../shared/components/Pagination";
+import type { QuestionPostsResponsePagination } from "../types/question";
+import { getAllSolutionBoard } from "../apis/solutionBoard";
 
 function SolutionProblemBoardPage({ problemId }: { problemId?: string }) {
+  const [questionListPagination, setQuestionListPagination] =
+    useState<QuestionPostsResponsePagination>({
+      queryResults: [],
+      currentPageNumber: 1,
+      possibleNextPageNumbers: [],
+    });
+  const [page, setPage] = useState(1);
   const [searchType, setSearchType] = useState("문제 번호");
+  console.log(problemId);
   const [keyword, setKeyword] = useState(problemId ?? "");
 
   const handleSearch = () => {
@@ -10,11 +23,57 @@ function SolutionProblemBoardPage({ problemId }: { problemId?: string }) {
     // 여기서 검색 API 호출 또는 필터링 로직 실행
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (searchType == "문제 번호") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          {
+            postType: "SINGLE_PROBLEM",
+            singleProblemId: keyword,
+            title: "",
+            nickName: "",
+          },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+      if (searchType == "작성자") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          { postType: "SINGLE_PROBLEM", title: "", nickName: keyword },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+
+      if (searchType == "글제목") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          { postType: "SINGLE_PROBLEM", title: keyword, nickName: "" },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+    };
+    fetchData();
+  }, [searchType, keyword]);
+
   return (
     <div className="w-[1680px] mx-auto mt-24 px-4">
       <BoardNav title="문제" />
       <div className="mt-6">
-        {/* 여기서 activeTab에 따라 게시글 리스트 렌더링 */}탭 내용
+        <QuestionListHeader />
+        {questionListPagination.queryResults.map((question, index) => (
+          <QuestionItem question={question} index={index} />
+        ))}
+        {questionListPagination && (
+          <Pagination
+            pageInfo={{
+              currentPageNumber: questionListPagination?.currentPageNumber,
+              possibleNextPageNumbers:
+                questionListPagination?.possibleNextPageNumbers,
+            }}
+            setPage={setPage}
+          />
+        )}
       </div>
       {/* 검색 UI */}
       <div className="flex items-center mt-6 space-x-2 w-[600px] mx-auto">
@@ -24,7 +83,7 @@ function SolutionProblemBoardPage({ problemId }: { problemId?: string }) {
           className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
         >
           <option value="작성자">작성자</option>
-          <option value="제목">글제목</option>
+          <option value="글제목">글제목</option>
           <option value="문제 번호">문제 번호</option>
         </select>
 

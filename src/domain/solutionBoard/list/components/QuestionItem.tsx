@@ -16,72 +16,79 @@ function QuestionItem({
       <div className="inline-block align-middle w-[200px] text-center overflow-hidden truncate">
         <span
           className="text-sm text-black whitespace-nowrap"
-          title={String(question.id)}
+          title={String(question.postId)}
         >
-          {question.id}
+          {question.postId}
         </span>
       </div>
       <div className="inline-block align-middle w-[550px] text-center overflow-hidden truncate">
         <a
           className="text-sm text-blue-500 whitespace-nowrap mr-4"
           title={String(question.title)}
-          href={`/questions/${question.id}`}
+          href={`/questions/${question.postId}`}
         >
           {question.title}
         </a>
       </div>
       <div className="inline-block align-middle w-[400px] text-center overflow-hidden truncate">
-        {(question.category.type === "free" ||
-          question.category.type === "notice") && (
+        {question.postType === "FREE" && (
           <span
             className="text-sm text-blue-500 whitespace-nowrap mr-4"
-            title={String(question.category.type)}
+            title={String(question.postType)}
           >
-            {question.category.type}
+            자유글
+          </span>
+        )}
+        {question.postType === "NOTICE" && (
+          <span
+            className="text-sm text-blue-500 whitespace-nowrap mr-4"
+            title={String(question.postType)}
+          >
+            공지사항
           </span>
         )}
 
-        {question.category.type === "problem" && (
+        {question.postType === "SINGLE_PROBLEM" && (
           <a
             className="text-sm text-blue-500 whitespace-nowrap mr-4"
-            href={`/problems/${question.category.id}`}
+            href={`/problems/${question.singleProblemId}`}
           >
-            [문제] {question.category.id}
+            [문제] {question.singleProblemId}
           </a>
         )}
 
-        {question.category.type === "testPaper" && (
+        {question.postType === "ASSESSMENT" && (
           <a
             className="text-sm text-blue-500 whitespace-nowrap mr-4"
-            href={`/teatPapers/${question.category.id}`}
+            href={`/teatPapers/${question.assessmentId}`}
           >
-            [시험지] {question.category.id}
+            [시험지] {question.assessmentId}
           </a>
         )}
 
-        {question.category.type === "contest" && (
+        {question.postType === "CONTEST" && (
           <a
             className="text-sm text-blue-500 whitespace-nowrap mr-4"
-            href={`/contests/${question.category.id}`}
+            href={`/contests/${question.contestId}`}
           >
-            [대회] {question.category.id}
+            [대회] {question.contestId}
           </a>
         )}
       </div>
       <div className="inline-block align-middle w-[150px] text-center overflow-hidden truncate">
         <span
           className="text-sm text-black whitespace-nowrap"
-          title={String(question.writer)}
+          title={String(question.memberNickName)}
         >
-          {question.writer}
+          {question.memberNickName}
         </span>
       </div>
       <div className="inline-block align-middle w-[150px] text-center overflow-hidden truncate">
         <span
           className="text-sm text-black whitespace-nowrap"
-          title={String(question.commentNum)}
+          title={String(question.commentCount)}
         >
-          {question.commentNum}
+          {question.commentCount}
         </span>
       </div>
       <div className="inline-block align-middle w-[200px] text-center overflow-hidden truncate">

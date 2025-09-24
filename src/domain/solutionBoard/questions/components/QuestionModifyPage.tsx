@@ -1,18 +1,48 @@
 // SolutionBoardPage.tsx
-import { useRef, useState } from "react";
-import ReactQuillEditor from "./ReactQuillEditor";
+import { useEffect, useRef, useState } from "react";
+import ReactQuillEditor from "../../write/components/ReactQuillEditor";
 import ReactQuill from "react-quill-new";
-import { postSolution } from "../../apis/solutionBoard";
+import { modifySolution } from "../../apis/solutionBoard";
 import { useNavigate } from "@tanstack/react-router";
+import { getUserInfo } from "../../../user/apis/user";
+import { getQuestionById } from "../apis/question";
 
-function WritingQuestionPage() {
+function QuestionModifyPage({ questionId }: { questionId: string }) {
   const quillRef = useRef<ReactQuill>(null);
   const [questionCategory, setQuestionCategory] = useState("problem");
   const [title, setTitle] = useState("");
   const [id, setId] = useState("0");
   const navigate = useNavigate();
+  const [isMyQuestion, setIsMyQuestion] = useState(false);
+  const [content, setContent] = useState("");
 
-  const onHandlePost = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const userInfo = await getUserInfo();
+      const questionResponse = await getQuestionById(questionId);
+      if (userInfo.memberId === questionResponse.memberInfo.memberId) {
+        setIsMyQuestion(true);
+      }
+
+      setTitle(questionResponse.title);
+      setContent(questionResponse.content);
+      if (questionResponse.postType == "SINGLE_PROBLEM") {
+        setId(questionResponse.singleProblemId ?? "");
+        setQuestionCategory("problem");
+      }
+      if (questionResponse.postType == "ASSESSMENT") {
+        setId(questionResponse.assessmentId ?? "");
+        setQuestionCategory("testPaper");
+      }
+      if (questionResponse.postType == "CONTEST") {
+        setId(questionResponse.contestId ?? "");
+        setQuestionCategory("contest");
+      }
+    };
+    fetchData();
+  }, [questionId]);
+
+  const onHandleModifyPost = async () => {
     if (questionCategory === "problem") {
       if (id === "0") {
         alert("문제 번호를 입력해주세요");
@@ -39,46 +69,18 @@ function WritingQuestionPage() {
       return;
     }
 
-    let questionId;
     try {
       if (questionCategory == "problem") {
-        questionId = await postSolution({
-          postType: "SINGLE_PROBLEM",
+        await modifySolution(questionId, {
           title,
           content: quillRef.current?.getEditor().root.innerHTML ?? "",
-          problemId: id,
         });
       }
 
-      if (questionCategory == "testPaper") {
-        questionId = await postSolution({
-          postType: "ASSESSMENT",
-          title,
-          content: quillRef.current?.getEditor().root.innerHTML ?? "",
-          assessmentId: id,
-        });
-      }
-
-      if (questionCategory == "contest") {
-        questionId = await postSolution({
-          postType: "CONTEST",
-          title,
-          content: quillRef.current?.getEditor().root.innerHTML ?? "",
-          contestId: id,
-        });
-      }
-
-      if (questionCategory == "free") {
-        questionId = await postSolution({
-          postType: "FREE",
-          title,
-          content: quillRef.current?.getEditor().root.innerHTML ?? "",
-        });
-      }
       navigate({ to: `/questions/${questionId}` });
     } catch (e) {
       console.log(e);
-      alert("질문 글 작성 오류 발생");
+      alert("질문 글 수정 오류 발생");
     }
   };
 
@@ -105,7 +107,7 @@ function WritingQuestionPage() {
               id="category"
               name="category"
               value={questionCategory} // 상태와 연결
-              onChange={(e) => setQuestionCategory(e.target.value)} // 선택 변경 시 상태 업데이트
+              disabled
               className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             >
               <option value="problem">문제 질문</option>
@@ -157,22 +159,29 @@ function WritingQuestionPage() {
 
         {/* 에디터 */}
         <div className="border border-gray-300 rounded-lg overflow-hidden write">
-          <ReactQuillEditor ref={quillRef} />
+          <ReactQuillEditor ref={quillRef} value={content} />
         </div>
-        <div className="flex justify-center gap-6">
-          <button
-            className="my-3 cursor-pointer px-3 py-2 rounded-lg shadow transition bg-blue-500 text-white"
-            onClick={onHandlePost}
-          >
-            글 쓰기
-          </button>
-          <button className="my-3 cursor-pointer px-3 py-2 rounded-lg shadow transition bg-blue-500 text-white">
-            취소
-          </button>
-        </div>
+        {isMyQuestion && (
+          <div className="flex justify-center gap-6">
+            <button
+              className="my-3 cursor-pointer px-3 py-2 rounded-lg shadow transition bg-blue-500 text-white"
+              onClick={onHandleModifyPost}
+            >
+              수정 완료
+            </button>
+            <button
+              className="my-3 cursor-pointer px-3 py-2 rounded-lg shadow transition bg-blue-500 text-white"
+              onClick={() => {
+                navigate({ to: `/questions/${questionId}` });
+              }}
+            >
+              취소
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default WritingQuestionPage;
+export default QuestionModifyPage;

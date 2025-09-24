@@ -30,11 +30,15 @@ import { Route as MainLayoutProblemsSchoolRouteRouteImport } from './routes/_mai
 import { Route as MainLayoutProblemsPopularRouteRouteImport } from './routes/_mainLayout/problems/popular/route'
 import { Route as MainLayoutProblemsNewRouteRouteImport } from './routes/_mainLayout/problems/new/route'
 import { Route as MainLayoutProblemsIncheonRouteRouteImport } from './routes/_mainLayout/problems/incheon/route'
+import { Route as MainLayoutProblemsHighSchool3RouteRouteImport } from './routes/_mainLayout/problems/high-school-3/route'
+import { Route as MainLayoutProblemsHighSchool2RouteRouteImport } from './routes/_mainLayout/problems/high-school-2/route'
+import { Route as MainLayoutProblemsHighSchool1RouteRouteImport } from './routes/_mainLayout/problems/high-school-1/route'
 import { Route as MainLayoutProblemsGwangjuRouteRouteImport } from './routes/_mainLayout/problems/gwangju/route'
 import { Route as MainLayoutProblemsDaejeonRouteRouteImport } from './routes/_mainLayout/problems/daejeon/route'
 import { Route as MainLayoutProblemsDaeguRouteRouteImport } from './routes/_mainLayout/problems/daegu/route'
 import { Route as MainLayoutProblemsCourseRouteRouteImport } from './routes/_mainLayout/problems/course/route'
 import { Route as MainLayoutProblemsBusanRouteRouteImport } from './routes/_mainLayout/problems/busan/route'
+import { Route as MainLayoutQuestionsModifyQuestionIdRouteImport } from './routes/_mainLayout/questions/modify/$questionId'
 import { Route as MainLayoutSolutionBoardWriteQuestionRouteRouteImport } from './routes/_mainLayout/solution-board/write/question/route'
 import { Route as MainLayoutSolutionBoardListNoticeRouteRouteImport } from './routes/_mainLayout/solution-board/list/notice/route'
 import { Route as MainLayoutSolutionBoardListFreeRouteRouteImport } from './routes/_mainLayout/solution-board/list/free/route'
@@ -161,6 +165,24 @@ const MainLayoutProblemsIncheonRouteRoute =
     path: '/problems/incheon',
     getParentRoute: () => MainLayoutRouteRoute,
   } as any)
+const MainLayoutProblemsHighSchool3RouteRoute =
+  MainLayoutProblemsHighSchool3RouteRouteImport.update({
+    id: '/problems/high-school-3',
+    path: '/problems/high-school-3',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutProblemsHighSchool2RouteRoute =
+  MainLayoutProblemsHighSchool2RouteRouteImport.update({
+    id: '/problems/high-school-2',
+    path: '/problems/high-school-2',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutProblemsHighSchool1RouteRoute =
+  MainLayoutProblemsHighSchool1RouteRouteImport.update({
+    id: '/problems/high-school-1',
+    path: '/problems/high-school-1',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
 const MainLayoutProblemsGwangjuRouteRoute =
   MainLayoutProblemsGwangjuRouteRouteImport.update({
     id: '/problems/gwangju',
@@ -189,6 +211,12 @@ const MainLayoutProblemsBusanRouteRoute =
   MainLayoutProblemsBusanRouteRouteImport.update({
     id: '/problems/busan',
     path: '/problems/busan',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutQuestionsModifyQuestionIdRoute =
+  MainLayoutQuestionsModifyQuestionIdRouteImport.update({
+    id: '/questions/modify/$questionId',
+    path: '/questions/modify/$questionId',
     getParentRoute: () => MainLayoutRouteRoute,
   } as any)
 const MainLayoutSolutionBoardWriteQuestionRouteRoute =
@@ -264,6 +292,9 @@ export interface FileRoutesByFullPath {
   '/problems/daegu': typeof MainLayoutProblemsDaeguRouteRoute
   '/problems/daejeon': typeof MainLayoutProblemsDaejeonRouteRoute
   '/problems/gwangju': typeof MainLayoutProblemsGwangjuRouteRoute
+  '/problems/high-school-1': typeof MainLayoutProblemsHighSchool1RouteRoute
+  '/problems/high-school-2': typeof MainLayoutProblemsHighSchool2RouteRoute
+  '/problems/high-school-3': typeof MainLayoutProblemsHighSchool3RouteRoute
   '/problems/incheon': typeof MainLayoutProblemsIncheonRouteRoute
   '/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -282,6 +313,7 @@ export interface FileRoutesByFullPath {
   '/solution-board/list/free': typeof MainLayoutSolutionBoardListFreeRouteRoute
   '/solution-board/list/notice': typeof MainLayoutSolutionBoardListNoticeRouteRoute
   '/solution-board/write/question': typeof MainLayoutSolutionBoardWriteQuestionRouteRoute
+  '/questions/modify/$questionId': typeof MainLayoutQuestionsModifyQuestionIdRoute
   '/solution-board/question/contest/$contestId': typeof MainLayoutSolutionBoardQuestionContestContestIdRouteRoute
   '/solution-board/question/problem/$problemId': typeof MainLayoutSolutionBoardQuestionProblemProblemIdRouteRoute
   '/solution-board/question/testPaper/$testPaperId': typeof MainLayoutSolutionBoardQuestionTestPaperTestPaperIdRouteRoute
@@ -301,6 +333,9 @@ export interface FileRoutesByTo {
   '/problems/daegu': typeof MainLayoutProblemsDaeguRouteRoute
   '/problems/daejeon': typeof MainLayoutProblemsDaejeonRouteRoute
   '/problems/gwangju': typeof MainLayoutProblemsGwangjuRouteRoute
+  '/problems/high-school-1': typeof MainLayoutProblemsHighSchool1RouteRoute
+  '/problems/high-school-2': typeof MainLayoutProblemsHighSchool2RouteRoute
+  '/problems/high-school-3': typeof MainLayoutProblemsHighSchool3RouteRoute
   '/problems/incheon': typeof MainLayoutProblemsIncheonRouteRoute
   '/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -319,6 +354,7 @@ export interface FileRoutesByTo {
   '/solution-board/list/free': typeof MainLayoutSolutionBoardListFreeRouteRoute
   '/solution-board/list/notice': typeof MainLayoutSolutionBoardListNoticeRouteRoute
   '/solution-board/write/question': typeof MainLayoutSolutionBoardWriteQuestionRouteRoute
+  '/questions/modify/$questionId': typeof MainLayoutQuestionsModifyQuestionIdRoute
   '/solution-board/question/contest/$contestId': typeof MainLayoutSolutionBoardQuestionContestContestIdRouteRoute
   '/solution-board/question/problem/$problemId': typeof MainLayoutSolutionBoardQuestionProblemProblemIdRouteRoute
   '/solution-board/question/testPaper/$testPaperId': typeof MainLayoutSolutionBoardQuestionTestPaperTestPaperIdRouteRoute
@@ -340,6 +376,9 @@ export interface FileRoutesById {
   '/_mainLayout/problems/daegu': typeof MainLayoutProblemsDaeguRouteRoute
   '/_mainLayout/problems/daejeon': typeof MainLayoutProblemsDaejeonRouteRoute
   '/_mainLayout/problems/gwangju': typeof MainLayoutProblemsGwangjuRouteRoute
+  '/_mainLayout/problems/high-school-1': typeof MainLayoutProblemsHighSchool1RouteRoute
+  '/_mainLayout/problems/high-school-2': typeof MainLayoutProblemsHighSchool2RouteRoute
+  '/_mainLayout/problems/high-school-3': typeof MainLayoutProblemsHighSchool3RouteRoute
   '/_mainLayout/problems/incheon': typeof MainLayoutProblemsIncheonRouteRoute
   '/_mainLayout/problems/new': typeof MainLayoutProblemsNewRouteRoute
   '/_mainLayout/problems/popular': typeof MainLayoutProblemsPopularRouteRoute
@@ -358,6 +397,7 @@ export interface FileRoutesById {
   '/_mainLayout/solution-board/list/free': typeof MainLayoutSolutionBoardListFreeRouteRoute
   '/_mainLayout/solution-board/list/notice': typeof MainLayoutSolutionBoardListNoticeRouteRoute
   '/_mainLayout/solution-board/write/question': typeof MainLayoutSolutionBoardWriteQuestionRouteRoute
+  '/_mainLayout/questions/modify/$questionId': typeof MainLayoutQuestionsModifyQuestionIdRoute
   '/_mainLayout/solution-board/question/contest/$contestId': typeof MainLayoutSolutionBoardQuestionContestContestIdRouteRoute
   '/_mainLayout/solution-board/question/problem/$problemId': typeof MainLayoutSolutionBoardQuestionProblemProblemIdRouteRoute
   '/_mainLayout/solution-board/question/testPaper/$testPaperId': typeof MainLayoutSolutionBoardQuestionTestPaperTestPaperIdRouteRoute
@@ -379,6 +419,9 @@ export interface FileRouteTypes {
     | '/problems/daegu'
     | '/problems/daejeon'
     | '/problems/gwangju'
+    | '/problems/high-school-1'
+    | '/problems/high-school-2'
+    | '/problems/high-school-3'
     | '/problems/incheon'
     | '/problems/new'
     | '/problems/popular'
@@ -397,6 +440,7 @@ export interface FileRouteTypes {
     | '/solution-board/list/free'
     | '/solution-board/list/notice'
     | '/solution-board/write/question'
+    | '/questions/modify/$questionId'
     | '/solution-board/question/contest/$contestId'
     | '/solution-board/question/problem/$problemId'
     | '/solution-board/question/testPaper/$testPaperId'
@@ -416,6 +460,9 @@ export interface FileRouteTypes {
     | '/problems/daegu'
     | '/problems/daejeon'
     | '/problems/gwangju'
+    | '/problems/high-school-1'
+    | '/problems/high-school-2'
+    | '/problems/high-school-3'
     | '/problems/incheon'
     | '/problems/new'
     | '/problems/popular'
@@ -434,6 +481,7 @@ export interface FileRouteTypes {
     | '/solution-board/list/free'
     | '/solution-board/list/notice'
     | '/solution-board/write/question'
+    | '/questions/modify/$questionId'
     | '/solution-board/question/contest/$contestId'
     | '/solution-board/question/problem/$problemId'
     | '/solution-board/question/testPaper/$testPaperId'
@@ -454,6 +502,9 @@ export interface FileRouteTypes {
     | '/_mainLayout/problems/daegu'
     | '/_mainLayout/problems/daejeon'
     | '/_mainLayout/problems/gwangju'
+    | '/_mainLayout/problems/high-school-1'
+    | '/_mainLayout/problems/high-school-2'
+    | '/_mainLayout/problems/high-school-3'
     | '/_mainLayout/problems/incheon'
     | '/_mainLayout/problems/new'
     | '/_mainLayout/problems/popular'
@@ -472,6 +523,7 @@ export interface FileRouteTypes {
     | '/_mainLayout/solution-board/list/free'
     | '/_mainLayout/solution-board/list/notice'
     | '/_mainLayout/solution-board/write/question'
+    | '/_mainLayout/questions/modify/$questionId'
     | '/_mainLayout/solution-board/question/contest/$contestId'
     | '/_mainLayout/solution-board/question/problem/$problemId'
     | '/_mainLayout/solution-board/question/testPaper/$testPaperId'
@@ -635,6 +687,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutProblemsIncheonRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
+    '/_mainLayout/problems/high-school-3': {
+      id: '/_mainLayout/problems/high-school-3'
+      path: '/problems/high-school-3'
+      fullPath: '/problems/high-school-3'
+      preLoaderRoute: typeof MainLayoutProblemsHighSchool3RouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/problems/high-school-2': {
+      id: '/_mainLayout/problems/high-school-2'
+      path: '/problems/high-school-2'
+      fullPath: '/problems/high-school-2'
+      preLoaderRoute: typeof MainLayoutProblemsHighSchool2RouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/problems/high-school-1': {
+      id: '/_mainLayout/problems/high-school-1'
+      path: '/problems/high-school-1'
+      fullPath: '/problems/high-school-1'
+      preLoaderRoute: typeof MainLayoutProblemsHighSchool1RouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
     '/_mainLayout/problems/gwangju': {
       id: '/_mainLayout/problems/gwangju'
       path: '/problems/gwangju'
@@ -668,6 +741,13 @@ declare module '@tanstack/react-router' {
       path: '/problems/busan'
       fullPath: '/problems/busan'
       preLoaderRoute: typeof MainLayoutProblemsBusanRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/questions/modify/$questionId': {
+      id: '/_mainLayout/questions/modify/$questionId'
+      path: '/questions/modify/$questionId'
+      fullPath: '/questions/modify/$questionId'
+      preLoaderRoute: typeof MainLayoutQuestionsModifyQuestionIdRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
     '/_mainLayout/solution-board/write/question': {
@@ -753,6 +833,9 @@ interface MainLayoutRouteRouteChildren {
   MainLayoutProblemsDaeguRouteRoute: typeof MainLayoutProblemsDaeguRouteRoute
   MainLayoutProblemsDaejeonRouteRoute: typeof MainLayoutProblemsDaejeonRouteRoute
   MainLayoutProblemsGwangjuRouteRoute: typeof MainLayoutProblemsGwangjuRouteRoute
+  MainLayoutProblemsHighSchool1RouteRoute: typeof MainLayoutProblemsHighSchool1RouteRoute
+  MainLayoutProblemsHighSchool2RouteRoute: typeof MainLayoutProblemsHighSchool2RouteRoute
+  MainLayoutProblemsHighSchool3RouteRoute: typeof MainLayoutProblemsHighSchool3RouteRoute
   MainLayoutProblemsIncheonRouteRoute: typeof MainLayoutProblemsIncheonRouteRoute
   MainLayoutProblemsNewRouteRoute: typeof MainLayoutProblemsNewRouteRoute
   MainLayoutProblemsPopularRouteRoute: typeof MainLayoutProblemsPopularRouteRoute
@@ -771,6 +854,7 @@ interface MainLayoutRouteRouteChildren {
   MainLayoutSolutionBoardListFreeRouteRoute: typeof MainLayoutSolutionBoardListFreeRouteRoute
   MainLayoutSolutionBoardListNoticeRouteRoute: typeof MainLayoutSolutionBoardListNoticeRouteRoute
   MainLayoutSolutionBoardWriteQuestionRouteRoute: typeof MainLayoutSolutionBoardWriteQuestionRouteRoute
+  MainLayoutQuestionsModifyQuestionIdRoute: typeof MainLayoutQuestionsModifyQuestionIdRoute
   MainLayoutSolutionBoardQuestionContestContestIdRouteRoute: typeof MainLayoutSolutionBoardQuestionContestContestIdRouteRoute
   MainLayoutSolutionBoardQuestionProblemProblemIdRouteRoute: typeof MainLayoutSolutionBoardQuestionProblemProblemIdRouteRoute
   MainLayoutSolutionBoardQuestionTestPaperTestPaperIdRouteRoute: typeof MainLayoutSolutionBoardQuestionTestPaperTestPaperIdRouteRoute
@@ -789,6 +873,12 @@ const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutProblemsDaeguRouteRoute: MainLayoutProblemsDaeguRouteRoute,
   MainLayoutProblemsDaejeonRouteRoute: MainLayoutProblemsDaejeonRouteRoute,
   MainLayoutProblemsGwangjuRouteRoute: MainLayoutProblemsGwangjuRouteRoute,
+  MainLayoutProblemsHighSchool1RouteRoute:
+    MainLayoutProblemsHighSchool1RouteRoute,
+  MainLayoutProblemsHighSchool2RouteRoute:
+    MainLayoutProblemsHighSchool2RouteRoute,
+  MainLayoutProblemsHighSchool3RouteRoute:
+    MainLayoutProblemsHighSchool3RouteRoute,
   MainLayoutProblemsIncheonRouteRoute: MainLayoutProblemsIncheonRouteRoute,
   MainLayoutProblemsNewRouteRoute: MainLayoutProblemsNewRouteRoute,
   MainLayoutProblemsPopularRouteRoute: MainLayoutProblemsPopularRouteRoute,
@@ -811,6 +901,8 @@ const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
     MainLayoutSolutionBoardListNoticeRouteRoute,
   MainLayoutSolutionBoardWriteQuestionRouteRoute:
     MainLayoutSolutionBoardWriteQuestionRouteRoute,
+  MainLayoutQuestionsModifyQuestionIdRoute:
+    MainLayoutQuestionsModifyQuestionIdRoute,
   MainLayoutSolutionBoardQuestionContestContestIdRouteRoute:
     MainLayoutSolutionBoardQuestionContestContestIdRouteRoute,
   MainLayoutSolutionBoardQuestionProblemProblemIdRouteRoute:

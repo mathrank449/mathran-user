@@ -10,8 +10,8 @@ export const getRankByMemberId = async (
 
     return data;
   } catch (e) {
-    if (e instanceof AxiosError) {
-      throw e.message;
+    if (e instanceof AxiosError && e.response) {
+      throw e.response.data;
     }
     throw e;
   }

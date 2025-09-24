@@ -1,7 +1,11 @@
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 
-const ReadOnlyReactQuillEditor = ({ contents }: { contents: string }) => {
+const ReadOnlyCommentReactQuillEditor = ({
+  contents,
+}: {
+  contents: string;
+}) => {
   return (
     <ReactQuill
       theme="snow"
@@ -13,4 +17,4 @@ const ReadOnlyReactQuillEditor = ({ contents }: { contents: string }) => {
   );
 };
 
-export default ReadOnlyReactQuillEditor;
+export default ReadOnlyCommentReactQuillEditor;

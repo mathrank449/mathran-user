@@ -1,7 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BoardNav from "./BoardNav";
+import QuestionListHeader from "../list/components/QuestionListHeader";
+import QuestionItem from "../list/components/QuestionItem";
+import Pagination from "../../../shared/components/Pagination";
+import type { QuestionPostsResponsePagination } from "../types/question";
+import { getAllSolutionBoard } from "../apis/solutionBoard";
 
 function SolutionContestBoardPage({ contestId }: { contestId?: string }) {
+  const [questionListPagination, setQuestionListPagination] =
+    useState<QuestionPostsResponsePagination>({
+      queryResults: [],
+      currentPageNumber: 1,
+      possibleNextPageNumbers: [],
+    });
+  const [page, setPage] = useState(1);
   const [searchType, setSearchType] = useState("대회 번호");
   const [keyword, setKeyword] = useState(contestId ?? "");
 
@@ -10,13 +22,58 @@ function SolutionContestBoardPage({ contestId }: { contestId?: string }) {
     // 여기서 검색 API 호출 또는 필터링 로직 실행
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (searchType == "대회 번호") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          {
+            postType: "CONTEST",
+            contestId: keyword,
+            title: "",
+            nickName: "",
+          },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+      if (searchType == "작성자") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          { postType: "CONTEST", title: "", nickName: keyword },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+
+      if (searchType == "글제목") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          { postType: "CONTEST", title: keyword, nickName: "" },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+    };
+    fetchData();
+  }, [searchType, keyword]);
+
   return (
-    <div className="w-full max-w-[1680px] mx-auto mt-24 px-4">
+    <div className="w-[1680px] mx-auto mt-24 px-4">
       <BoardNav title="대회" />
       <div className="mt-6">
-        {/* 여기서 activeTab에 따라 게시글 리스트 렌더링 */}탭 내용
+        <QuestionListHeader />
+        {questionListPagination.queryResults.map((question, index) => (
+          <QuestionItem question={question} index={index} />
+        ))}
+        {questionListPagination && (
+          <Pagination
+            pageInfo={{
+              currentPageNumber: questionListPagination?.currentPageNumber,
+              possibleNextPageNumbers:
+                questionListPagination?.possibleNextPageNumbers,
+            }}
+            setPage={setPage}
+          />
+        )}
       </div>
-
       {/* 검색 UI */}
       <div className="flex items-center mt-6 space-x-2 w-[600px] mx-auto">
         <select
@@ -25,7 +82,7 @@ function SolutionContestBoardPage({ contestId }: { contestId?: string }) {
           className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
         >
           <option value="작성자">작성자</option>
-          <option value="제목">글제목</option>
+          <option value="글제목">글제목</option>
           <option value="대회 번호">대회 번호</option>
         </select>
 

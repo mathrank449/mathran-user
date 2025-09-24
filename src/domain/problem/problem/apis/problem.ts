@@ -16,6 +16,7 @@ export const getSingleProblemsByQuery = async (
   district?: string | undefined
 ): Promise<ProblemListPagination> => {
   const location = [region, district].filter(Boolean).join(" ");
+  console.log(query);
   try {
     let problemResponse;
     if (query.queryType === "all") {
@@ -56,6 +57,22 @@ export const getSingleProblemsByQuery = async (
         }&difficultyMaxInclude=${query.difficulty}&schoolCode=${
           school?.schoolCode ?? ""
         }&location=${location}&orderColumn=TOTAL_TRY_COUNT&direction=DESC&pageSize=10&pageNumber=${page}`
+      );
+    }
+
+    if (query.queryType === "pastProblem") {
+      problemResponse = await instance.get(
+        `/v1/problem/single?singleProblemId=&coursePath=${
+          query.courseInfo?.coursePath
+        }&singleProblemName=${
+          query.singleProblemName
+        }&answerType=&difficultyMinInclude=${
+          query.difficulty
+        }&difficultyMaxInclude=${query.difficulty}&schoolCode=${
+          school?.schoolCode ?? ""
+        }&location=${location}&pastProblem=${
+          query.pastProblem
+        }&pageSize=10&pageNumber=${page}`
       );
     } else {
       problemResponse = await instance.get(

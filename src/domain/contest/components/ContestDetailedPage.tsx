@@ -39,11 +39,16 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
     return () => clearInterval(interval);
   }, [alreadySubmitted]);
 
+  const [submissionResult, setSubmissionResult] = useState<
+    SubmissionLogItem | undefined
+  >(undefined);
+  const [isAutoSubmitted, setIsAutoSubmitted] = useState(false);
+
   useEffect(() => {
-    if (!contest) return; // 아직 로딩 중이면 return
+    if (!contest || isAutoSubmitted) return; // 이미 제출했으면 더 실행 안함
+
     const timeLimitSeconds = contest.minutes * 60;
 
-    // 제한시간을 넘었고 아직 제출 결과가 없다면 자동 제출
     if (elapsedTime >= timeLimitSeconds && !submissionResult) {
       alert("제한 시간이 지나 현재 푼 부분까지 채점을 합니다.");
       const autoSubmit = async () => {
@@ -65,6 +70,7 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
           );
 
           setSubmissionLogs(submissionLogsResponse);
+          setIsAutoSubmitted(true); // ✅ 다시 실행 안되도록
         } catch (e) {
           console.error("자동 제출 실패:", e);
         }
@@ -72,7 +78,7 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
 
       autoSubmit();
     }
-  }, [elapsedTime]);
+  }, [elapsedTime, contest, submissionResult, isAutoSubmitted]);
 
   const navigate = useNavigate();
   const [answers, setAnswers] = useState<string[][]>([[""]]);
@@ -83,9 +89,6 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
   >(undefined);
 
   const [, setSelectedLog] = useState<number | undefined>(undefined);
-  const [submissionResult, setSubmissionResult] = useState<
-    SubmissionLogItem | undefined
-  >(undefined);
 
   useEffect(() => {
     const fetchContest = async () => {

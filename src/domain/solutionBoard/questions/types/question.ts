@@ -1,19 +1,23 @@
-import type { Category } from "../../types/question";
+import type { MemberInfo } from "../../../user/types/user";
+import type { PostType } from "../../type/solutionBoard";
 
 // 질문 글 타입 정의
 export type Question = {
-  id: string;
+  postId: string;
+  memberInfo: MemberInfo;
+  postType: PostType;
   title: string;
-  category: Category;
-  writer: string;
-  contents: string;
+  content: string;
   comments: Comment[];
+  singleProblemId?: string;
+  assessmentId?: string;
+  contestId?: string;
   createdAt: string; // ISO 날짜 문자열
 };
 
 export type Comment = {
-  id: string;
-  writer: string;
-  contents: string;
+  commentId: string;
+  memberInfo: MemberInfo;
+  content: string;
   createdAt: string;
 };

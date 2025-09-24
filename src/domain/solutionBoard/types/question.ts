@@ -1,33 +1,17 @@
 import type { PageInfo } from "../../../shared/types/page";
-
-// 카테고리 타입 정의
-export type Category =
-  | {
-      type: "problem";
-      id: string;
-    }
-  | {
-      type: "testPaper";
-      id: string;
-    }
-  | {
-      type: "contest";
-      id: string;
-    }
-  | {
-      type: "free";
-    }
-  | {
-      type: "notice";
-    };
+import type { PostType } from "../type/solutionBoard";
 
 // 질문 글 타입 정의
 export type QuestionPostItem = {
-  id: string;
+  postId: string;
+  memberId: string;
+  memberNickName: string;
+  postType: PostType;
   title: string;
-  category: Category;
-  writer: string;
-  commentNum: number;
+  singleProblemId: string;
+  assessmentId: string;
+  contestId: string;
+  commentCount: number;
   createdAt: string; // ISO 날짜 문자열
 };
 

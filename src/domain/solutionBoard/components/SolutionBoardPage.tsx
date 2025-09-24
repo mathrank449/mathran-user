@@ -1,76 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BoardNav from "./BoardNav";
 import type { QuestionPostsResponsePagination } from "../types/question";
 import Pagination from "../../../shared/components/Pagination";
 import QuestionItem from "../list/components/QuestionItem";
 import QuestionListHeader from "../list/components/QuestionListHeader";
-
-const questionListResponse = [
-  {
-    id: "1",
-    title: "안되는 이유를 맞춰보시오[5점]",
-    category: {
-      type: "problem",
-      id: "1",
-    } as const,
-    writer: "ttcori",
-    commentNum: 10,
-    createdAt: "2025-09-19T20:15:00Z",
-  },
-  {
-    id: "2",
-    title: "이 코드의 시간복잡도를 구하시오[10점]",
-    category: {
-      type: "testPaper",
-      id: "2000",
-    } as const,
-    writer: "sungho",
-    commentNum: 5,
-    createdAt: "2025-09-18T14:22:00Z",
-  },
-  {
-    id: "3",
-    title: "다음 대회 문제에 대한 풀이를 공유해주세요",
-    category: {
-      type: "contest",
-      id: "3000",
-    } as const,
-    writer: "cori_dev",
-    commentNum: 8,
-    createdAt: "2025-09-17T09:10:00Z",
-  },
-  {
-    id: "4",
-    title: "자유롭게 질문 남겨주세요",
-    category: {
-      type: "free",
-    } as const,
-    writer: "alice",
-    commentNum: 2,
-    createdAt: "2025-09-16T20:00:00Z",
-  },
-  {
-    id: "5",
-    title: "[공지] 9월 스터디 일정 안내",
-    category: {
-      type: "notice",
-    } as const,
-    writer: "admin",
-    commentNum: 0,
-    createdAt: "2025-09-15T12:00:00Z",
-  },
-];
+import { getAllSolutionBoard } from "../apis/solutionBoard";
 
 function SolutionBoardPage() {
   const [questionListPagination, setQuestionListPagination] =
     useState<QuestionPostsResponsePagination>({
-      queryResults: questionListResponse,
+      queryResults: [],
       currentPageNumber: 1,
       possibleNextPageNumbers: [],
     });
   const [page, setPage] = useState(1);
   const [searchType, setSearchType] = useState("작성자");
   const [keyword, setKeyword] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (searchType == "작성자") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          { title: "", nickName: keyword },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+
+      if (searchType == "글제목") {
+        const questionListPaginationResponse = await getAllSolutionBoard(
+          { title: keyword, nickName: "" },
+          page
+        );
+        setQuestionListPagination(questionListPaginationResponse);
+      }
+    };
+    fetchData();
+  }, [searchType, keyword]);
+
+  useEffect(() => {
+    setKeyword("");
+  }, [searchType]);
 
   const handleSearch = () => {
     console.log(`검색: ${searchType} -> ${keyword}`);
@@ -105,7 +75,7 @@ function SolutionBoardPage() {
           className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
         >
           <option value="작성자">작성자</option>
-          <option value="제목">글제목</option>
+          <option value="글제목">글제목</option>
         </select>
 
         <input
