@@ -1,5 +1,5 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
-import RedirectKakaoPage from "../../domain/user/components/RedirectKakaoPage";
+import RedirectNaverPage from "../../domain/user/components/RedirectNaverPage";
 
 type SearchParams = {
   code?: string;
@@ -7,7 +7,7 @@ type SearchParams = {
   error?: Error;
 };
 
-export const Route = createFileRoute("/redirect-kakao")({
+export const Route = createFileRoute("/redirect-naver")({
   component: RouteComponent,
   validateSearch: (search): SearchParams => {
     return {
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/redirect-kakao")({
 });
 
 function RouteComponent() {
-  const { code, error } = useSearch({ from: "/redirect-kakao" });
+  const { code, error } = useSearch({ from: "/redirect-naver" });
 
-  return <RedirectKakaoPage code={code} error={error} />;
+  return <RedirectNaverPage code={code} error={error} />;
 }

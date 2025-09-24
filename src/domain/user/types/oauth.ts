@@ -1,5 +1,5 @@
 export type OauthInfo = {
-  provider: "KAKAO" | "google" | "naver";
+  provider: "KAKAO" | "GOOGLE" | "NAVER";
   code: string;
   state: "1234";
 };

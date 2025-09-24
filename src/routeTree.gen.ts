@@ -9,7 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RedirectNaverRouteRouteImport } from './routes/redirect-naver/route'
 import { Route as RedirectKakaoRouteRouteImport } from './routes/redirect-kakao/route'
+import { Route as RedirectGoogleRouteRouteImport } from './routes/redirect-google/route'
 import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MainLayoutRegisterRouteRouteImport } from './routes/_mainLayout/register/route'
@@ -50,9 +52,19 @@ import { Route as MainLayoutSolutionBoardQuestionTestPaperTestPaperIdRouteRouteI
 import { Route as MainLayoutSolutionBoardQuestionProblemProblemIdRouteRouteImport } from './routes/_mainLayout/solution-board/question/problem/$problemId/route'
 import { Route as MainLayoutSolutionBoardQuestionContestContestIdRouteRouteImport } from './routes/_mainLayout/solution-board/question/contest/$contestId/route'
 
+const RedirectNaverRouteRoute = RedirectNaverRouteRouteImport.update({
+  id: '/redirect-naver',
+  path: '/redirect-naver',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RedirectKakaoRouteRoute = RedirectKakaoRouteRouteImport.update({
   id: '/redirect-kakao',
   path: '/redirect-kakao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedirectGoogleRouteRoute = RedirectGoogleRouteRouteImport.update({
+  id: '/redirect-google',
+  path: '/redirect-google',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MainLayoutRouteRoute = MainLayoutRouteRouteImport.update({
@@ -282,7 +294,9 @@ const MainLayoutSolutionBoardQuestionContestContestIdRouteRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/redirect-google': typeof RedirectGoogleRouteRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
+  '/redirect-naver': typeof RedirectNaverRouteRoute
   '/login': typeof MainLayoutLoginRouteRoute
   '/my': typeof MainLayoutMyRouteRoute
   '/rankings': typeof MainLayoutRankingsRouteRoute
@@ -323,7 +337,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/redirect-google': typeof RedirectGoogleRouteRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
+  '/redirect-naver': typeof RedirectNaverRouteRoute
   '/login': typeof MainLayoutLoginRouteRoute
   '/my': typeof MainLayoutMyRouteRoute
   '/rankings': typeof MainLayoutRankingsRouteRoute
@@ -366,7 +382,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_mainLayout': typeof MainLayoutRouteRouteWithChildren
+  '/redirect-google': typeof RedirectGoogleRouteRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
+  '/redirect-naver': typeof RedirectNaverRouteRoute
   '/_mainLayout/login': typeof MainLayoutLoginRouteRoute
   '/_mainLayout/my': typeof MainLayoutMyRouteRoute
   '/_mainLayout/rankings': typeof MainLayoutRankingsRouteRoute
@@ -409,7 +427,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/redirect-google'
     | '/redirect-kakao'
+    | '/redirect-naver'
     | '/login'
     | '/my'
     | '/rankings'
@@ -450,7 +470,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/redirect-google'
     | '/redirect-kakao'
+    | '/redirect-naver'
     | '/login'
     | '/my'
     | '/rankings'
@@ -492,7 +514,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_mainLayout'
+    | '/redirect-google'
     | '/redirect-kakao'
+    | '/redirect-naver'
     | '/_mainLayout/login'
     | '/_mainLayout/my'
     | '/_mainLayout/rankings'
@@ -535,16 +559,32 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MainLayoutRouteRoute: typeof MainLayoutRouteRouteWithChildren
+  RedirectGoogleRouteRoute: typeof RedirectGoogleRouteRoute
   RedirectKakaoRouteRoute: typeof RedirectKakaoRouteRoute
+  RedirectNaverRouteRoute: typeof RedirectNaverRouteRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/redirect-naver': {
+      id: '/redirect-naver'
+      path: '/redirect-naver'
+      fullPath: '/redirect-naver'
+      preLoaderRoute: typeof RedirectNaverRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/redirect-kakao': {
       id: '/redirect-kakao'
       path: '/redirect-kakao'
       fullPath: '/redirect-kakao'
       preLoaderRoute: typeof RedirectKakaoRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redirect-google': {
+      id: '/redirect-google'
+      path: '/redirect-google'
+      fullPath: '/redirect-google'
+      preLoaderRoute: typeof RedirectGoogleRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_mainLayout': {
@@ -924,7 +964,9 @@ const MainLayoutRouteRouteWithChildren = MainLayoutRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MainLayoutRouteRoute: MainLayoutRouteRouteWithChildren,
+  RedirectGoogleRouteRoute: RedirectGoogleRouteRoute,
   RedirectKakaoRouteRoute: RedirectKakaoRouteRoute,
+  RedirectNaverRouteRoute: RedirectNaverRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

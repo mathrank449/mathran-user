@@ -7,16 +7,18 @@ import { ProblemNav } from "./ProblemNav";
 import { MoreNav } from "./MoreNav";
 import instance from "../apis/instance";
 import { logout } from "../../domain/user/apis/auth";
+import { useAuthStore } from "../../domain/user/stores/authStore";
 
 export function Header() {
   const navigate = useNavigate();
   const [isHoveringProblemNav, setIsHoveringProblemNav] = useState(false);
   const [isHoveringMoreNav, setIsHoveringMoreNav] = useState(false);
+  const { clearAuth, userInfo, isLogin } = useAuthStore();
 
   const logoutMutation = useMutation({
     mutationFn: async () => {},
     onSuccess: async () => {
-      localStorage.removeItem("mathran_username");
+      clearAuth();
       instance.defaults.headers.common["Authorization"] = null;
       await logout();
       navigate({ to: "/login" }); // 로그아웃 후 이동할 경로
@@ -93,7 +95,7 @@ export function Header() {
         </div>
         <div className="absolute right-4">
           {/* 오른쪽 로그인/로그아웃 */}
-          {localStorage.getItem("mathran_username") ? (
+          {isLogin ? (
             <div className="flex items-center gap-4 mr-8">
               <button
                 className="cursor-pointer"
@@ -102,7 +104,7 @@ export function Header() {
                 }}
               >
                 <span className="text-sm text-black-700 font-medium">
-                  {localStorage.getItem("mathran_username")}
+                  {userInfo?.userName}
                 </span>
               </button>
               <span className="text-gray-400">|</span>

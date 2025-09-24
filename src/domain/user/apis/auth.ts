@@ -5,10 +5,25 @@ import axios from "axios";
 
 export const login = async (oauthInfo: OauthInfo): Promise<UserInfo> => {
   try {
-    const { data } = await instance.get<UserInfo>(
-      `v1/auth/login/oauth/${oauthInfo.provider}?code=${oauthInfo.code}&state=${oauthInfo.state}`
-    );
-    return data;
+    if (oauthInfo.provider == "KAKAO") {
+      const { data } = await instance.get<UserInfo>(
+        `v1/auth/login/oauth/${oauthInfo.provider}?code=${oauthInfo.code}&state=${oauthInfo.state}`
+      );
+      return data;
+    }
+    if (oauthInfo.provider == "NAVER") {
+      const { data } = await instance.get<UserInfo>(
+        `v1/auth/login/oauth/${oauthInfo.provider}?code=${oauthInfo.code}&state=${oauthInfo.state}`
+      );
+      return data;
+    }
+    if (oauthInfo.provider == "GOOGLE") {
+      const { data } = await instance.get<UserInfo>(
+        `v1/auth/login/oauth/${oauthInfo.provider}?code=${oauthInfo.code}&state=${oauthInfo.state}`
+      );
+      return data;
+    }
+    throw "provider가 없습니다.";
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || "OAuth login failed");

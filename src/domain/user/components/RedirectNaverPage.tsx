@@ -2,21 +2,24 @@ import { useEffect } from "react";
 import { login } from "../apis/auth";
 import instance from "../../../shared/apis/instance";
 import { useNavigate } from "@tanstack/react-router";
+import { useAuthStore } from "../stores/authStore";
 
 interface RedirectPageProps {
   code?: string;
   error?: Error;
 }
 
-function RedirectPage({ code, error }: RedirectPageProps) {
+function RedirectNaverPage({ code, error }: RedirectPageProps) {
   const navigate = useNavigate();
+  const { setAuth } = useAuthStore();
+
   useEffect(() => {
-    login({ provider: "KAKAO", code: code || "", state: "1234" })
+    login({ provider: "NAVER", code: code || "", state: "1234" })
       .then((userInfo) => {
         instance.defaults.headers.common[
           "Authorization"
         ] = `${userInfo.accessToken}`;
-
+        setAuth(userInfo);
         if (userInfo.isNewUser) {
           alert("기본정보를 기입해주세요.");
           navigate({ to: "/register" });
@@ -40,4 +43,4 @@ function RedirectPage({ code, error }: RedirectPageProps) {
   );
 }
 
-export default RedirectPage;
+export default RedirectNaverPage;
