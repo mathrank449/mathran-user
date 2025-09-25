@@ -53,7 +53,7 @@ function LoginPage() {
         </button>
         <button
           onClick={() => {
-            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${google_redirect_url}&response_type=code&state=1234&scope=https://www.googleapis.com/auth/userinfo.email`;
+            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${google_redirect_url}&response_type=code&state=1234&scope=email profile`;
           }}
         >
           <img
