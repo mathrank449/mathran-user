@@ -13,7 +13,7 @@ function RedirectGooglePage({ code, error }: RedirectPageProps) {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
   useEffect(() => {
-    login({ provider: "NAVER", code: code || "", state: "1234" })
+    login({ provider: "GOOGLE", code: code || "", state: "1234" })
       .then((userInfo) => {
         instance.defaults.headers.common[
           "Authorization"
