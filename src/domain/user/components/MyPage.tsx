@@ -4,6 +4,7 @@ import { getMyProblemSolveInfo, getUserInfo } from "../apis/user";
 import type { UserRankInfo } from "../../rank/types/rank";
 import { getRankByMemberId } from "../../rank/apis/rank";
 import type { ProblemSolveInfo } from "../types/user";
+import PortOne from "@portone/browser-sdk/v2";
 
 function MyPage() {
   const [mySchool, setMySchool] = useState<School | undefined>(undefined);
@@ -12,29 +13,34 @@ function MyPage() {
     ProblemSolveInfo | undefined
   >(undefined);
 
-  const handlePaymentButton = () => {
-      function onClickPayment() {
-    /* 1. 가맹점 식별하기 */
-    const { IMP } = window;
-    IMP.init('imp00000000');
+  const handlePaymentButton = async () => {
+    const response = await PortOne.requestPayment({
+      // Store ID 설정
+      storeId: "store-a9019ea9-0758-4ab0-bc07-fafdfcd6986e",
+      // 채널 키 설정
+      channelKey: "channel-key-c62a3472-8260-449d-a8eb-deeb5733240e",
+      paymentId: `payment-${crypto.randomUUID()}`,
+      orderName: "나이키 와플 트레이너 2 SD",
+      totalAmount: 1000,
+      currency: "CURRENCY_KRW",
+      payMethod: "EASY_PAY",
+    });
 
-    /* 2. 결제 데이터 정의하기 */
-    const data = {
-      pg: 'html5_inicis',                           // PG사
-      pay_method: 'card',                           // 결제수단
-      merchant_uid: `mid_${new Date().getTime()}`   // 주문번호
-      amount: 1000,                                 // 결제금액
-      name: '아임포트 결제 데이터 분석',                  // 주문명
-      buyer_name: '홍길동',                           // 구매자 이름
-      buyer_tel: '01012341234',                     // 구매자 전화번호
-      buyer_email: 'example@example',               // 구매자 이메일
-      buyer_addr: '신사동 661-16',                    // 구매자 주소
-      buyer_postcode: '06018',                      // 구매자 우편번호
-      ...
-    };
+    if (response && response.code !== undefined) {
+      // 오류 발생
+      return alert(response.message);
+    }
 
-    /* 4. 결제 창 호출하기 */
-    IMP.request_pay(data, callback);
+    // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
+    // const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   // paymentId와 주문 정보를 서버에 전달합니다
+    //   body: JSON.stringify({
+    //     paymentId: paymentId,
+    //     // 주문 정보...
+    //   }),
+    // });
   };
 
   useEffect(() => {
@@ -115,7 +121,7 @@ function MyPage() {
               className="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-xl shadow-md hover:bg-emerald-600 transition cursor-pointer"
               onClick={handlePaymentButton}
             >
-              결제하기
+              포인트 충전
             </button>
           </section>
         </div>
