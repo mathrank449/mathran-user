@@ -12,6 +12,31 @@ function MyPage() {
     ProblemSolveInfo | undefined
   >(undefined);
 
+  const handlePaymentButton = () => {
+      function onClickPayment() {
+    /* 1. 가맹점 식별하기 */
+    const { IMP } = window;
+    IMP.init('imp00000000');
+
+    /* 2. 결제 데이터 정의하기 */
+    const data = {
+      pg: 'html5_inicis',                           // PG사
+      pay_method: 'card',                           // 결제수단
+      merchant_uid: `mid_${new Date().getTime()}`   // 주문번호
+      amount: 1000,                                 // 결제금액
+      name: '아임포트 결제 데이터 분석',                  // 주문명
+      buyer_name: '홍길동',                           // 구매자 이름
+      buyer_tel: '01012341234',                     // 구매자 전화번호
+      buyer_email: 'example@example',               // 구매자 이메일
+      buyer_addr: '신사동 661-16',                    // 구매자 주소
+      buyer_postcode: '06018',                      // 구매자 우편번호
+      ...
+    };
+
+    /* 4. 결제 창 호출하기 */
+    IMP.request_pay(data, callback);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,40 +73,52 @@ function MyPage() {
 
       {/* 메인 레이아웃 */}
       <div className="flex justify-between gap-10 my-8">
-        {/* 왼쪽 사이드: 프로필/통계 */}
-        <section className="w-[380px] space-y-4">
-          <div className="rounded-2xl border border-gray-200 shadow-sm p-6 bg-white space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">등수</span>
-              <span className="text-xl font-bold text-blue-600">
-                {myRank?.rank}
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">맞은 문제</span>
-              <span className="text-lg font-semibold text-green-600">
-                {myProblemSolveInfo?.solvedSingleProblemIds.length}
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">틀린 문제</span>
-              <span className="text-lg font-semibold text-red-600">
-                {myProblemSolveInfo?.failedSingleProblemIds.length}
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-500">학교/소속</span>
-              {mySchool && (
-                <span className="text-base text-gray-700">
-                  {mySchool.schoolName}
+        <div>
+          {/* 왼쪽 사이드: 프로필/통계 */}
+          <section className="w-[380px] space-y-4">
+            <div className="rounded-2xl border border-gray-200 shadow-sm p-6 bg-white space-y-4 mb-12">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500">등수</span>
+                <span className="text-xl font-bold text-blue-600">
+                  {myRank?.rank}
                 </span>
-              )}
-              {!mySchool && (
-                <span className="text-base text-gray-700">소속 없음</span>
-              )}
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500">맞은 문제</span>
+                <span className="text-lg font-semibold text-green-600">
+                  {myProblemSolveInfo?.solvedSingleProblemIds.length}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500">틀린 문제</span>
+                <span className="text-lg font-semibold text-red-600">
+                  {myProblemSolveInfo?.failedSingleProblemIds.length}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-500">학교/소속</span>
+                {mySchool && (
+                  <span className="text-base text-gray-700">
+                    {mySchool.schoolName}
+                  </span>
+                )}
+                {!mySchool && (
+                  <span className="text-base text-gray-700">소속 없음</span>
+                )}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <section className="text-center">
+            <button
+              type="button"
+              aria-label="결제하기 버튼"
+              className="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-xl shadow-md hover:bg-emerald-600 transition cursor-pointer"
+              onClick={handlePaymentButton}
+            >
+              결제하기
+            </button>
+          </section>
+        </div>
 
         {/* 오른쪽: 문제 리스트 */}
         <section className="w-[780px] space-y-6">
