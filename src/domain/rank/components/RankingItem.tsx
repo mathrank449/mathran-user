@@ -22,10 +22,12 @@ function RankingItem({
         </span>
       </div>
       <div className="inline-block align-middle w-[450px] text-center overflow-hidden truncate">
-        <div className="gap-1 text-center">
-          <span className="text-md px-3 py-1 mr-3 text-center rounded-xl border-solid border border-red-500 bg-red-500 text-white">
-            {rankingItem.tier}
-          </span>
+        <div className="flex justify-center items-center gap-2 text-center">
+          <img
+            src={`/rank/${rankingItem?.tier}.png`}
+            className="w-8"
+            alt={rankingItem?.tier}
+          />
           <span
             className="text-sm text-black whitespace-nowrap"
             title={String(rankingItem.memberInfo.nickName)}

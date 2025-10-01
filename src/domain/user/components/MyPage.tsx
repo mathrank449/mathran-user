@@ -5,6 +5,7 @@ import type { UserRankInfo } from "../../rank/types/rank";
 import { getRankByMemberId } from "../../rank/apis/rank";
 import type { ProblemSolveInfo } from "../types/user";
 import PortOne from "@portone/browser-sdk/v2";
+import { useAuthStore } from "../stores/authStore";
 
 function MyPage() {
   const [mySchool, setMySchool] = useState<School | undefined>(undefined);
@@ -12,6 +13,8 @@ function MyPage() {
   const [myProblemSolveInfo, setMyProblemSolveInfo] = useState<
     ProblemSolveInfo | undefined
   >(undefined);
+
+  const { userInfo } = useAuthStore();
 
   const handlePaymentButton = async () => {
     const response = await PortOne.requestPayment({
@@ -71,9 +74,14 @@ function MyPage() {
   return (
     <div className="w-[1200px] mx-auto mt-24">
       {/* 헤더 */}
-      <div className="border-b border-gray-300 py-4">
+      <div className="border-b border-gray-300 py-4 flex justify-start items-center gap-2">
+        <img
+          src={`/rank/${myRank?.tier}.png`}
+          className="w-8"
+          alt={myRank?.tier}
+        />
         <span className="text-2xl font-semibold text-gray-700">
-          ({myRank?.tier}) {localStorage.getItem("mathran_username")}
+          {userInfo?.userName}
         </span>
       </div>
 

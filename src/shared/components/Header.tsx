@@ -54,7 +54,7 @@ export function Header() {
             navigate({ to: "/test-papers" });
           }}
         >
-          문제집
+          시험지
         </button>
         <button
           className="text-lg cursor-pointer  py-4"
@@ -62,7 +62,7 @@ export function Header() {
             navigate({ to: "/contests" });
           }}
         >
-          대회
+          경시대회
         </button>
         <button
           className="text-lg cursor-pointer  py-4"
