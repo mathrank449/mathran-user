@@ -55,13 +55,6 @@ function SettingPage() {
           <h1 className="text-2xl font-bold text-gray-800 mb-4">정보 수정</h1>
           <hr className="border-gray-300 mb-6" />
         </div>
-
-        {/* 이메일 표시 */}
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-gray-500 font-medium">이메일</span>
-          <span className="text-gray-800 font-semibold w-1/2">sdd32dsad</span>
-        </div>
-
         {/* 닉네임 입력 */}
         <div className="flex justify-between items-center mb-12">
           <label className="text-gray-500 font-medium" htmlFor="nickname">

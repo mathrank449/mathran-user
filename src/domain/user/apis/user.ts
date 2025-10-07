@@ -54,3 +54,15 @@ export const getMyProblemSolveInfo = async (): Promise<ProblemSolveInfo> => {
     throw e;
   }
 };
+
+export const deleteMemberAccount = async (memberId: string) => {
+  try {
+    await instance.delete(`/v1/member/${memberId}`);
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      // e.response?.data가 있으면 서버 에러 메시지 반환
+      throw e.response?.data ?? e.message;
+    }
+    throw e;
+  }
+};

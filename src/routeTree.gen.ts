@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RedirectNaverRouteRouteImport } from './routes/redirect-naver/route'
 import { Route as RedirectKakaoRouteRouteImport } from './routes/redirect-kakao/route'
 import { Route as RedirectGoogleRouteRouteImport } from './routes/redirect-google/route'
+import { Route as PrivacyRouteRouteImport } from './routes/privacy/route'
 import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MainLayoutRegisterRouteRouteImport } from './routes/_mainLayout/register/route'
@@ -65,6 +66,11 @@ const RedirectKakaoRouteRoute = RedirectKakaoRouteRouteImport.update({
 const RedirectGoogleRouteRoute = RedirectGoogleRouteRouteImport.update({
   id: '/redirect-google',
   path: '/redirect-google',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRouteRoute = PrivacyRouteRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MainLayoutRouteRoute = MainLayoutRouteRouteImport.update({
@@ -294,6 +300,7 @@ const MainLayoutSolutionBoardQuestionContestContestIdRouteRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/privacy': typeof PrivacyRouteRoute
   '/redirect-google': typeof RedirectGoogleRouteRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/redirect-naver': typeof RedirectNaverRouteRoute
@@ -337,6 +344,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/privacy': typeof PrivacyRouteRoute
   '/redirect-google': typeof RedirectGoogleRouteRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/redirect-naver': typeof RedirectNaverRouteRoute
@@ -382,6 +390,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_mainLayout': typeof MainLayoutRouteRouteWithChildren
+  '/privacy': typeof PrivacyRouteRoute
   '/redirect-google': typeof RedirectGoogleRouteRoute
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/redirect-naver': typeof RedirectNaverRouteRoute
@@ -427,6 +436,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/privacy'
     | '/redirect-google'
     | '/redirect-kakao'
     | '/redirect-naver'
@@ -470,6 +480,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/privacy'
     | '/redirect-google'
     | '/redirect-kakao'
     | '/redirect-naver'
@@ -514,6 +525,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_mainLayout'
+    | '/privacy'
     | '/redirect-google'
     | '/redirect-kakao'
     | '/redirect-naver'
@@ -559,6 +571,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MainLayoutRouteRoute: typeof MainLayoutRouteRouteWithChildren
+  PrivacyRouteRoute: typeof PrivacyRouteRoute
   RedirectGoogleRouteRoute: typeof RedirectGoogleRouteRoute
   RedirectKakaoRouteRoute: typeof RedirectKakaoRouteRoute
   RedirectNaverRouteRoute: typeof RedirectNaverRouteRoute
@@ -585,6 +598,13 @@ declare module '@tanstack/react-router' {
       path: '/redirect-google'
       fullPath: '/redirect-google'
       preLoaderRoute: typeof RedirectGoogleRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_mainLayout': {
@@ -964,6 +984,7 @@ const MainLayoutRouteRouteWithChildren = MainLayoutRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MainLayoutRouteRoute: MainLayoutRouteRouteWithChildren,
+  PrivacyRouteRoute: PrivacyRouteRoute,
   RedirectGoogleRouteRoute: RedirectGoogleRouteRoute,
   RedirectKakaoRouteRoute: RedirectKakaoRouteRoute,
   RedirectNaverRouteRoute: RedirectNaverRouteRoute,

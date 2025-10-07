@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { AiOutlineRight } from "react-icons/ai";
 
 type MoreNavProps = {
@@ -5,6 +6,7 @@ type MoreNavProps = {
 };
 
 export function MoreNav({ isVisible }: MoreNavProps) {
+  const navigate = useNavigate();
   if (!isVisible) return null;
 
   return (
@@ -16,6 +18,9 @@ export function MoreNav({ isVisible }: MoreNavProps) {
           <button
             key={item}
             className="inline-block cursor-pointer w-full text-left p-1 px-4 hover:bg-gray-600 hover:text-white"
+            onClick={() => {
+              navigate({ to: "/privacy" });
+            }}
           >
             <AiOutlineRight className="inline-block" />
             <span>{item}</span>
