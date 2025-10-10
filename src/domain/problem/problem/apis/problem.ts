@@ -7,6 +7,7 @@ import type {
   SubmitAnswerResponse,
 } from "../types/problem";
 import type { School } from "../../types/school";
+import type { ProblemSolution } from "../../types/problem";
 
 export const getSingleProblemsByQuery = async (
   query: SingleProblemQueryListType,
@@ -123,6 +124,20 @@ export const solveSingleProblem = async (
       `/v1/problem/single/solve?singleProblemId=${id}&answers=${answers}&elapsedTimeSeconds=${elapsedTimeSeconds}`
     );
 
+    return data;
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      throw e.message;
+    }
+    throw e;
+  }
+};
+
+export const getSingleProblemSolutionById = async (
+  id: string
+): Promise<ProblemSolution> => {
+  try {
+    const { data } = await instance.get(`/v1/problem/single/${id}/solution`);
     return data;
   } catch (e) {
     if (e instanceof AxiosError) {

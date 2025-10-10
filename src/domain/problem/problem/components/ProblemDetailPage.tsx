@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getSingleProblemById, solveSingleProblem } from "../apis/problem";
+import {
+  getSingleProblemById,
+  getSingleProblemSolutionById,
+  solveSingleProblem,
+} from "../apis/problem";
 import type {
   ProblemItemResponse,
   SubmitAnswerResponse,
@@ -14,6 +18,7 @@ import type {
   ChallengeLogDetail,
 } from "../../../challengeLog/types/challengeLog";
 import { getChallengeLogsBySingleProblemId } from "../../../challengeLog/apis/challengeLog";
+import type { ProblemSolution } from "../../types/problem";
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 interface ProblemDetailPageProps {
@@ -30,6 +35,9 @@ function ProblemDetailPage({ problemId }: ProblemDetailPageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [answers, setAnswers] = useState<string[]>([""]); // 여러 정답 관리
   const [startTime, setStartTime] = useState(0);
+  const [solution, setSolution] = useState<ProblemSolution | undefined>(
+    undefined
+  );
 
   const [submissionResult, setSubmissionResult] =
     useState<SubmitAnswerResponse>({
@@ -52,6 +60,16 @@ function ProblemDetailPage({ problemId }: ProblemDetailPageProps) {
         setChallengeLogs(challengeLogsResponse);
       }
       setIsLoading(false);
+    };
+    fetchData();
+  }, [problemId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const problemSolutionRes = await getSingleProblemSolutionById(
+        String(problemId)
+      );
+      setSolution(problemSolutionRes);
     };
     fetchData();
   }, [problemId]);
@@ -105,10 +123,23 @@ function ProblemDetailPage({ problemId }: ProblemDetailPageProps) {
           <hr />
         </div>
 
-        <div className="mb-8 border-b-2 border-black pb-3">
-          <span className="font-bold mb-8 border-b-3 border-blue-400 pb-3">
+        <div className="flex justify-between items-center mb-8 border-b-2 border-black pb-3">
+          {/* 왼쪽: 제목 */}
+          <span className="font-bold text-lg border-b-4 border-blue-400 pb-2">
             문제
           </span>
+
+          {/* 오른쪽: 풀이 영상 링크 (solution에서 불러옴) */}
+          {solution?.solutionVideoLink && (
+            <a
+              href={solution.solutionVideoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-700 font-semibold transition-colors"
+            >
+              풀이 영상 보기 🎥
+            </a>
+          )}
         </div>
 
         <section className="relative w-[540px] mb-4 ml-[20px]">
@@ -188,6 +219,11 @@ function ProblemDetailPage({ problemId }: ProblemDetailPageProps) {
                 const challengeLogsResponse =
                   await getChallengeLogsBySingleProblemId(String(problemId));
                 setChallengeLogs(challengeLogsResponse);
+
+                const problemSolutionRes = await getSingleProblemSolutionById(
+                  String(problemId)
+                );
+                setSolution(problemSolutionRes);
 
                 setStartTime(Date.now());
               } catch (error) {

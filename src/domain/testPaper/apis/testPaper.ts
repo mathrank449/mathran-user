@@ -5,6 +5,7 @@ import type {
   TestPaperQueryListType,
   TestPaperResponsePagination,
 } from "../types/testPaper";
+import type { ProblemSolution } from "../../problem/types/problem";
 
 export const getTestPapersByQuery = async (
   query: TestPaperQueryListType,
@@ -64,6 +65,20 @@ export const submitTestPapersByTestPaperId = async (
       elapsedTimeSeconds,
     });
     return data;
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      throw e.message;
+    }
+    throw e;
+  }
+};
+
+export const getTestPaperSolutionById = async (
+  id: string
+): Promise<ProblemSolution[]> => {
+  try {
+    const { data } = await instance.get(`/v1/problem/contest/${id}/solution`);
+    return data.results;
   } catch (e) {
     if (e instanceof AxiosError) {
       throw e.message;
