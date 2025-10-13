@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import type { ContestDetailedResponse } from "../types/contest";
-import { getContestById, submitContestByContestId } from "../apis/contest";
+import {
+  getContestById,
+  getContestSolutionById,
+  submitContestByContestId,
+} from "../apis/contest";
 import { AiOutlineCopy } from "react-icons/ai";
 import { difficultyMap, problemMap } from "../../problem/utils/problemMap";
 import {
@@ -18,6 +22,7 @@ import SubmissionResultListHeader from "../../testPaper/components/SubmissionRes
 import SubmissionResultByProblem from "../../testPaper/components/SubmissionResultByProblem";
 import type { ApiError } from "../../../shared/types/error";
 import { useNavigate } from "@tanstack/react-router";
+import type { ProblemSolution } from "../../problem/types/problem";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -26,6 +31,9 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
   const [contest, setContest] = useState<ContestDetailedResponse | null>(null);
   // 여러 문제의 여러 정답을 관리 (2차원 배열)
   const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [solution, setSolution] = useState<ProblemSolution[] | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -125,6 +133,10 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
         }
         setSubmissionLogs(submissionLogsResponse);
         setElapsedTime(0);
+        const contestSolutionRes = await getContestSolutionById(
+          String(contestId)
+        );
+        setSolution(contestSolutionRes);
       }
     };
 
@@ -248,9 +260,7 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
                 <span className="text-sm">분</span>
               </div>
             </div>
-
             <hr />
-
             <div className="flex justify-between gap-4 items-center border-b-2 border-black my-4">
               <div className="pb-3 focus:outline-none focus:ring-2 focus:ring-blue-400 px-2 rounded-md ">
                 {submissionResult === undefined ? (
@@ -275,13 +285,26 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
                 )}
               </div>
 
-              {/* 시간 제한 */}
-              <div className="flex items-center gap-1">
-                <span className="text-md">점수/</span>
-                <span className="text-md focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md text-center">
-                  {contest?.itemDetails[selectedIndex].score}
-                </span>
-                <span className="text-sm">점</span>
+              <div className="flex justify-between gap-4">
+                {/* 오른쪽: 풀이 영상 링크 (solution에서 불러옴) */}
+                {solution && solution[selectedIndex].solutionVideoLink && (
+                  <a
+                    href={solution[selectedIndex].solutionVideoLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-700 font-semibold transition-colors"
+                  >
+                    풀이 영상 보기 🎥
+                  </a>
+                )}
+                {/* 시간 제한 */}
+                <div className="flex items-center gap-1">
+                  <span className="text-md">점수/</span>
+                  <span className="text-md focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md text-center">
+                    {contest?.itemDetails[selectedIndex].score}
+                  </span>
+                  <span className="text-sm">점</span>
+                </div>
               </div>
             </div>
 
@@ -385,6 +408,11 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
                   await getSubmissionLogsByAssessmentId(String(contestId));
 
                 setSubmissionLogs(submissionLogsResponse);
+                const contestSolutionRes = await getContestSolutionById(
+                  String(contestId)
+                );
+                setSolution(contestSolutionRes);
+
                 alert("정답을 제출하였습니다.");
               } catch (e) {
                 const err = e as ApiError;

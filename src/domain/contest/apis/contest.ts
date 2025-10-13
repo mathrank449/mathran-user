@@ -6,6 +6,7 @@ import type {
   ContestResponsePagination,
 } from "../types/contest";
 import type { ApiError } from "../../../shared/types/error";
+import type { ProblemSolution } from "../../problem/types/problem";
 
 export const getContestByQuery = async (
   query: ContestQueryListType,
@@ -70,6 +71,20 @@ export const submitContestByContestId = async (
     if (e instanceof AxiosError) {
       if (e.response) throw e.response.data as ApiError; // 타입 단언
       throw { code: -1, message: e.message } as ApiError;
+    }
+    throw e;
+  }
+};
+
+export const getContestSolutionById = async (
+  id: string
+): Promise<ProblemSolution[]> => {
+  try {
+    const { data } = await instance.get(`/v1/problem/contest/${id}/solution`);
+    return data.results;
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      throw e.message;
     }
     throw e;
   }

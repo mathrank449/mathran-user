@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { TestPaperDetailedResponse } from "../types/testPaper";
 import {
   getTestPapersById,
+  getTestPaperSolutionById,
   submitTestPapersByTestPaperId,
 } from "../apis/testPaper";
 import { AiOutlineCopy } from "react-icons/ai";
@@ -18,6 +19,7 @@ import SubmissionLogListItem from "../../submissionLog/components/SubmissionLogL
 import SubmissionLogHeader from "../../submissionLog/components/SubmissionLogHeader";
 import SubmissionResultListHeader from "./SubmissionResultListHeader";
 import SubmissionResultByProblem from "./SubmissionResultByProblem";
+import type { ProblemSolution } from "../../problem/types/problem";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -27,6 +29,9 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
   );
   // 여러 문제의 여러 정답을 관리 (2차원 배열)
   const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [solution, setSolution] = useState<ProblemSolution[] | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -99,6 +104,11 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
       }
 
       setElapsedTime(0);
+
+      const testPaperSolutionRes = await getTestPaperSolutionById(
+        String(testPaperId)
+      );
+      setSolution(testPaperSolutionRes);
     };
 
     fetchTestPaper();
@@ -248,13 +258,26 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
                 )}
               </div>
 
-              {/* 시간 제한 */}
-              <div className="flex items-center gap-1">
-                <span className="text-md">점수/</span>
-                <span className="text-md focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md text-center">
-                  {testPaper?.itemDetails[selectedIndex].score}
-                </span>
-                <span className="text-sm">점</span>
+              <div className="flex justify-between gap-4">
+                {/* 오른쪽: 풀이 영상 링크 (solution에서 불러옴) */}
+                {solution && solution[selectedIndex].solutionVideoLink && (
+                  <a
+                    href={solution[selectedIndex].solutionVideoLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-700 font-semibold transition-colors"
+                  >
+                    풀이 영상 보기 🎥
+                  </a>
+                )}
+                {/* 시간 제한 */}
+                <div className="flex items-center gap-1">
+                  <span className="text-md">점수/</span>
+                  <span className="text-md focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md text-center">
+                    {testPaper?.itemDetails[selectedIndex].score}
+                  </span>
+                  <span className="text-sm">점</span>
+                </div>
               </div>
             </div>
 
@@ -358,6 +381,10 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
                   await getSubmissionLogsByAssessmentId(String(testPaperId));
 
                 setSubmissionLogs(submissionLogsResponse);
+                const testPaperSolutionRes = await getTestPaperSolutionById(
+                  String(testPaperId)
+                );
+                setSolution(testPaperSolutionRes);
                 alert("정답을 제출하였습니다.");
               } catch (e) {
                 console.log(e);

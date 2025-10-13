@@ -1,5 +1,7 @@
 // types/problem.ts
 
+import type { PastProblemType } from "../problem/types/problem";
+
 export type ProblemType = "" | "MULTIPLE_CHOICE" | "SHORT_ANSWER";
 export type ProblemKoreaType = "객관식" | "단답형";
 export type DifficultyType =
@@ -76,4 +78,18 @@ export type QueryListType = {
   coursePath: string;
   location: string | "";
   year: string | "";
+};
+
+// 정답 데이터 타입 정의
+export type ProblemSolution = {
+  imageSource: string; // 문제 이미지 경로 (또는 원본 이미지)
+  path: string; // 문제 경로 또는 식별용 경로
+  difficulty: DifficultyType; // 난이도
+  type: ProblemType; // 문제 유형
+  pastProblem: PastProblemType; // 기출 여부
+  answer: string[]; // 정답 배열 (객관식, 주관식 공통)
+  createdAt: string; // 생성일
+  year: number; // 연도
+  solutionVideoLink: string; // 풀이 영상 링크
+  solutionImage: string; // 풀이 이미지 (해설 이미지)
 };
