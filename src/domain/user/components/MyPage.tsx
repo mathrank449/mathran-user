@@ -98,18 +98,6 @@ function MyPage() {
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-500">맞은 문제</span>
-                <span className="text-lg font-semibold text-green-600">
-                  {myProblemSolveInfo?.solvedSingleProblemIds.length}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-500">틀린 문제</span>
-                <span className="text-lg font-semibold text-red-600">
-                  {myProblemSolveInfo?.failedSingleProblemIds.length}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
                 <span className="text-gray-500">학교/소속</span>
                 {mySchool && (
                   <span className="text-base text-gray-700">

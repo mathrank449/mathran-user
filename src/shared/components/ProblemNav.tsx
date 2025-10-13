@@ -23,22 +23,6 @@ export function ProblemNav({ isVisible }: ProblemNavProps) {
           ]}
         />
 
-        {/* 유형별 문제 */}
-        <CategoryColumn
-          title="문제"
-          items={[
-            { title: "단원별로 풀어보기", linkTo: "/problems/course" },
-            {
-              title: "틀린 문제 다시 풀어보기",
-              linkTo: "/problems/incorrect",
-            },
-            {
-              title: "맞춘 문제 다시 풀어보기",
-              linkTo: "/problems/correct",
-            },
-          ]}
-        />
-
         {/* 지역별 문제 */}
         <CategoryGrid
           title="지역별 문제"
