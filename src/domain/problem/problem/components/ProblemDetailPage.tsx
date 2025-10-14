@@ -117,7 +117,7 @@ function ProblemDetailPage({ problemId }: ProblemDetailPageProps) {
                 window.location.href = `/solution-board/question/problem/${problem.id}`;
               }}
             >
-              풀이 게시판 보기
+              질문 게시판 보기
             </button>
           </div>
           <hr />
