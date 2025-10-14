@@ -6,6 +6,7 @@ import { getRankByMemberId } from "../../rank/apis/rank";
 import type { ProblemSolveInfo } from "../types/user";
 import PortOne from "@portone/browser-sdk/v2";
 import { useAuthStore } from "../stores/authStore";
+import { useNavigate } from "@tanstack/react-router";
 
 function MyPage() {
   const [mySchool, setMySchool] = useState<School | undefined>(undefined);
@@ -14,31 +15,42 @@ function MyPage() {
     ProblemSolveInfo | undefined
   >(undefined);
 
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+
   const { userInfo } = useAuthStore();
+  const navigate = useNavigate();
 
-  const handlePaymentButton = async () => {
-    const response = await PortOne.requestPayment({
-      // Store ID 설정
-      storeId: "store-a9019ea9-0758-4ab0-bc07-fafdfcd6986e",
-      // 채널 키 설정
-      channelKey: "channel-key-c62a3472-8260-449d-a8eb-deeb5733240e",
-      paymentId: `payment-${crypto.randomUUID()}`,
-      orderName: "나이키 와플 트레이너 2 SD",
-      totalAmount: 1000,
-      currency: "CURRENCY_KRW",
-      payMethod: "EASY_PAY",
-    });
+  const handlePaymentButton = async (amount: number) => {
+    try {
+      const response = await PortOne.requestPayment({
+        // Store ID 설정
+        storeId: "store-a9019ea9-0758-4ab0-bc07-fafdfcd6986e",
+        // 채널 키 설정
+        channelKey: "channel-key-c62a3472-8260-449d-a8eb-deeb5733240e",
+        paymentId: `payment-${crypto.randomUUID()}`,
+        orderName: `${amount.toLocaleString()} 포인트 충전`,
+        totalAmount: amount,
+        currency: "CURRENCY_KRW",
+        payMethod: "EASY_PAY",
+      });
 
-    if (response && response.code !== undefined) {
-      // 오류 발생
-      return alert(response.message);
+      if (response && response.code !== undefined) {
+        // 오류 발생
+        return alert(response.message);
+      }
+
+      alert(`${amount.toLocaleString()}원 결제가 완료되었습니다!`);
+    } catch (err) {
+      console.error(err);
+      alert("결제 중 오류가 발생했습니다.");
     }
 
-    // /payment/complete 엔드포인트를 구현해야 합니다. 다음 목차에서 설명합니다.
+    // 결제 완료 후 서버 통신 로직 (추후 구현)
     // const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
     //   method: "POST",
     //   headers: { "Content-Type": "application/json" },
-    //   // paymentId와 주문 정보를 서버에 전달합니다
+    //   // paymentId와 주문 정보를 서버에 전달합니다.
     //   body: JSON.stringify({
     //     paymentId: paymentId,
     //     // 주문 정보...
@@ -57,7 +69,6 @@ function MyPage() {
         setMyProblemSolveInfo(myProblemSolveInfoResponse);
       } catch (e) {
         console.log(e);
-
         if ((e as { code: number })?.code === 8003) {
           setMyRank({
             rank: 0,
@@ -68,9 +79,9 @@ function MyPage() {
         }
       }
     };
-
     fetchData();
   }, []);
+
   return (
     <div className="w-[1200px] mx-auto mt-24">
       {/* 헤더 */}
@@ -82,7 +93,6 @@ function MyPage() {
             alt={myRank?.tier}
           />
         )}
-
         <span className="text-2xl font-semibold text-gray-700">
           {userInfo?.userName}
         </span>
@@ -102,27 +112,69 @@ function MyPage() {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-500">학교/소속</span>
-                {mySchool && (
+                {mySchool ? (
                   <span className="text-base text-gray-700">
                     {mySchool.schoolName}
                   </span>
-                )}
-                {!mySchool && (
+                ) : (
                   <span className="text-base text-gray-700">소속 없음</span>
                 )}
               </div>
             </div>
           </section>
+
+          {/* 포인트 충전 버튼 */}
           <section className="text-center">
+            {!showPaymentOptions ? (
+              <button
+                type="button"
+                aria-label="결제하기 버튼"
+                className="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-xl shadow-md hover:bg-emerald-600 transition cursor-pointer"
+                onClick={() => setShowPaymentOptions(true)}
+              >
+                포인트 충전
+              </button>
+            ) : (
+              <div className="bg-white border border-gray-200 shadow-md rounded-xl p-6 w-[260px] mx-auto space-y-4">
+                <span className="block text-gray-700 font-semibold mb-2">
+                  충전 금액 선택
+                </span>
+                <div className="flex flex-col gap-3">
+                  {[1000, 5000, 10000].map((amount) => (
+                    <button
+                      key={amount}
+                      className={`px-4 py-2 rounded-lg border font-semibold transition cursor-pointer ${
+                        selectedAmount === amount
+                          ? "bg-emerald-500 text-white border-emerald-500"
+                          : "border-gray-300 hover:bg-gray-100"
+                      }`}
+                      onClick={() => {
+                        setSelectedAmount(amount);
+                        handlePaymentButton(amount);
+                      }}
+                    >
+                      {amount.toLocaleString()}원
+                    </button>
+                  ))}
+                </div>
+                <button
+                  className="mt-4 text-sm text-gray-500 hover:underline"
+                  onClick={() => setShowPaymentOptions(false)}
+                >
+                  취소
+                </button>
+              </div>
+            )}
+          </section>
+          <div className="text-center mt-6">
             <button
               type="button"
-              aria-label="결제하기 버튼"
-              className="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-xl shadow-md hover:bg-emerald-600 transition cursor-pointer"
-              onClick={handlePaymentButton}
+              className="px-6 py-2 text-emerald-600 font-medium rounded-xl border border-emerald-400 hover:bg-emerald-50 transition cursor-pointer"
+              onClick={() => navigate({ to: "/my/purchase" })}
             >
-              포인트 충전
+              구매 이력 보기
             </button>
-          </section>
+          </div>
         </div>
 
         {/* 오른쪽: 문제 리스트 */}
@@ -135,13 +187,13 @@ function MyPage() {
             <div className="flex flex-wrap gap-3">
               {myProblemSolveInfo?.solvedSingleProblemIds.map((problemId) => (
                 <a
+                  key={problemId}
                   href={`/problems/${problemId}`}
                   className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
                 >
                   {problemId}
                 </a>
               ))}
-              {/* 문제 항목이 많아도 스크롤 가능 */}
             </div>
           </div>
 
@@ -153,8 +205,9 @@ function MyPage() {
             <div className="flex flex-wrap gap-3">
               {myProblemSolveInfo?.failedSingleProblemIds.map((problemId) => (
                 <a
+                  key={problemId}
                   href={`/problems/${problemId}`}
-                  className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
+                  className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition"
                 >
                   {problemId}
                 </a>

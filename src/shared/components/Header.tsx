@@ -102,6 +102,13 @@ export function Header() {
           {/* 오른쪽 로그인/로그아웃 */}
           {isLogin ? (
             <div className="flex items-center gap-4 mr-8">
+              {/* ✅ 포인트 표시 */}
+              <div className="flex items-center gap-1 bg-amber-100 px-3 py-1 rounded-md">
+                <img src="/point.png" alt="포인트" className="w-4 h-4" />
+                <span className="text-sm font-medium text-amber-700">
+                  {2000}P
+                </span>
+              </div>
               <button
                 className="cursor-pointer"
                 onClick={() => {

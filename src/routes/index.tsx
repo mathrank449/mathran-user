@@ -55,7 +55,7 @@ function Index() {
         </div>
       </main>
 
-      <div className="absolute bottom-0 left-0 w-full">
+      <div className="static bottom-0 left-0 w-full">
         <Footer />
       </div>
     </div>
