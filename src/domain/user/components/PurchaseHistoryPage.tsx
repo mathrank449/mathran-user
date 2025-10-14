@@ -133,9 +133,6 @@ function PurchaseHistoryPage() {
                   <th className="px-6 py-3 text-sm font-semibold text-gray-600">
                     구매 일시
                   </th>
-                  <th className="px-6 py-3 text-sm font-semibold text-gray-600">
-                    상태
-                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -159,23 +156,6 @@ function PurchaseHistoryPage() {
                       </button>
                     </td>
                     <td className="px-6 py-4 text-gray-600">{item.date}</td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                          item.status === "SUCCESS"
-                            ? "bg-emerald-100 text-emerald-700"
-                            : item.status === "FAILED"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-yellow-100 text-yellow-600"
-                        }`}
-                      >
-                        {item.status === "SUCCESS"
-                          ? "결제 완료"
-                          : item.status === "FAILED"
-                          ? "실패"
-                          : "처리 중"}
-                      </span>
-                    </td>
                   </tr>
                 ))}
               </tbody>
