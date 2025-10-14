@@ -198,8 +198,9 @@ function ProblemDetailPage({ problemId }: ProblemDetailPageProps) {
             onClick={async () => {
               setIsLoading(true); // 호출 전 로딩 시작
               try {
-                const elapsedTimeSeconds = Math.floor(
-                  (Date.now() - startTime) / 1000
+                const elapsedTimeSeconds = Math.max(
+                  5,
+                  Math.floor((Date.now() - startTime) / 1000)
                 );
                 // 정답 제출
                 const solvingResult = await solveSingleProblem(

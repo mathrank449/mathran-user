@@ -75,11 +75,14 @@ function MyPage() {
     <div className="w-[1200px] mx-auto mt-24">
       {/* 헤더 */}
       <div className="border-b border-gray-300 py-4 flex justify-start items-center gap-2">
-        <img
-          src={`/rank/${myRank?.tier}.png`}
-          className="w-8"
-          alt={myRank?.tier}
-        />
+        {myRank?.tier != null && (
+          <img
+            src={`/rank/${myRank?.tier}.png`}
+            className="w-8"
+            alt={myRank?.tier}
+          />
+        )}
+
         <span className="text-2xl font-semibold text-gray-700">
           {userInfo?.userName}
         </span>

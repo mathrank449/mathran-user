@@ -359,7 +359,7 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
                 const submittedLogId = await submitTestPapersByTestPaperId(
                   testPaperId,
                   answers,
-                  elapsedTime
+                  Math.max(elapsedTime, 5)
                 );
 
                 let submissionLogDetailResponse =

@@ -23,11 +23,14 @@ function RankingItem({
       </div>
       <div className="inline-block align-middle w-[450px] text-center overflow-hidden truncate">
         <div className="flex justify-center items-center gap-2 text-center">
-          <img
-            src={`/rank/${rankingItem?.tier}.png`}
-            className="w-8"
-            alt={rankingItem?.tier}
-          />
+          {rankingItem?.tier != "NONE" && (
+            <img
+              src={`/rank/${rankingItem?.tier}.png`}
+              className="w-8"
+              alt={rankingItem?.tier}
+            />
+          )}
+
           <span
             className="text-sm text-black whitespace-nowrap"
             title={String(rankingItem.memberInfo.nickName)}

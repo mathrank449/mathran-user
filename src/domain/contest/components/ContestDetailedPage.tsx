@@ -386,7 +386,7 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
                 const submittedLogId = await submitContestByContestId(
                   contestId,
                   answers,
-                  elapsedTime
+                  Math.max(elapsedTime, 5)
                 );
 
                 let submissionLogDetailResponse =
