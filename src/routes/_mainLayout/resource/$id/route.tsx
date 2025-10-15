@@ -7,5 +7,6 @@ export const Route = createFileRoute("/_mainLayout/resource/$id")({
 
 function RouteComponent() {
   const { id } = Route.useParams();
+  console.log(id);
   return <ResourceDetailPage id={id} />;
 }

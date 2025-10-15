@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import type { ResourceType } from "../types/resource";
-import { getDetailedResource, purchaseResource } from "../apis/resource";
+import {
+  getDetailedResource,
+  getPurchaseStatus,
+  purchaseResource,
+} from "../apis/resource";
 import type { FileRealInfo } from "../../../shared/types/file";
 import { extractYoutubeEmbed } from "../../../shared/utils/extractYoutubeEmbed";
 import ReadOnlyReactQuillEditor from "../../solutionBoard/write/components/ReadOnlyReactQuillEditor";
@@ -9,6 +13,7 @@ import { useNavigate } from "@tanstack/react-router";
 
 function ResourceDetailPage({ id }: { id: string }) {
   const navigate = useNavigate();
+
   // 제목, 카테고리, 파일, 영상 링크 상태
   const [title, setTitle] = useState("");
   const [resourceCategory, setResourceCategory] =
@@ -21,6 +26,7 @@ function ResourceDetailPage({ id }: { id: string }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(id);
         const detailedResource = await getDetailedResource(id);
         console.log(detailedResource);
         setTitle(detailedResource.title);
@@ -41,14 +47,50 @@ function ResourceDetailPage({ id }: { id: string }) {
           const confirmed = confirm("해당 자료를 구매하시겠습니까?");
           if (confirmed) {
             const purchaseId = `purchase-${crypto.randomUUID()}`;
+            function delay(ms: number) {
+              return new Promise((resolve) => setTimeout(resolve, ms));
+            }
+
             try {
-              // ✅ 구매 API 호출 (예시)
-              await purchaseResource(id, purchaseId);
-              alert("구매가 완료되었습니다!");
-              // 구매 후 다시 데이터 불러오기
-              window.location.reload();
+              // ✅ 구매 요청
+              const orderId = await purchaseResource(id, purchaseId);
+
+              let purchaseStatus;
+              let attempts = 0;
+              const maxAttempts = 10; // 예: 최대 10번만 시도
+              const interval = 2000; // 2초 간격으로 재시도
+
+              // ✅ 상태가 확정될 때까지 반복 확인
+              while (attempts < maxAttempts) {
+                purchaseStatus = await getPurchaseStatus(orderId);
+
+                if (purchaseStatus.orderStatus === "SUCCEEDED") {
+                  alert("구매가 완료되었습니다!");
+                  // 필요하다면 데이터 다시 불러오기
+                  window.location.reload();
+                  break;
+                }
+
+                if (purchaseStatus.orderStatus === "FAILED") {
+                  alert("구매에 실패했습니다. 다시 시도해주세요.");
+                  navigate({ to: "/resource" });
+                  break;
+                }
+
+                if (purchaseStatus.orderStatus === "PENDING") {
+                  await delay(interval); // 일정 시간 대기 후 다시 확인
+                  attempts++;
+                }
+              }
+
+              // ✅ 반복이 끝났는데도 여전히 PENDING 상태라면
+              if (purchaseStatus?.orderStatus === "PENDING") {
+                alert(
+                  "구매 상태 확인이 지연되고 있습니다. 잠시 후 다시 시도해주세요."
+                );
+              }
             } catch (purchaseError) {
-              alert(`구매 중 오류가 발생했습니다. ${purchaseError}`);
+              alert(`구매 중 오류가 발생했습니다: ${purchaseError}`);
             }
           } else {
             // ❌ 사용자가 취소를 선택한 경우
@@ -59,7 +101,7 @@ function ResourceDetailPage({ id }: { id: string }) {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, navigate]);
 
   return (
     <div className="w-full max-w-[1680px] mx-auto mt-24 px-4">
@@ -129,9 +171,11 @@ function ResourceDetailPage({ id }: { id: string }) {
                 <div className="relative w-full pt-[56.25%] rounded-md overflow-hidden">
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src={`${extractYoutubeEmbed(
-                      video
-                    )}?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0&playsinline=1`}
+                    src={
+                      video.startsWith("http")
+                        ? `${extractYoutubeEmbed(video)}?autoplay=1&mute=1`
+                        : undefined // 상대 경로면 렌더링 안 함
+                    }
                     title={`YouTube video player ${index}`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
@@ -144,7 +188,9 @@ function ResourceDetailPage({ id }: { id: string }) {
       </div>
       <div className="text-right space-x-4 mr-24">
         <button
-          onClick={() => navigate({ to: `/resource` })}
+          onClick={() => {
+            navigate({ to: `/resource` });
+          }}
           className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition cursor-pointer"
         >
           목록으로

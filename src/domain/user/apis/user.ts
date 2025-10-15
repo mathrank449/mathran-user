@@ -66,3 +66,17 @@ export const deleteMemberAccount = async (memberId: string) => {
     throw e;
   }
 };
+
+export const getMyOrderlist = async (page: number) => {
+  try {
+    const { data } = await instance.get(
+      `/v1/content/orders/my?pageNumber=${page}&pageSize=10`
+    );
+    return data;
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      throw e.message;
+    }
+    throw e;
+  }
+};

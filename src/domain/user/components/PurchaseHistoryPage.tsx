@@ -1,59 +1,21 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "../stores/authStore";
 import { useEffect, useState } from "react";
-import { getUserInfo } from "../apis/user";
+import { getMyOrderlist, getUserInfo } from "../apis/user";
 import type { UserRankInfo } from "../../rank/types/rank";
 import { getRankByMemberId } from "../../rank/apis/rank";
 import Pagination from "../../../shared/components/Pagination";
-
-// 🧾 구매 내역 타입 정의
-type PurchaseHistory = {
-  id: number;
-  amount: number;
-  date: string;
-  status: "SUCCESS" | "FAILED" | "PENDING";
-  method: "KAKAO_PAY" | "CARD" | "POINT";
-  resourceName: string; // 자료 이름
-  resourceId: number; // 자료 상세 페이지 이동용
-};
-
-// 예시용 더미 데이터
-const dummyPurchases: PurchaseHistory[] = [
-  {
-    id: 1,
-    amount: 5000,
-    date: "2025-10-10 14:32",
-    status: "SUCCESS",
-    method: "KAKAO_PAY",
-    resourceName: "2025 수능 대비 모의고사 A형",
-    resourceId: 101,
-  },
-  {
-    id: 2,
-    amount: 10000,
-    date: "2025-09-28 19:22",
-    status: "SUCCESS",
-    method: "CARD",
-    resourceName: "고등 수학 II 개념 문제집",
-    resourceId: 205,
-  },
-  {
-    id: 3,
-    amount: 5000,
-    date: "2025-09-15 09:10",
-    status: "FAILED",
-    method: "KAKAO_PAY",
-    resourceName: "중학 수학 실전 테스트 3회차",
-    resourceId: 99,
-  },
-];
+import type { OrderListPagination } from "../types/order";
+import { formatDateTime } from "../utils/tranformDate";
 
 function PurchaseHistoryPage() {
   const { userInfo } = useAuthStore();
   const navigate = useNavigate();
   const [myRank, setMyRank] = useState<UserRankInfo | undefined>();
-  const [purchases, setPurchases] = useState<PurchaseHistory[]>([]);
-  const [, setPage] = useState(1);
+  const [purchases, setPurchases] = useState<OrderListPagination | undefined>(
+    undefined
+  );
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,9 +25,8 @@ function PurchaseHistoryPage() {
         setMyRank(myRankInfo);
 
         // 🧾 실제 API 연결 시 아래 부분을 수정
-        // const purchaseData = await getPurchaseHistory(myUserInfo.memberId);
-        // setPurchases(purchaseData);
-        setPurchases(dummyPurchases);
+        const purchasesResponse = await getMyOrderlist(page);
+        setPurchases(purchasesResponse);
       } catch (e) {
         console.log(e);
         if ((e as { code: number })?.code === 8003) {
@@ -79,8 +40,10 @@ function PurchaseHistoryPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [page]);
 
+  if (purchases === undefined) return;
+  console.log(purchases);
   return (
     <div className="w-[1200px] mx-auto mt-24">
       {/* 헤더 */}
@@ -112,7 +75,7 @@ function PurchaseHistoryPage() {
       <section className="mt-8">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">구매 이력</h2>
 
-        {purchases.length === 0 ? (
+        {purchases?.queryResults.length === 0 ? (
           <div className="text-gray-500 text-center py-8 border rounded-lg">
             구매 내역이 없습니다.
           </div>
@@ -136,26 +99,28 @@ function PurchaseHistoryPage() {
                 </tr>
               </thead>
               <tbody>
-                {purchases.map((item) => (
+                {purchases?.queryResults.map((item) => (
                   <tr
                     key={item.id}
                     className="border-t hover:bg-gray-50 transition"
                   >
                     <td className="px-6 py-4 text-gray-700">{item.id}</td>
                     <td className="px-6 py-4 font-medium text-gray-800">
-                      {item.amount.toLocaleString()}원
+                      {item.purchasedPointAmount.toLocaleString()}원
                     </td>
                     <td className="px-6 py-4">
                       <button
                         onClick={() =>
-                          navigate({ to: `/resource/${item.resourceId}` })
+                          navigate({ to: `/resource/${item.contentId}` })
                         }
                         className="text-blue-600 hover:underline hover:text-blue-800 cursor-pointer"
                       >
-                        {item.resourceName}
+                        {item.contentId}
                       </button>
                     </td>
-                    <td className="px-6 py-4 text-gray-600">{item.date}</td>
+                    <td className="px-6 py-4 text-gray-600">
+                      {formatDateTime(new Date(item.completedAt))}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -164,11 +129,11 @@ function PurchaseHistoryPage() {
         )}
       </section>
       <Pagination
-        pageInfo={{
-          currentPageNumber: 1,
-          possibleNextPageNumbers: [2, 3, 4],
-        }}
         setPage={setPage}
+        pageInfo={{
+          currentPageNumber: purchases.currentPageNumber,
+          possibleNextPageNumbers: purchases.possibleNextPageNumbers,
+        }}
       />
     </div>
   );

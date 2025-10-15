@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
-import type { RankInfoPagination } from "../types/rank";
-import { getRankAll } from "../apis/rank";
-import RankingHeader from "./RankingHeader";
-import RankingItem from "./RankingItem";
+import type { SchoolRankInfoPagination } from "../types/rank";
+import { getSchoolRankAll } from "../apis/rank";
 import Pagination from "../../../shared/components/Pagination";
 import Modal from "react-modal";
-import { AiOutlineInfoCircle } from "react-icons/ai";
+import SchoolRankingItem from "./SchoolRankingItem";
+import SchoolRankingHeader from "./SchoolRankingHeader";
 import { useNavigate } from "@tanstack/react-router";
 
 Modal.setAppElement("#root"); // 접근성 설정
 
-function RankingListPage() {
+function SchoolRankingListPage() {
   const navigate = useNavigate();
   const [rankginListPagination, setRankginListPagination] = useState<
-    RankInfoPagination | undefined
+    SchoolRankInfoPagination | undefined
   >(undefined);
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const rankginListResponse = await getRankAll(page);
+      const rankginListResponse = await getSchoolRankAll(page);
       setRankginListPagination(rankginListResponse);
     };
     fetchData();
@@ -33,24 +32,17 @@ function RankingListPage() {
       {/* 헤더 */}
       <div className="flex items-center justify-between pl-12 pr-6 bg-gray-50 text-3xl py-6 w-full">
         <span>랭킹</span>
-        {/* 정보 아이콘 버튼 */}
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 text-gray-600 hover:text-black transition cursor-pointer"
-        >
-          <AiOutlineInfoCircle className="w-6 h-6" />
-          <span className="text-base">랭킹 기준</span>
-        </button>
       </div>
+      {/* 탭 버튼 */}
       <div className="flex gap-4">
         <button
           onClick={() => navigate({ to: "/rankings" })}
-          className="px-4 py-2 rounded-xl text-lg font-semibold bg-black text-white shadow-md cursor-pointer"
+          className="px-4 py-2 rounded-xl text-lg font-semibold border border-gray-300 hover:bg-gray-100 transition cursor-pointer"
         >
           학생 랭킹
         </button>
         <button
-          className="px-4 py-2 rounded-xl text-lg font-semibold border border-gray-300 hover:bg-gray-100 transition cursor-pointer"
+          className="px-4 py-2 rounded-xl text-lg font-semibold bg-black text-white shadow-md cursor-pointer"
           onClick={() => {
             navigate({ to: "/rankings/school" });
           }}
@@ -58,11 +50,16 @@ function RankingListPage() {
           학교 랭킹
         </button>
       </div>
+
       {/* 랭킹 리스트 */}
       <div>
-        <RankingHeader />
+        <SchoolRankingHeader />
         {rankginListPagination?.queryResults?.map((rankingItem, index) => (
-          <RankingItem key={index} rankingItem={rankingItem} index={index} />
+          <SchoolRankingItem
+            key={index}
+            rankingItem={rankingItem}
+            index={index}
+          />
         ))}
         <Pagination
           pageInfo={{
@@ -176,4 +173,4 @@ function RankingListPage() {
   );
 }
 
-export default RankingListPage;
+export default SchoolRankingListPage;

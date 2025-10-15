@@ -48,3 +48,16 @@ export type ResourceDeatiledType = {
   fileInfos?: FileRealInfo[];
   videoLinks?: string[];
 };
+
+export type PurchaseStatus = {
+  id: string;
+  userId: string;
+  contentId: string;
+  idempotencyKey: string;
+  orderStatus: OrderStatus;
+  purchasedPointAmount: number;
+  createdAt: string;
+  completedAt: string;
+};
+
+export type OrderStatus = "PENDING" | "FAILED" | "SUCCEEDED";

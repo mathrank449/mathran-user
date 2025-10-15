@@ -63,3 +63,15 @@ export type RankInfo = {
 export interface RankInfoPagination extends PageInfo {
   queryResults: RankInfo[];
 }
+
+export type SchoolRankInfo = {
+  schoolCode: string;
+  schoolName: string;
+  score: number;
+  rank: number;
+  memberCount: number;
+};
+
+export interface SchoolRankInfoPagination extends PageInfo {
+  queryResults: SchoolRankInfo[];
+}

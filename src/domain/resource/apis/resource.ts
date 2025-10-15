@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import instance from "../../../shared/apis/instance";
 import type {
   PostResourceType,
+  PurchaseStatus,
   ResourceDeatiledType,
   ResourceItemType,
   ResourceQueryType,
@@ -99,6 +100,7 @@ export const getDetailedResource = async (
   contentId: string
 ): Promise<ResourceDeatiledType> => {
   try {
+    console.log(contentId);
     const { data } = await instance.get(`/v1/content/${contentId}`);
 
     return {
@@ -167,10 +169,27 @@ export const modifyResource = async (
 
 export const purchaseResource = async (id: string, idempotencyKey: string) => {
   try {
-    await instance.post(`/v1/content/${id}?idempotencyKey=${idempotencyKey}`);
+    const { data } = await instance.post(
+      `/v1/content/${id}?idempotencyKey=${idempotencyKey}`
+    );
+    return data;
   } catch (e) {
     if (e instanceof AxiosError) {
       throw e.response?.data.message;
+    }
+    throw e;
+  }
+};
+
+export const getPurchaseStatus = async (
+  orderId: string
+): Promise<PurchaseStatus> => {
+  try {
+    const { data } = await instance.get(`/v1/content/order/${orderId}`);
+    return data;
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      throw e.message;
     }
     throw e;
   }

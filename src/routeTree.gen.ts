@@ -16,11 +16,11 @@ import { Route as PrivacyRouteRouteImport } from './routes/privacy/route'
 import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MainLayoutRegisterRouteRouteImport } from './routes/_mainLayout/register/route'
-import { Route as MainLayoutRankingsRouteRouteImport } from './routes/_mainLayout/rankings/route'
 import { Route as MainLayoutLoginRouteRouteImport } from './routes/_mainLayout/login/route'
 import { Route as MainLayoutTestPapersIndexRouteImport } from './routes/_mainLayout/test-papers/index'
 import { Route as MainLayoutSettingIndexRouteImport } from './routes/_mainLayout/setting/index'
 import { Route as MainLayoutResourceIndexRouteImport } from './routes/_mainLayout/resource/index'
+import { Route as MainLayoutRankingsIndexRouteImport } from './routes/_mainLayout/rankings/index'
 import { Route as MainLayoutProblemsIndexRouteImport } from './routes/_mainLayout/problems/index'
 import { Route as MainLayoutMyIndexRouteImport } from './routes/_mainLayout/my/index'
 import { Route as MainLayoutContestsIndexRouteImport } from './routes/_mainLayout/contests/index'
@@ -29,6 +29,7 @@ import { Route as MainLayoutQuestionsQuestionIdRouteImport } from './routes/_mai
 import { Route as MainLayoutProblemsProblemIdRouteImport } from './routes/_mainLayout/problems/$problemId'
 import { Route as MainLayoutContestsContestIdRouteImport } from './routes/_mainLayout/contests/$contestId'
 import { Route as MainLayoutResourceIdRouteRouteImport } from './routes/_mainLayout/resource/$id/route'
+import { Route as MainLayoutRankingsSchoolRouteRouteImport } from './routes/_mainLayout/rankings/school/route'
 import { Route as MainLayoutProblemsUlsanRouteRouteImport } from './routes/_mainLayout/problems/ulsan/route'
 import { Route as MainLayoutProblemsSeoulRouteRouteImport } from './routes/_mainLayout/problems/seoul/route'
 import { Route as MainLayoutProblemsSchoolRouteRouteImport } from './routes/_mainLayout/problems/school/route'
@@ -90,11 +91,6 @@ const MainLayoutRegisterRouteRoute = MainLayoutRegisterRouteRouteImport.update({
   path: '/register',
   getParentRoute: () => MainLayoutRouteRoute,
 } as any)
-const MainLayoutRankingsRouteRoute = MainLayoutRankingsRouteRouteImport.update({
-  id: '/rankings',
-  path: '/rankings',
-  getParentRoute: () => MainLayoutRouteRoute,
-} as any)
 const MainLayoutLoginRouteRoute = MainLayoutLoginRouteRouteImport.update({
   id: '/login',
   path: '/login',
@@ -114,6 +110,11 @@ const MainLayoutSettingIndexRoute = MainLayoutSettingIndexRouteImport.update({
 const MainLayoutResourceIndexRoute = MainLayoutResourceIndexRouteImport.update({
   id: '/resource/',
   path: '/resource/',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutRankingsIndexRoute = MainLayoutRankingsIndexRouteImport.update({
+  id: '/rankings/',
+  path: '/rankings/',
   getParentRoute: () => MainLayoutRouteRoute,
 } as any)
 const MainLayoutProblemsIndexRoute = MainLayoutProblemsIndexRouteImport.update({
@@ -159,6 +160,12 @@ const MainLayoutResourceIdRouteRoute =
   MainLayoutResourceIdRouteRouteImport.update({
     id: '/resource/$id',
     path: '/resource/$id',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutRankingsSchoolRouteRoute =
+  MainLayoutRankingsSchoolRouteRouteImport.update({
+    id: '/rankings/school',
+    path: '/rankings/school',
     getParentRoute: () => MainLayoutRouteRoute,
   } as any)
 const MainLayoutProblemsUlsanRouteRoute =
@@ -325,7 +332,6 @@ export interface FileRoutesByFullPath {
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/redirect-naver': typeof RedirectNaverRouteRoute
   '/login': typeof MainLayoutLoginRouteRoute
-  '/rankings': typeof MainLayoutRankingsRouteRoute
   '/register': typeof MainLayoutRegisterRouteRoute
   '/my/purchase': typeof MainLayoutMyPurchaseRouteRoute
   '/problems/busan': typeof MainLayoutProblemsBusanRouteRoute
@@ -342,6 +348,7 @@ export interface FileRoutesByFullPath {
   '/problems/school': typeof MainLayoutProblemsSchoolRouteRoute
   '/problems/seoul': typeof MainLayoutProblemsSeoulRouteRoute
   '/problems/ulsan': typeof MainLayoutProblemsUlsanRouteRoute
+  '/rankings/school': typeof MainLayoutRankingsSchoolRouteRoute
   '/resource/$id': typeof MainLayoutResourceIdRouteRoute
   '/contests/$contestId': typeof MainLayoutContestsContestIdRoute
   '/problems/$problemId': typeof MainLayoutProblemsProblemIdRoute
@@ -350,6 +357,7 @@ export interface FileRoutesByFullPath {
   '/contests': typeof MainLayoutContestsIndexRoute
   '/my': typeof MainLayoutMyIndexRoute
   '/problems': typeof MainLayoutProblemsIndexRoute
+  '/rankings': typeof MainLayoutRankingsIndexRoute
   '/resource': typeof MainLayoutResourceIndexRoute
   '/setting': typeof MainLayoutSettingIndexRoute
   '/test-papers': typeof MainLayoutTestPapersIndexRoute
@@ -372,7 +380,6 @@ export interface FileRoutesByTo {
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/redirect-naver': typeof RedirectNaverRouteRoute
   '/login': typeof MainLayoutLoginRouteRoute
-  '/rankings': typeof MainLayoutRankingsRouteRoute
   '/register': typeof MainLayoutRegisterRouteRoute
   '/my/purchase': typeof MainLayoutMyPurchaseRouteRoute
   '/problems/busan': typeof MainLayoutProblemsBusanRouteRoute
@@ -389,6 +396,7 @@ export interface FileRoutesByTo {
   '/problems/school': typeof MainLayoutProblemsSchoolRouteRoute
   '/problems/seoul': typeof MainLayoutProblemsSeoulRouteRoute
   '/problems/ulsan': typeof MainLayoutProblemsUlsanRouteRoute
+  '/rankings/school': typeof MainLayoutRankingsSchoolRouteRoute
   '/resource/$id': typeof MainLayoutResourceIdRouteRoute
   '/contests/$contestId': typeof MainLayoutContestsContestIdRoute
   '/problems/$problemId': typeof MainLayoutProblemsProblemIdRoute
@@ -397,6 +405,7 @@ export interface FileRoutesByTo {
   '/contests': typeof MainLayoutContestsIndexRoute
   '/my': typeof MainLayoutMyIndexRoute
   '/problems': typeof MainLayoutProblemsIndexRoute
+  '/rankings': typeof MainLayoutRankingsIndexRoute
   '/resource': typeof MainLayoutResourceIndexRoute
   '/setting': typeof MainLayoutSettingIndexRoute
   '/test-papers': typeof MainLayoutTestPapersIndexRoute
@@ -421,7 +430,6 @@ export interface FileRoutesById {
   '/redirect-kakao': typeof RedirectKakaoRouteRoute
   '/redirect-naver': typeof RedirectNaverRouteRoute
   '/_mainLayout/login': typeof MainLayoutLoginRouteRoute
-  '/_mainLayout/rankings': typeof MainLayoutRankingsRouteRoute
   '/_mainLayout/register': typeof MainLayoutRegisterRouteRoute
   '/_mainLayout/my/purchase': typeof MainLayoutMyPurchaseRouteRoute
   '/_mainLayout/problems/busan': typeof MainLayoutProblemsBusanRouteRoute
@@ -438,6 +446,7 @@ export interface FileRoutesById {
   '/_mainLayout/problems/school': typeof MainLayoutProblemsSchoolRouteRoute
   '/_mainLayout/problems/seoul': typeof MainLayoutProblemsSeoulRouteRoute
   '/_mainLayout/problems/ulsan': typeof MainLayoutProblemsUlsanRouteRoute
+  '/_mainLayout/rankings/school': typeof MainLayoutRankingsSchoolRouteRoute
   '/_mainLayout/resource/$id': typeof MainLayoutResourceIdRouteRoute
   '/_mainLayout/contests/$contestId': typeof MainLayoutContestsContestIdRoute
   '/_mainLayout/problems/$problemId': typeof MainLayoutProblemsProblemIdRoute
@@ -446,6 +455,7 @@ export interface FileRoutesById {
   '/_mainLayout/contests/': typeof MainLayoutContestsIndexRoute
   '/_mainLayout/my/': typeof MainLayoutMyIndexRoute
   '/_mainLayout/problems/': typeof MainLayoutProblemsIndexRoute
+  '/_mainLayout/rankings/': typeof MainLayoutRankingsIndexRoute
   '/_mainLayout/resource/': typeof MainLayoutResourceIndexRoute
   '/_mainLayout/setting/': typeof MainLayoutSettingIndexRoute
   '/_mainLayout/test-papers/': typeof MainLayoutTestPapersIndexRoute
@@ -470,7 +480,6 @@ export interface FileRouteTypes {
     | '/redirect-kakao'
     | '/redirect-naver'
     | '/login'
-    | '/rankings'
     | '/register'
     | '/my/purchase'
     | '/problems/busan'
@@ -487,6 +496,7 @@ export interface FileRouteTypes {
     | '/problems/school'
     | '/problems/seoul'
     | '/problems/ulsan'
+    | '/rankings/school'
     | '/resource/$id'
     | '/contests/$contestId'
     | '/problems/$problemId'
@@ -495,6 +505,7 @@ export interface FileRouteTypes {
     | '/contests'
     | '/my'
     | '/problems'
+    | '/rankings'
     | '/resource'
     | '/setting'
     | '/test-papers'
@@ -517,7 +528,6 @@ export interface FileRouteTypes {
     | '/redirect-kakao'
     | '/redirect-naver'
     | '/login'
-    | '/rankings'
     | '/register'
     | '/my/purchase'
     | '/problems/busan'
@@ -534,6 +544,7 @@ export interface FileRouteTypes {
     | '/problems/school'
     | '/problems/seoul'
     | '/problems/ulsan'
+    | '/rankings/school'
     | '/resource/$id'
     | '/contests/$contestId'
     | '/problems/$problemId'
@@ -542,6 +553,7 @@ export interface FileRouteTypes {
     | '/contests'
     | '/my'
     | '/problems'
+    | '/rankings'
     | '/resource'
     | '/setting'
     | '/test-papers'
@@ -565,7 +577,6 @@ export interface FileRouteTypes {
     | '/redirect-kakao'
     | '/redirect-naver'
     | '/_mainLayout/login'
-    | '/_mainLayout/rankings'
     | '/_mainLayout/register'
     | '/_mainLayout/my/purchase'
     | '/_mainLayout/problems/busan'
@@ -582,6 +593,7 @@ export interface FileRouteTypes {
     | '/_mainLayout/problems/school'
     | '/_mainLayout/problems/seoul'
     | '/_mainLayout/problems/ulsan'
+    | '/_mainLayout/rankings/school'
     | '/_mainLayout/resource/$id'
     | '/_mainLayout/contests/$contestId'
     | '/_mainLayout/problems/$problemId'
@@ -590,6 +602,7 @@ export interface FileRouteTypes {
     | '/_mainLayout/contests/'
     | '/_mainLayout/my/'
     | '/_mainLayout/problems/'
+    | '/_mainLayout/rankings/'
     | '/_mainLayout/resource/'
     | '/_mainLayout/setting/'
     | '/_mainLayout/test-papers/'
@@ -666,13 +679,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutRegisterRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
-    '/_mainLayout/rankings': {
-      id: '/_mainLayout/rankings'
-      path: '/rankings'
-      fullPath: '/rankings'
-      preLoaderRoute: typeof MainLayoutRankingsRouteRouteImport
-      parentRoute: typeof MainLayoutRouteRoute
-    }
     '/_mainLayout/login': {
       id: '/_mainLayout/login'
       path: '/login'
@@ -699,6 +705,13 @@ declare module '@tanstack/react-router' {
       path: '/resource'
       fullPath: '/resource'
       preLoaderRoute: typeof MainLayoutResourceIndexRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/rankings/': {
+      id: '/_mainLayout/rankings/'
+      path: '/rankings'
+      fullPath: '/rankings'
+      preLoaderRoute: typeof MainLayoutRankingsIndexRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
     '/_mainLayout/problems/': {
@@ -755,6 +768,13 @@ declare module '@tanstack/react-router' {
       path: '/resource/$id'
       fullPath: '/resource/$id'
       preLoaderRoute: typeof MainLayoutResourceIdRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/rankings/school': {
+      id: '/_mainLayout/rankings/school'
+      path: '/rankings/school'
+      fullPath: '/rankings/school'
+      preLoaderRoute: typeof MainLayoutRankingsSchoolRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
     '/_mainLayout/problems/ulsan': {
@@ -944,7 +964,6 @@ declare module '@tanstack/react-router' {
 
 interface MainLayoutRouteRouteChildren {
   MainLayoutLoginRouteRoute: typeof MainLayoutLoginRouteRoute
-  MainLayoutRankingsRouteRoute: typeof MainLayoutRankingsRouteRoute
   MainLayoutRegisterRouteRoute: typeof MainLayoutRegisterRouteRoute
   MainLayoutMyPurchaseRouteRoute: typeof MainLayoutMyPurchaseRouteRoute
   MainLayoutProblemsBusanRouteRoute: typeof MainLayoutProblemsBusanRouteRoute
@@ -961,6 +980,7 @@ interface MainLayoutRouteRouteChildren {
   MainLayoutProblemsSchoolRouteRoute: typeof MainLayoutProblemsSchoolRouteRoute
   MainLayoutProblemsSeoulRouteRoute: typeof MainLayoutProblemsSeoulRouteRoute
   MainLayoutProblemsUlsanRouteRoute: typeof MainLayoutProblemsUlsanRouteRoute
+  MainLayoutRankingsSchoolRouteRoute: typeof MainLayoutRankingsSchoolRouteRoute
   MainLayoutResourceIdRouteRoute: typeof MainLayoutResourceIdRouteRoute
   MainLayoutContestsContestIdRoute: typeof MainLayoutContestsContestIdRoute
   MainLayoutProblemsProblemIdRoute: typeof MainLayoutProblemsProblemIdRoute
@@ -969,6 +989,7 @@ interface MainLayoutRouteRouteChildren {
   MainLayoutContestsIndexRoute: typeof MainLayoutContestsIndexRoute
   MainLayoutMyIndexRoute: typeof MainLayoutMyIndexRoute
   MainLayoutProblemsIndexRoute: typeof MainLayoutProblemsIndexRoute
+  MainLayoutRankingsIndexRoute: typeof MainLayoutRankingsIndexRoute
   MainLayoutResourceIndexRoute: typeof MainLayoutResourceIndexRoute
   MainLayoutSettingIndexRoute: typeof MainLayoutSettingIndexRoute
   MainLayoutTestPapersIndexRoute: typeof MainLayoutTestPapersIndexRoute
@@ -987,7 +1008,6 @@ interface MainLayoutRouteRouteChildren {
 
 const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutLoginRouteRoute: MainLayoutLoginRouteRoute,
-  MainLayoutRankingsRouteRoute: MainLayoutRankingsRouteRoute,
   MainLayoutRegisterRouteRoute: MainLayoutRegisterRouteRoute,
   MainLayoutMyPurchaseRouteRoute: MainLayoutMyPurchaseRouteRoute,
   MainLayoutProblemsBusanRouteRoute: MainLayoutProblemsBusanRouteRoute,
@@ -1007,6 +1027,7 @@ const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutProblemsSchoolRouteRoute: MainLayoutProblemsSchoolRouteRoute,
   MainLayoutProblemsSeoulRouteRoute: MainLayoutProblemsSeoulRouteRoute,
   MainLayoutProblemsUlsanRouteRoute: MainLayoutProblemsUlsanRouteRoute,
+  MainLayoutRankingsSchoolRouteRoute: MainLayoutRankingsSchoolRouteRoute,
   MainLayoutResourceIdRouteRoute: MainLayoutResourceIdRouteRoute,
   MainLayoutContestsContestIdRoute: MainLayoutContestsContestIdRoute,
   MainLayoutProblemsProblemIdRoute: MainLayoutProblemsProblemIdRoute,
@@ -1015,6 +1036,7 @@ const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutContestsIndexRoute: MainLayoutContestsIndexRoute,
   MainLayoutMyIndexRoute: MainLayoutMyIndexRoute,
   MainLayoutProblemsIndexRoute: MainLayoutProblemsIndexRoute,
+  MainLayoutRankingsIndexRoute: MainLayoutRankingsIndexRoute,
   MainLayoutResourceIndexRoute: MainLayoutResourceIndexRoute,
   MainLayoutSettingIndexRoute: MainLayoutSettingIndexRoute,
   MainLayoutTestPapersIndexRoute: MainLayoutTestPapersIndexRoute,
