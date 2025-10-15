@@ -1,11 +1,11 @@
-import type { UserInfo } from "../types/user";
+import type { UserDetailedInfo } from "../types/user";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 interface AuthState {
   isLogin: boolean | null;
-  userInfo: UserInfo | null; // UserType은 유저 정보 타입으로 대체하세요
-  setAuth: (userInfo: UserInfo) => void;
+  userInfo: UserDetailedInfo | null; // UserType은 유저 정보 타입으로 대체하세요
+  setAuth: (userInfo: UserDetailedInfo) => void;
   clearAuth: () => void;
 }
 

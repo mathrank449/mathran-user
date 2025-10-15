@@ -23,6 +23,7 @@ export type UserDetailedInfo = {
   agreeToPrivacyPolicy: boolean;
   pending: boolean;
   schoolDetail?: School;
+  remainPoint: number;
 };
 
 export type BasicUserInfo = {
