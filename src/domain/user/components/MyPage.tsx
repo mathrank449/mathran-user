@@ -7,6 +7,8 @@ import type { ProblemSolveInfo } from "../types/user";
 import PortOne from "@portone/browser-sdk/v2";
 import { useAuthStore } from "../stores/authStore";
 import { useNavigate } from "@tanstack/react-router";
+import { getProductList, purchaseProduct } from "../../product/apis/product";
+import type { Product } from "../../product/types/product";
 
 function MyPage() {
   const [mySchool, setMySchool] = useState<School | undefined>(undefined);
@@ -16,23 +18,35 @@ function MyPage() {
   >(undefined);
 
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [productList, setProductList] = useState<Product[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<undefined | Product>(
+    undefined
+  );
 
   const { userInfo } = useAuthStore();
   const navigate = useNavigate();
 
-  const handlePaymentButton = async (amount: number) => {
+  const handlePaymentButton = async () => {
+    if (selectedProduct === undefined) return;
+    const paymentId = `payment-${crypto.randomUUID()}`;
     try {
       const response = await PortOne.requestPayment({
         // Store ID 설정
         storeId: "store-a9019ea9-0758-4ab0-bc07-fafdfcd6986e",
         // 채널 키 설정
         channelKey: "channel-key-c62a3472-8260-449d-a8eb-deeb5733240e",
-        paymentId: `payment-${crypto.randomUUID()}`,
-        orderName: `${amount.toLocaleString()} 포인트 충전`,
-        totalAmount: amount,
+        paymentId,
+        orderName: `${selectedProduct.pointAmount.toLocaleString()} 포인트 충전`,
+        totalAmount: selectedProduct.price,
         currency: "CURRENCY_KRW",
         payMethod: "EASY_PAY",
+        customData: {
+          paymentProductId: selectedProduct.pointProductId,
+          pointAmount: selectedProduct.pointAmount,
+        },
+        customer: {
+          customerId: userInfo?.memberId,
+        },
       });
 
       if (response && response.code !== undefined) {
@@ -40,22 +54,16 @@ function MyPage() {
         return alert(response.message);
       }
 
-      alert(`${amount.toLocaleString()}원 결제가 완료되었습니다!`);
+      // 결제 완료 후 서버 통신 로직 (추후 구현)
+      await purchaseProduct(paymentId);
+      alert(
+        `${selectedProduct.price.toLocaleString()}원 결제가 완료되었습니다!`
+      );
+      window.location.reload();
     } catch (err) {
       console.error(err);
       alert("결제 중 오류가 발생했습니다.");
     }
-
-    // 결제 완료 후 서버 통신 로직 (추후 구현)
-    // const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   // paymentId와 주문 정보를 서버에 전달합니다.
-    //   body: JSON.stringify({
-    //     paymentId: paymentId,
-    //     // 주문 정보...
-    //   }),
-    // });
   };
 
   useEffect(() => {
@@ -67,6 +75,8 @@ function MyPage() {
         setMyRank(myRankInfo);
         const myProblemSolveInfoResponse = await getMyProblemSolveInfo();
         setMyProblemSolveInfo(myProblemSolveInfoResponse);
+        const productListResponse = await getProductList();
+        setProductList(productListResponse);
       } catch (e) {
         console.log(e);
         if ((e as { code: number })?.code === 8003) {
@@ -81,6 +91,11 @@ function MyPage() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (selectedProduct === undefined) return;
+    handlePaymentButton();
+  }, [selectedProduct]);
 
   return (
     <div className="w-[1200px] mx-auto mt-24">
@@ -140,20 +155,19 @@ function MyPage() {
                   충전 금액 선택
                 </span>
                 <div className="flex flex-col gap-3">
-                  {[1000, 5000, 10000].map((amount) => (
+                  {productList.map((product) => (
                     <button
-                      key={amount}
+                      key={product.pointProductId}
                       className={`px-4 py-2 rounded-lg border font-semibold transition cursor-pointer ${
-                        selectedAmount === amount
+                        selectedProduct?.pointAmount === product.pointAmount
                           ? "bg-emerald-500 text-white border-emerald-500"
                           : "border-gray-300 hover:bg-gray-100"
                       }`}
                       onClick={() => {
-                        setSelectedAmount(amount);
-                        handlePaymentButton(amount);
+                        setSelectedProduct(product);
                       }}
                     >
-                      {amount.toLocaleString()}원
+                      {product.pointAmount.toLocaleString()}원
                     </button>
                   ))}
                 </div>

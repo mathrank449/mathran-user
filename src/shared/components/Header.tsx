@@ -106,7 +106,7 @@ export function Header() {
               <div className="flex items-center gap-1 bg-amber-100 px-3 py-1 rounded-md">
                 <img src="/point.png" alt="포인트" className="w-4 h-4" />
                 <span className="text-sm font-medium text-amber-700">
-                  {2000}P
+                  {userInfo?.remainPoint}P
                 </span>
               </div>
               <button

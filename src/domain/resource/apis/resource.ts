@@ -98,13 +98,21 @@ export const getResourePagination = async (
 export const getDetailedResource = async (
   contentId: string
 ): Promise<ResourceDeatiledType> => {
-  const { data } = await instance.get(`/v1/content/${contentId}`);
+  try {
+    const { data } = await instance.get(`/v1/content/${contentId}`);
 
-  return {
-    ...data,
-    resourceId: data.contentId,
-    resourceType: mapContentTypeToResourceType(data.contentType), // 서버 contentType → 프론트 resourceType
-  };
+    return {
+      ...data,
+      resourceId: data.contentId,
+      resourceType: mapContentTypeToResourceType(data.contentType), // 서버 contentType → 프론트 resourceType
+    };
+  } catch (e) {
+    console.log(e);
+    if (e instanceof AxiosError) {
+      throw e.response?.data.message;
+    }
+    throw e;
+  }
 };
 
 export const modifyResource = async (
@@ -152,6 +160,17 @@ export const modifyResource = async (
   } catch (e) {
     if (e instanceof AxiosError) {
       throw e.message;
+    }
+    throw e;
+  }
+};
+
+export const purchaseResource = async (id: string, idempotencyKey: string) => {
+  try {
+    await instance.post(`/v1/content/${id}?idempotencyKey=${idempotencyKey}`);
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      throw e.response?.data.message;
     }
     throw e;
   }

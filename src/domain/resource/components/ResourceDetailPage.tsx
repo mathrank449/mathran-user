@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ResourceType } from "../types/resource";
-import { getDetailedResource } from "../apis/resource";
+import { getDetailedResource, purchaseResource } from "../apis/resource";
 import type { FileRealInfo } from "../../../shared/types/file";
 import { extractYoutubeEmbed } from "../../../shared/utils/extractYoutubeEmbed";
 import ReadOnlyReactQuillEditor from "../../solutionBoard/write/components/ReadOnlyReactQuillEditor";
@@ -10,7 +10,7 @@ import { useNavigate } from "@tanstack/react-router";
 function ResourceDetailPage({ id }: { id: string }) {
   const navigate = useNavigate();
   // 제목, 카테고리, 파일, 영상 링크 상태
-  const [title, setTitle] = useState("자료1번입니다.");
+  const [title, setTitle] = useState("");
   const [resourceCategory, setResourceCategory] =
     useState<ResourceType>("schoolPaper");
   const [text, setText] = useState("");
@@ -20,19 +20,41 @@ function ResourceDetailPage({ id }: { id: string }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const detailedResource = await getDetailedResource(id);
-      console.log(detailedResource);
-      setTitle(detailedResource.title);
-      setResourceCategory(detailedResource.resourceType);
-      setText(detailedResource.text);
+      try {
+        const detailedResource = await getDetailedResource(id);
+        console.log(detailedResource);
+        setTitle(detailedResource.title);
+        setResourceCategory(detailedResource.resourceType);
+        setText(detailedResource.text);
 
-      if (
-        detailedResource.resourceType == "testPaper" ||
-        detailedResource.resourceType == "schoolPaper"
-      ) {
-        setFiles(detailedResource.fileInfos ?? []);
-      } else if (detailedResource.resourceType == "video") {
-        setVideoLinks(detailedResource.videoLinks ?? []);
+        if (
+          detailedResource.resourceType == "testPaper" ||
+          detailedResource.resourceType == "schoolPaper"
+        ) {
+          setFiles(detailedResource.fileInfos ?? []);
+        } else if (detailedResource.resourceType == "video") {
+          setVideoLinks(detailedResource.videoLinks ?? []);
+        }
+      } catch (e) {
+        alert(e);
+        if (e === "결제되지 않은 자료입니다.") {
+          const confirmed = confirm("해당 자료를 구매하시겠습니까?");
+          if (confirmed) {
+            const purchaseId = `purchase-${crypto.randomUUID()}`;
+            try {
+              // ✅ 구매 API 호출 (예시)
+              await purchaseResource(id, purchaseId);
+              alert("구매가 완료되었습니다!");
+              // 구매 후 다시 데이터 불러오기
+              window.location.reload();
+            } catch (purchaseError) {
+              alert(`구매 중 오류가 발생했습니다. ${purchaseError}`);
+            }
+          } else {
+            // ❌ 사용자가 취소를 선택한 경우
+            navigate({ to: "/resource" });
+          }
+        }
       }
     };
 
