@@ -94,7 +94,7 @@ function MyPage() {
           />
         )}
         <span className="text-2xl font-semibold text-gray-700">
-          {userInfo?.userName}
+          {userInfo?.nickName}
         </span>
       </div>
 

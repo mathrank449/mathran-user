@@ -116,7 +116,7 @@ export function Header() {
                 }}
               >
                 <span className="text-sm text-black-700 font-medium">
-                  {userInfo?.userName}
+                  {userInfo?.nickName}
                 </span>
               </button>
               <span className="text-gray-400">|</span>

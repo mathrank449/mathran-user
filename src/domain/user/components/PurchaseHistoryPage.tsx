@@ -95,7 +95,7 @@ function PurchaseHistoryPage() {
           )}
           <div>
             <p className="text-xl font-semibold text-gray-800">
-              {userInfo?.userName}
+              {userInfo?.nickName}
             </p>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { refreshToken } from "../domain/user/apis/auth";
 import instance from "../shared/apis/instance";
 import { useAuthStore } from "../domain/user/stores/authStore";
+import { getUserInfo } from "../domain/user/apis/user";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,7 +24,9 @@ export const Route = createRootRoute({
       instance.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${userInfo.accessToken}`;
-      setAuth(userInfo);
+      const userDetailedInfo = await getUserInfo();
+
+      setAuth(userDetailedInfo);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       clearAuth();

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { refreshToken } from "../../domain/user/apis/auth";
 import { useAuthStore } from "../../domain/user/stores/authStore";
+import { getUserInfo } from "../../domain/user/apis/user";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -63,7 +64,8 @@ instance.interceptors.response.use(
         const newToken = data.accessToken;
 
         instance.defaults.headers.common["Authorization"] = newToken;
-        useAuthStore.getState().setAuth(data);
+        const detailedUserInfo = await getUserInfo();
+        useAuthStore.getState().setAuth(detailedUserInfo);
         processQueue(null, newToken);
 
         originalRequest.headers["Authorization"] = newToken;
