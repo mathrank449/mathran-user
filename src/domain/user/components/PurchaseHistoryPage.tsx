@@ -43,7 +43,7 @@ function PurchaseHistoryPage() {
   }, [page]);
 
   if (purchases === undefined) return;
-  console.log(purchases);
+
   return (
     <div className="w-[1200px] mx-auto mt-24">
       {/* 헤더 */}

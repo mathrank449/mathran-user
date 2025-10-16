@@ -70,7 +70,7 @@ export const deleteMemberAccount = async (memberId: string) => {
 export const getMyOrderlist = async (page: number) => {
   try {
     const { data } = await instance.get(
-      `/v1/content/orders/my?pageNumber=${page}&pageSize=10`
+      `/v1/content/orders/my?pageNumber=${page}&pageSize=10&orderStatus=SUCCEEDED`
     );
     return data;
   } catch (e) {
