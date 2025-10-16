@@ -4,6 +4,7 @@ import type { OrderStatus } from "../../resource/types/resource";
 export type OrderItem = {
   id: string;
   userId: string;
+  contentTitle: string;
   contentId: string;
   idempotencyKey: string;
   orderStatus: OrderStatus;

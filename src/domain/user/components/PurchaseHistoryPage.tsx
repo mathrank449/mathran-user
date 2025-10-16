@@ -115,7 +115,7 @@ function PurchaseHistoryPage() {
                         }
                         className="text-blue-600 hover:underline hover:text-blue-800 cursor-pointer"
                       >
-                        {item.contentId}
+                        {item.contentTitle}
                       </button>
                     </td>
                     <td className="px-6 py-4 text-gray-600">
