@@ -114,7 +114,7 @@ function ContestListPage() {
               />
             ))
         ) : (
-          <div>데이터 없음</div>
+          <div></div>
         )}
       </div>
       {contestListPagination && (

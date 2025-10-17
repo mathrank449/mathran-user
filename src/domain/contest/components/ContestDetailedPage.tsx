@@ -143,7 +143,7 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
     fetchContest();
   }, [contestId]);
 
-  if (contest === null) return <div>데이터 없음</div>;
+  if (contest === null) return <div></div>;
 
   const problem = contest.itemDetails[selectedIndex];
 

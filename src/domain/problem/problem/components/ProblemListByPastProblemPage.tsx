@@ -126,7 +126,7 @@ function ProblemListByPastProblemPage({
               <ProblemItem key={problem.id} problem={problem} index={index} />
             ))
         ) : (
-          <div>데이터 없음</div>
+          <div></div>
         )}
       </div>
       {problemListPagination && (

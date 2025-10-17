@@ -114,7 +114,7 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
     fetchTestPaper();
   }, [testPaperId]);
 
-  if (testPaper === null) return <div>데이터 없음</div>;
+  if (testPaper === null) return <div></div>;
 
   const problem = testPaper.itemDetails[selectedIndex];
 
