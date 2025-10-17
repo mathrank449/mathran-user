@@ -1,5 +1,4 @@
 import kakao_login from "../../../shared/assests/kakao_login.png";
-import naver_login from "../../../shared/assests/naver_login.png";
 import google_login from "../../../shared/assests/google_login.png";
 import mathran_logo from "/mathran_logo.png";
 
@@ -37,17 +36,6 @@ function LoginPage() {
           <img
             src={kakao_login}
             alt="카카오 로그인 버튼"
-            className="w-82 cursor-pointer hover:scale-105 transition-transform"
-          />
-        </button>
-        <button
-          onClick={() => {
-            window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=${naver_redirect_url}&response_type=code&state=1234`;
-          }}
-        >
-          <img
-            src={naver_login}
-            alt="네이버 로그인 버튼"
             className="w-82 cursor-pointer hover:scale-105 transition-transform"
           />
         </button>
