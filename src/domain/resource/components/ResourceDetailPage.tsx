@@ -90,7 +90,7 @@ function ResourceDetailPage({ id }: { id: string }) {
                 );
               }
             } catch (purchaseError) {
-              alert(`구매 중 오류가 발생했습니다: ${purchaseError}`);
+              alert(`포인트가 부족합니다. ${purchaseError}`);
             }
           } else {
             // ❌ 사용자가 취소를 선택한 경우
