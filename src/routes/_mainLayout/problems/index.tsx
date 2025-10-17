@@ -6,5 +6,5 @@ export const Route = createFileRoute("/_mainLayout/problems/")({
 });
 
 function RouteComponent() {
-  return <ProblemListPage />;
+  return <ProblemListPage type="all" />;
 }

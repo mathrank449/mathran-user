@@ -1,7 +1,7 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { useQuery } from "@tanstack/react-query";
 import { getCourse } from "../../apis/course";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProblemListHeader from "./ProblemListHeader";
 import type { SingleProblemQueryListType } from "../types/problem";
 import ProblemItem from "./ProblemItem";
@@ -12,24 +12,20 @@ import { pathMap } from "../utils/pathMap";
 import { useNavigate } from "@tanstack/react-router";
 import Pagination from "../../../../shared/components/Pagination";
 
-const typeMap: Record<string, SingleProblemQueryListType["queryType"]> = {
-  전체: "all",
-  최신: "new",
-  인기: "popular",
-  "단원 별": "course",
-  "우리학교 예상": "school",
-};
-
-function ProblemListPage() {
+function ProblemListPage({
+  type,
+}: {
+  type: "all" | "new" | "popular" | "course" | "school" | "pastProblem";
+}) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const { data: gradeList } = useQuery({
     queryKey: [`v1/problem/course/`, ""],
     queryFn: ({ queryKey }) => getCourse(queryKey[1]),
   });
-  const [selectedType, setSelectedType] = useState("전체");
+
   const [queryList, setQueryList] = useState<SingleProblemQueryListType>({
-    queryType: "all",
+    queryType: type,
     singleProblemId: "",
     courseInfo: {
       courseName: "전체(과정)",
@@ -46,14 +42,6 @@ function ProblemListPage() {
     queryFn: ({ queryKey }) =>
       getSingleProblemsByQuery(queryKey[1], queryKey[2]),
   });
-  console.log(problemListPagination);
-
-  useEffect(() => {
-    setQueryList((prev) => ({
-      ...prev,
-      queryType: typeMap[selectedType] || "all",
-    }));
-  }, [selectedType]);
 
   return (
     <div className="flex flex-col items-center gap-8">
@@ -62,24 +50,31 @@ function ProblemListPage() {
       </div>
       <nav className="flex items-center gap-8 mt-12">
         <div className="flex gap-2 flex-wrap mr-24">
-          {["전체", "최신", "인기", "단원 별", "우리학교 예상"].map((item) => {
-            return (
-              <button
-                key={item}
-                onClick={() => {
-                  navigate({ to: pathMap[item] });
-                  setSelectedType(item);
-                }}
-                className={`px-4 py-2 rounded-full border transition-colors duration-200 cursor-pointer
+          {[
+            { value: "전체", key: "all" },
+            { value: "최신", key: "new" },
+            { value: "인기", key: "popular" },
+            { value: "단원 별", key: "course" },
+            { value: "우리학교 예상", key: "scholl" },
+          ].map((item) => {
+            {
+              return (
+                <button
+                  key={item.key}
+                  onClick={() => {
+                    navigate({ to: pathMap[item.value] });
+                  }}
+                  className={`px-4 py-2 rounded-full border transition-colors duration-200 cursor-pointer
                 ${
-                  selectedType === item
+                  type == item.key
                     ? "border-indigo-500 bg-indigo-500 text-white shadow-sm"
                     : "border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
                 }`}
-              >
-                <span className="text-sm font-medium">{item}</span>
-              </button>
-            );
+                >
+                  <span className="text-sm font-medium">{item.value}</span>
+                </button>
+              );
+            }
           })}
         </div>
 

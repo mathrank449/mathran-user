@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import NewProblemListPage from "../../../../domain/problem/problem/components/NewProblemListPage";
+import ProblemListPage from "../../../../domain/problem/problem/components/ProblemListPage";
 
 export const Route = createFileRoute("/_mainLayout/problems/new")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <NewProblemListPage />;
+  return <ProblemListPage type="new" />;
 }

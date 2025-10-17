@@ -17,10 +17,10 @@ export const getSingleProblemsByQuery = async (
   district?: string | undefined
 ): Promise<ProblemListPagination> => {
   const location = [region, district].filter(Boolean).join(" ");
-  console.log(query);
+
   try {
     let problemResponse;
-    if (query.queryType === "all") {
+    if (query.queryType == "all") {
       problemResponse = await instance.get(
         `/v1/problem/single?singleProblemId=&coursePath=${
           query.courseInfo?.coursePath
@@ -32,9 +32,7 @@ export const getSingleProblemsByQuery = async (
           school?.schoolCode ?? ""
         }&location=${location}&pageSize=10&pageNumber=${page}`
       );
-    }
-
-    if (query.queryType === "new") {
+    } else if (query.queryType == "new") {
       problemResponse = await instance.get(
         `/v1/problem/single?singleProblemId=&coursePath=${
           query.courseInfo?.coursePath
@@ -46,8 +44,7 @@ export const getSingleProblemsByQuery = async (
           school?.schoolCode ?? ""
         }&location=${location}&orderColumn=DATE&direction=DESC&pageSize=10&pageNumber=${page}`
       );
-    }
-    if (query.queryType === "popular") {
+    } else if (query.queryType == "popular") {
       problemResponse = await instance.get(
         `/v1/problem/single?singleProblemId=&coursePath=${
           query.courseInfo?.coursePath
@@ -59,9 +56,7 @@ export const getSingleProblemsByQuery = async (
           school?.schoolCode ?? ""
         }&location=${location}&orderColumn=TOTAL_TRY_COUNT&direction=DESC&pageSize=10&pageNumber=${page}`
       );
-    }
-
-    if (query.queryType === "pastProblem") {
+    } else if (query.queryType == "pastProblem") {
       problemResponse = await instance.get(
         `/v1/problem/single?singleProblemId=&coursePath=${
           query.courseInfo?.coursePath
