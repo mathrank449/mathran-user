@@ -14,8 +14,8 @@ function RegisterPage() {
   return (
     <div className="mx-auto w-[720px] mb-36">
       <div className="rounded-xl p-10 flex flex-col items-center gap-6">
+        <img src={mathran_logo} className="w-64" />
         <div className="flex items-center justify-center gap-4">
-          <img src={mathran_logo} className="w-64" />
           <h1 className="text-4xl font-bold text-gray-800">문항풀이 서비스</h1>
         </div>
         <RegisterForm formData={formData} setFormData={setFormData} />
