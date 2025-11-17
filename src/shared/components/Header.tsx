@@ -36,7 +36,10 @@ export function Header() {
             navigate({ to: "/" });
           }}
         >
-          <img src="/mathran_logo.png" className="absolute w-20 left-4 top-1" />
+          <img
+            src="/mathran_logo.png"
+            className="absolute ml-8 w-[100px] cursor-pointer object-contain h-auto left-4 top-6"
+          />
         </button>
         <div
           className="py-4"
