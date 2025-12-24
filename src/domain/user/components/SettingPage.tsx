@@ -37,6 +37,9 @@ function SettingPage() {
       try {
         const data = await getUserInfo();
         setUserDetailedInfo(data);
+        if (data.schoolDetail?.schoolName) {
+          setSearchedSchoolname(data.schoolDetail.schoolName);
+        }
       } catch (e) {
         console.error("유저 정보를 가져오는 중 에러 발생:", e);
       }
