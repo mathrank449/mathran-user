@@ -153,11 +153,9 @@ function ProblemListPage({
       <div>
         <ProblemListHeader />
         {!isLoading && problemListPagination?.queryResults ? (
-          problemListPagination?.queryResults
-            .sort((a, b) => Number(a.id) - Number(b.id))
-            .map((problem, index) => (
-              <ProblemItem key={problem.id} problem={problem} index={index} />
-            ))
+          problemListPagination?.queryResults.map((problem, index) => (
+            <ProblemItem key={problem.id} problem={problem} index={index} />
+          ))
         ) : (
           <div></div>
         )}
