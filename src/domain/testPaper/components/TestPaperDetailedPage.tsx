@@ -95,13 +95,10 @@ function TestPaperDetailedPage({ testPaperId }: { testPaperId: string }) {
       // itemDetails 개수만큼 정답 배열 초기화 (예: [[""], [""], ...])
       const initialAnswers = testPaperResponse.itemDetails.map(() => [""]);
       setAnswers(initialAnswers);
-      if (localStorage.getItem("mathran_username")) {
-        const submissionLogsResponse = await getSubmissionLogsByAssessmentId(
-          String(testPaperId)
-        );
-
-        setSubmissionLogs(submissionLogsResponse);
-      }
+      const submissionLogsResponse = await getSubmissionLogsByAssessmentId(
+        String(testPaperId)
+      );
+      setSubmissionLogs(submissionLogsResponse);
 
       setElapsedTime(0);
 

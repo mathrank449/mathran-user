@@ -117,27 +117,25 @@ function ContestDetailedPage({ contestId }: { contestId: string }) {
       const initialAnswers = contestResponse.itemDetails.map(() => [""]);
       setAnswers(initialAnswers);
 
-      if (localStorage.getItem("mathran_username")) {
-        const submissionLogsResponse = await getSubmissionLogsByAssessmentId(
-          String(contestId)
-        );
-        if (submissionLogsResponse.length > 0) {
-          setAlreadySubmitted(true);
-          const submissionLogDetailResponse =
-            await getSubmissionLogDetailBySubmissionId(
-              String(submissionLogsResponse[0].submissionId)
-            );
-          setDetailedSubmission(submissionLogDetailResponse);
-          setSelectedLog(0);
-          setSubmissionResult(submissionLogsResponse[0]);
-        }
-        setSubmissionLogs(submissionLogsResponse);
-        setElapsedTime(0);
-        const contestSolutionRes = await getContestSolutionById(
-          String(contestId)
-        );
-        setSolution(contestSolutionRes);
+      const submissionLogsResponse = await getSubmissionLogsByAssessmentId(
+        String(contestId)
+      );
+      if (submissionLogsResponse.length > 0) {
+        setAlreadySubmitted(true);
+        const submissionLogDetailResponse =
+          await getSubmissionLogDetailBySubmissionId(
+            String(submissionLogsResponse[0].submissionId)
+          );
+        setDetailedSubmission(submissionLogDetailResponse);
+        setSelectedLog(0);
+        setSubmissionResult(submissionLogsResponse[0]);
       }
+      setSubmissionLogs(submissionLogsResponse);
+      setElapsedTime(0);
+      const contestSolutionRes = await getContestSolutionById(
+        String(contestId)
+      );
+      setSolution(contestSolutionRes);
     };
 
     fetchContest();

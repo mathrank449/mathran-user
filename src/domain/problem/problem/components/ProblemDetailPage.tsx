@@ -53,12 +53,10 @@ function ProblemDetailPage({ problemId }: ProblemDetailPageProps) {
       setStartTime(Date.now());
       setProblem(preoblemDetailedRes);
 
-      if (localStorage.getItem("mathran_username")) {
-        const challengeLogsResponse = await getChallengeLogsBySingleProblemId(
-          String(problemId)
-        );
-        setChallengeLogs(challengeLogsResponse);
-      }
+      const challengeLogsResponse = await getChallengeLogsBySingleProblemId(
+        String(problemId)
+      );
+      setChallengeLogs(challengeLogsResponse);
       setIsLoading(false);
     };
     fetchData();
